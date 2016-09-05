@@ -1,5 +1,8 @@
 package org.jboss.qe.collector.service.PageType;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Jiri Bilek
  */
@@ -15,18 +18,15 @@ public class PageParser {
     }
 
     public String get(String key){
-        key = "\""+key+"\":";
-        int index_from = rawPage.indexOf(key)+key.length()+1;
-        int index_to = rawPage.indexOf('"',index_from);
-        String value =rawPage.substring(index_from,index_to);
-        return value;
-    }
 
-    public int getInt(String key){
-        key = "\""+key+"\"";
-        int index_from = rawPage.indexOf(key)+key.length()+1;
-        int index_to = rawPage.indexOf(',',index_from);
-        int value =Integer.valueOf(rawPage.substring(index_from,index_to));
-        return value;
+        JSONObject obj = null;
+        try {
+            obj = new JSONObject(rawPage);
+            return obj.getString(key);
+            //System.out.println("Cislo bildu:"+obj.getJSONArray("runs").getJSONObject(0).getString("url"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
