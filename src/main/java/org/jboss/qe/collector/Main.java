@@ -132,6 +132,10 @@ public class Main {
                     }
                 }
             }*/
+            //for (int i = 0; i < JSONArray.size(data); i++) {
+                
+            //}
+            
         } else {
             System.out.println(dyeText(" - NO RESULTS AVAILABLE", Colour.BLACK_BOLD));
         }
