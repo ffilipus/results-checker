@@ -26,8 +26,9 @@ public class FailedTest {
      */
     public List testCase;
     
-    public FailedTest(String report) {
-        
+    public FailedTest(String testName, String buildUrl, String testCase) {
+        this.testName = testName;
+        this.buildUrl = buildUrl;
     }
 
 }
