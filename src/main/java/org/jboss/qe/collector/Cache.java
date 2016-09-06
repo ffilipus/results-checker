@@ -18,16 +18,14 @@ public class Cache {
     }
 
     public void add(String data){
-        try {
-            FileOutputStream outputStream = new FileOutputStream(filePath);//get file to write to
-            outputStream.write(data.getBytes());//cache passed data
-            outputStream.close();
+
+        try (FileOutputStream os = new FileOutputStream(filePath)) {
+            os.write(data.getBytes()); //cache passed data
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public boolean isActual(int time){
@@ -48,10 +46,8 @@ public class Cache {
     }
 
     public String getAll(){
-        try {
-            FileInputStream inputStream = new FileInputStream(this.filePath); //get file to read from and read the cache
-            String data = IOUtils.toString(inputStream);
-            inputStream.close();
+        try (FileInputStream is = new FileInputStream(filePath)) {
+            String data = IOUtils.toString(is);
             return data;
         } catch (IOException e) {
             e.printStackTrace();
