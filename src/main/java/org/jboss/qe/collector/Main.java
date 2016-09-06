@@ -160,9 +160,9 @@ public class Main {
         } catch (UnsupportedEncodingException uee){
             return -1;
         }
-        PageParser matrixChild = JobService.getJob(name, "", client);
+        PageParser matrixChild = JobService.getJob(name, "", client, cacheValidity);
         result.append(" - "+getPrintableUrl(url, (String)matrixChild.get("result")));
-         PageParser data = JobService.getTestReport(name, "", client);
+         PageParser data = JobService.getTestReport(name, "", client, cacheValidity);
         if (data != null) {
             totalBuilds++;
             buildsInMatrix++;
