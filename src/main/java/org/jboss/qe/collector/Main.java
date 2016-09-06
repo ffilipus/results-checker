@@ -9,6 +9,8 @@ import org.jboss.qe.collector.filter.scripts.*;
 import org.jboss.qe.collector.filter.testsuite.*;
 import org.jboss.qe.collector.service.*;
 import org.jboss.qe.collector.service.PageType.PageParser;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.ws.rs.client.Client;
 import java.io.UnsupportedEncodingException;
@@ -194,17 +196,17 @@ public class Main {
         int buildsInMatrix = 0;
 
         String printableUlr = getPrintableUrl(job.get("url"), job.get("result"));
-        Map<String, Set<Map>> jobFailures = new TreeMap<String, Set<Map>>();
+        Map<String, List<String>> jobFailures = new TreeMap<String, List<String>>();
         // use List to be able to count the occurrence of the failure in aggregated results
         List<String> cases = new LinkedList<String>();
-        Set<String> matrixJobs = getMatrixJobUrls(job);
+        List<String> matrixJobs = getMatrixJobUrls(job);
         for (String jobUrl: matrixJobs){
             int buildsInMatrixOneJob = handleMatrixConfiguration(jobUrl, jobName, cases);
             buildsInMatrix += buildsInMatrixOneJob;
         }
-        //jobFailures.put(printableUlr, cases);
+        jobFailures.put(printableUlr, cases);
         buildsPerMatrix.put(printableUlr, buildsInMatrix);
-        //failures.putAll(jobFailures);
+        failures.putAll(jobFailures);
     }
 
     /**
@@ -232,12 +234,16 @@ public class Main {
      * @param job Marix job parent.
      * @return URLs of all active configurations for current build of job.
      */
-    private static Set<String> getMatrixJobUrls(PageParser job) {
-        Set<String> triggeredConfiguration = new HashSet<String>();
-        System.out.println(job.get("runs"));
-        /*for (PageParser it: ((PageParser)job).get("runs")){
-            triggeredConfiguration.add(it.get("url"));
-        }*/
+    private static List<String> getMatrixJobUrls(PageParser job) {
+        List<String> triggeredConfiguration = new LinkedList<String>();
+        for (int i = 0 ; i < job.getRuns().length() ; i++){
+            try {
+                JSONObject it = job.getRuns().getJSONObject(i);
+                triggeredConfiguration.add(it.getString("url"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         return triggeredConfiguration;
     }
 
