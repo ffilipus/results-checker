@@ -30,6 +30,7 @@ public class Main {
     private static Filter filter;
     private static final boolean printSecured = Boolean.valueOf(System.getProperty("print.secured", "true"));
     private static final boolean printErrorDetails = Boolean.valueOf(System.getProperty("print.error.details", "false"));
+    private static int cacheValidity = 300; //5 min
 
     public static void main(String[] args) {
 
@@ -92,12 +93,12 @@ public class Main {
             String[] splitRes = jobName.split(":", 2);
             jobName = splitRes[0];
             String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
-            PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient());
+            PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient(), cacheValidity);
             System.out.println("\n"+dyeText(jobName, Colour.BLACK_BOLD));
             if (JobService.isMatrix(job)) {
                 //handleMatrix(jobName, job);
             } else {
-                handleSingle(jobName, job, buildNum);
+                handleSingle(jobName, job, buildNum, cacheValidity);
             }
         }
 
@@ -110,12 +111,12 @@ public class Main {
      * @param jobName Name of the single executor job.
      * @param job JSON representation of the job
      */
-    private static void handleSingle(String jobName, PageParser job, String buildNum) {
+    private static void handleSingle(String jobName, PageParser job, String buildNum, int cacheValidity) {
         String printableUlr = getPrintableUrl((String)job.get("url"), (String)job.get("result"));
         System.out.println(printableUlr);
         // handle single
         Set<String> cases = new HashSet<String>();
-        PageParser data = JobService.getTestReport(jobName, buildNum, null);
+        PageParser data = JobService.getTestReport(jobName, buildNum, null,cacheValidity);
         // ignore runs without any results
         if (data != null) {
             totalBuilds++;

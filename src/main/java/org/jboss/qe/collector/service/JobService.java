@@ -1,5 +1,7 @@
 package org.jboss.qe.collector.service;
 
+import org.apache.cxf.helpers.IOUtils;
+import org.jboss.qe.collector.Cache;
 import org.jboss.qe.collector.service.PageType.PageParser;
 
 import javax.ws.rs.client.Client;
@@ -7,9 +9,9 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLDecoder;
-import java.util.Map;
+import java.util.Date;
 
 /**
  * @author Petr Kremensky pkremens@redhat.com on 07/07/2015
@@ -31,12 +33,12 @@ public class JobService {
      * @param build Build number for the job. "lastBuild" is used by default. Use "" to omit the build number from request.
      * @return Test report of job in JSON format.
      */
-    public static PageParser getTestReport(String name, String build, Client client) {
+    public static PageParser getTestReport(String name, String build, Client client, int cacheValidity) {
         //String query = name+"/"+(build.equals("") ? "" : build + "/")+"testReport/api/json";
         // temporary solution
         String query = name+"/"+(build.equals("") ? "" : build + "/")+"testReport/api/json/index.html";
 
-        return getResponseData(query, client);
+        return getResponseData(query, client, cacheValidity);
     }
 
     /**
@@ -45,15 +47,15 @@ public class JobService {
      * @param build Build number for the job. "lastBuild" is used by default. Use "" to omit the build number from request.
      * @return Get job in JSON format.
      */
-    public static PageParser getJob(String name, String build, Client client) {
+    public static PageParser getJob(String name, String build, Client client, int cacheValidity) {
         //String query = name+"/"+(build.equals("") ? "" : build + "/")+"api/json";
         // temporary solution
         String query = name+"/"+(build.equals("") ? "" : build + "/")+"api/json/index.html";
 
-        return getResponseData(query, client);
+        return getResponseData(query, client, cacheValidity);
     }
 
-    private static PageParser getResponseData(String query, Client client_p) {
+    private static PageParser getResponseData(String query, Client client_p, int cacheValidity) {
         if (client_p == null) {
             client_p = client;
         }
@@ -68,9 +70,21 @@ public class JobService {
         target = target.path(query);
         Invocation.Builder builder = target.request();
         Response response = builder.get();
-        String data = builder.get(String.class);
-        PageParser page = new PageParser(data);
 
+        String data;
+        if(cacheValidity != 0){ //if cache validity = 0 don't cache any data
+             Cache cache = new Cache("result_checker_temp_" + query.replace("/","."));
+            if(cache.exist() && cache.isActual(cacheValidity)){
+                data = cache.getAll(); //read all cached data
+            } else {
+                data = builder.get(String.class);
+                cache.add(data); //create\modify file in temp to store data
+            }
+        } else {
+            data = builder.get(String.class); //get actual data if not cached
+        }
+
+        PageParser page = new PageParser(data);
         assert response.getStatus() == 200;
         return page;
     }
