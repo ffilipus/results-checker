@@ -29,12 +29,12 @@ public class Cache {
     }
 
     public boolean isActual(int time){
-        if(time == 0){
+        if (time == 0) {
             return false;
         }
         Date lastModified = new Date(file.lastModified());
         long fileAge = (new Date().getTime() - lastModified.getTime()) / 1000;
-        if(fileAge > time){ //compare last date of modification of file with current time and date
+        if (fileAge > time) { //compare last date of modification of file with current time and date
             return false;
         }else{
             return true;
