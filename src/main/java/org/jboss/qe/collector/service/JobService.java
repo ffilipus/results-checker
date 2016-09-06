@@ -18,8 +18,8 @@ import java.util.Map;
  */
 public class JobService {
     private static
-    final String CLIENT_URL = System.getProperty("jenkins.dn", "http://jenkins.mw.lab.eng.bos.redhat.com/hudson")+"/job/";
-    //final String CLIENT_URL = System.getProperty("jenkins.dn", "http://jenkinse.zloutek-soft.cz//hudson")+"/job/";
+    //final String CLIENT_URL = System.getProperty("jenkins.dn", "http://jenkins.mw.lab.eng.bos.redhat.com/hudson")+"/job/";
+    final String CLIENT_URL = System.getProperty("jenkins.dn", "http://jenkinse.zloutek-soft.cz//hudson")+"/job/";
 
 //    private static waitResponseTime = 0
     private static Client client = ClientBuilder.newClient();
@@ -34,9 +34,9 @@ public class JobService {
      * @return Test report of job in JSON format.
      */
     public static PageParser getTestReport(String name, String build, Client client) {
-        String query = name+"/"+(build.equals("") ? "" : build + "/")+"testReport/api/json";
+        //String query = name+"/"+(build.equals("") ? "" : build + "/")+"testReport/api/json";
         // temporary solution
-        //String query = name+"/"+(build.equals("") ? "" : build + "/")+"testReport/api/json/index.html";
+        String query = name+"/"+(build.equals("") ? "" : build + "/")+"testReport/api/json/index.html";
 
         return getResponseData(query, client);
     }
@@ -48,9 +48,9 @@ public class JobService {
      * @return Get job in JSON format.
      */
     public static PageParser getJob(String name, String build, Client client) {
-        String query = name+"/"+(build.equals("") ? "" : build + "/")+"api/json";
+        //String query = name+"/"+(build.equals("") ? "" : build + "/")+"api/json";
         // temporary solution
-        //String query = name+"/"+(build.equals("") ? "" : build + "/")+"api/json/index.html";
+        String query = name+"/"+(build.equals("") ? "" : build + "/")+"api/json/index.html";
 
         return getResponseData(query, client);
     }

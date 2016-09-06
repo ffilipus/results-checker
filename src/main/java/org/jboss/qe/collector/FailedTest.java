@@ -25,5 +25,9 @@ public class FailedTest {
      *   stdout - string
      */
     public List testCase;
+    
+    public FailedTest(String report) {
+        
+    }
 
 }

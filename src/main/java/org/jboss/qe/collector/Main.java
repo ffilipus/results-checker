@@ -14,6 +14,14 @@ import javax.ws.rs.client.Client;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
+//import org.codehaus.jackson;
+
+
 
 /**
  * // TODO store the results to cache on the first run, fetch them next time
@@ -97,7 +105,11 @@ public class Main {
             if (JobService.isMatrix(job)) {
                 handleMatrix(jobName, job);
             } else {
-                handleSingle(jobName, job, buildNum);
+                try {
+                    handleSingle(jobName, job, buildNum);
+                } catch (JSONException ex) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
 
@@ -110,7 +122,7 @@ public class Main {
      * @param jobName Name of the single executor job.
      * @param job JSON representation of the job
      */
-    private static void handleSingle(String jobName, PageParser job, String buildNum) {
+    private static void handleSingle(String jobName, PageParser job, String buildNum) throws JSONException {
         String printableUlr = getPrintableUrl((String)job.get("url"), (String)job.get("result"));
         System.out.println(printableUlr);
         // handle single
@@ -132,10 +144,20 @@ public class Main {
                     }
                 }
             }*/
-            //for (int i = 0; i < JSONArray.size(data); i++) {
-                
-            //}
             
+            //System.out.println(data.getObject().getJSONObject("suites").getJSONObject("cases").getString("age"));
+            //System.out.println(data.getObject().getString("suites"));
+            //System.out.println(data.getCases());
+            JSONArray casesObject = data.getCases();
+            for(int i = 0; i < casesObject.length(); i++) {
+                //System.out.println(casesObject.getJSONObject(i));
+                if(casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
+                    System.out.println("Failed or regression: ");
+                    String processedIssue = processIssues(new FailedTest("testName: "+casesObject.getJSONObject(i).getString("className")+"#"+casesObject.getJSONObject(i).getString("name")+", buildUrl: "+job.get("url")+", testCase: "+casesObject.getJSONObject(i)));
+                    cases.add(processedIssue);
+                    System.out.println(" - "+processedIssue);
+                }
+            }
         } else {
             System.out.println(dyeText(" - NO RESULTS AVAILABLE", Colour.BLACK_BOLD));
         }
