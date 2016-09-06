@@ -17,7 +17,7 @@ public class Category {
     *
     * @param category Incremented category.
     */
-   public synchronized static void increaseStatistics(String category) {
+   public static synchronized void increaseStatistics(String category) {
       if (category == null) {
          return;
       }

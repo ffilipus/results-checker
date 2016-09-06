@@ -43,10 +43,6 @@
       <module name="CovariantEquals"/>
       <!-- Checks the style of array type definitions. -->
       <module name="ArrayTypeStyle"/>
-      <!-- Make sure right curly braces are on a new line by itself. Note, this is not the recommendation from Sun. It is a legacy preference. -->
-      <module name="RightCurly">
-         <property name="option" value="alone"/>
-      </module>
       <!-- Checks that there is no whitespace after certain tokens; e.g. "." and "!". -->
       <module name="NoWhitespaceAfter"/>
       <!-- Checks that there is no whitespace before certain tokens; e.g. "++" and ";". -->
