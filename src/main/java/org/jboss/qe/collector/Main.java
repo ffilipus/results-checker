@@ -95,7 +95,7 @@ public class Main {
             PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient());
             System.out.println("\n"+dyeText(jobName, Colour.BLACK_BOLD));
             if (JobService.isMatrix(job)) {
-                //handleMatrix(jobName, job);
+                handleMatrix(jobName, job);
             } else {
                 handleSingle(jobName, job, buildNum);
             }
@@ -119,9 +119,9 @@ public class Main {
         // ignore runs without any results
         if (data != null) {
             totalBuilds++;
-            System.out.println(" - "+dyeText("PASSED: "+data.getInt("passCount")+", FAILED: "+data.getInt("failCount")+", SKIPPED: "+data.getInt("skipCount"), Colour.BLACK_BOLD));
+            System.out.println(" - "+dyeText("PASSED: "+data.get("passCount")+", FAILED: "+data.get("failCount")+", SKIPPED: "+data.get("skipCount"), Colour.BLACK_BOLD));
             /*for (List testCase : (List<List>) ((Map) data.get("suites")).get("cases")) {
-                for ()
+
                 testCase.findAll(filterFailed).each {
                     // process the issue here to avoid mixing of platform specific issues in aggregation
                     String processedIssue = processIssues(new FailedTest("testName: "+it.className+"#"+it.name+", buildUrl: "+job..containsKey("url")+", testCase: "+it));
@@ -149,7 +149,7 @@ public class Main {
      * @param cases Failed test cases. Items are add to this set in this function
      * @return If this build was finished, returned value is 1. Otherwise 0.
      */
-    /*private static int handleMatrixConfiguration(String configurationUrl, String jobName, List<String> cases) {
+     private static int handleMatrixConfiguration(String configurationUrl, String jobName, List<String> cases) {
         int buildsInMatrix = 0;
         Client client = JobService.getNewRESTClient();
         StringBuilder result = new StringBuilder();
@@ -161,15 +161,15 @@ public class Main {
         } catch (UnsupportedEncodingException uee){
             return -1;
         }
-        Map matrixChild = JobService.getJob(name, "", client);
+        PageParser matrixChild = JobService.getJob(name, "", client);
         result.append(" - "+getPrintableUrl(url, (String)matrixChild.get("result")));
-        Map data = JobService.getTestReport(name, "", client);
+         PageParser data = JobService.getTestReport(name, "", client);
         if (data != null) {
             totalBuilds++;
             buildsInMatrix++;
             result.append("  - "+dyeText("PASSED: "+data.get("passCount")+", FAILED: "+data.get("failCount")+", SKIPPED: +"+data.get("skipCount"), Colour.BLACK_BOLD)+"\n");
-            for (List testCase : data.get("suites").get("cases")) {
-                testCase.findAll(filterFailed).each {
+            /*for (List testCase : data.get("suites").get("cases")) {
+                /*testCase.findAll(filterFailed).each {
                     // process the issue here to avoid mixing of platform specific issues in aggregation
                     String processedIssue = processIssues(new FailedTest(testName: "${it.className}#${it.name}", buildUrl: url, testCase: it));
                     synchronized (this) {
@@ -181,35 +181,35 @@ public class Main {
                         result.append(printError(it));
                     }
                 }
-            }
+            }*/
         } else {
             result.append(dyeText("  -- NO RESULTS AVAILABLE", Colour.BLACK_BOLD));
         }
         System.out.println(result);
         return buildsInMatrix;
-    }*/
+    }
 
     /**
      * Handle the Matrix job.
      * @param jobName Name of the matrix parent,
      * @param job JSON representation of the job.
      */
-    /*private static void handleMatrix(String jobName, Map job) {
+    private static void handleMatrix(String jobName, PageParser job) {
         int buildsInMatrix = 0;
 
-        String printableUlr = getPrintableUrl(job.containsKey("url"), job.containsKey("result");
+        String printableUlr = getPrintableUrl(job.get("url"), job.get("result"));
         Map<String, Set<Map>> jobFailures = new TreeMap<String, Set<Map>>();
         // use List to be able to count the occurrence of the failure in aggregated results
-        Set<Map> cases = new HashSet<Map>();
+        List<String> cases = new LinkedList<String>();
         Set<String> matrixJobs = getMatrixJobUrls(job);
         for (String jobUrl: matrixJobs){
             int buildsInMatrixOneJob = handleMatrixConfiguration(jobUrl, jobName, cases);
             buildsInMatrix += buildsInMatrixOneJob;
         }
-        jobFailures.put(printableUlr, cases);
+        //jobFailures.put(printableUlr, cases);
         buildsPerMatrix.put(printableUlr, buildsInMatrix);
-        failures.putAll(jobFailures);
-    }*/
+        //failures.putAll(jobFailures);
+    }
 
     /**
      * Get url and its result.
@@ -236,16 +236,14 @@ public class Main {
      * @param job Marix job parent.
      * @return URLs of all active configurations for current build of job.
      */
-    /*private static Set<String> getMatrixJobUrls(Map job) {
+    private static Set<String> getMatrixJobUrls(PageParser job) {
         Set<String> triggeredConfiguration = new HashSet<String>();
-        int buildNumber = Integer.getInteger(job.get("number").toString());
-        for (Map it: (Map)job.get("runs")){
-            if (it.get("number") == buildNumber) {
-                triggeredConfiguration.add(it.get("url"));
-            }
-        }
+        System.out.println(job.get("runs"));
+        /*for (PageParser it: ((PageParser)job).get("runs")){
+            triggeredConfiguration.add(it.get("url"));
+        }*/
         return triggeredConfiguration;
-    }*/
+    }
 
     /**
      * Print aggregated results of all jobs passed as the argument. Dye all issues using processIssues() method.
