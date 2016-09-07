@@ -22,9 +22,8 @@ public class FailedTest {
      *   stdout - string
      */
    public String testCase;
-
    public FailedTest(String testName, String buildUrl, String testCase) {
-      this.testName = testName;
+      this.testName = testName;    
       this.buildUrl = buildUrl;
       this.testCase = testCase;
    }
