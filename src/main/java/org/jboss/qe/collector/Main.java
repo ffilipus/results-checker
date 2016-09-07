@@ -226,7 +226,7 @@ public class Main {
       Map<String, List<String>> jobFailures = new HashMap<String, List<String>>();
       // use List to be able to count the occurrence of the failure in aggregated results
       List<String> cases = new LinkedList<String>();
-      Set<String> matrixJobs = getMatrixJobUrls(job);
+      List<String> matrixJobs = getMatrixJobUrls(job);
       for (String jobUrl : matrixJobs) {
          int buildsInMatrixOneJob = handleMatrixConfiguration(jobUrl, jobName, cases);
          buildsInMatrix += buildsInMatrixOneJob;
@@ -267,12 +267,16 @@ public class Main {
     * @param job Marix job parent.
     * @return URLs of all active configurations for current build of job.
     */
-   private static Set<String> getMatrixJobUrls(PageParser job) {
-      Set<String> triggeredConfiguration = new HashSet<String>();
-      System.out.println(job.get("runs"));
-        /*for (PageParser it: ((PageParser)job).get("runs")){
-            triggeredConfiguration.add(it.get("url"));
-        }*/
+   private static List<String> getMatrixJobUrls(PageParser job) {
+      List<String> triggeredConfiguration = new LinkedList<>();
+      for (int i = 0;i < job.getRuns().length();i++) {
+         try {
+            JSONObject it = job.getRuns().getJSONObject(i);
+            triggeredConfiguration.add(it.getString("url"));
+         } catch (JSONException e) {
+            e.printStackTrace();
+         }
+      }
       return triggeredConfiguration;
    }
 
@@ -281,7 +285,7 @@ public class Main {
     */
    private static void printResults(String[] args) {
       System.out.println("\n" + dyeText("########    AGGREGATED RESULTS PER JOB   ########", Colour.CYAN_BOLD));
-      List<String> totalIssues = new ArrayList<String>();
+      List<String> totalIssues = new ArrayList<>();
       Iterator entries = failures.entrySet().iterator();
       while (entries.hasNext()) {
          Map.Entry<String, List<String>> thisEntry = (Map.Entry<String, List<String>>) entries.next();
@@ -290,7 +294,7 @@ public class Main {
          List<String> issues = thisEntry.getValue();
          System.out.println(url);
          if (buildsPerMatrix.keySet().contains(url)) {
-            System.out.println(dyeText("TOTAL FINISHED BUILDS: ${buildsPerMatrix.get(url)}", Colour.BLACK_BOLD));
+            System.out.println(dyeText("TOTAL FINISHED BUILDS: " + buildsPerMatrix.get(url), Colour.BLACK_BOLD));
          } else {
             System.out.println(dyeText("Single-configuration project", Colour.BLACK_BOLD));
          }
