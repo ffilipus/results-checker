@@ -1,7 +1,5 @@
 package org.jboss.qe.collector;
 
-import java.util.List;
-
 public class FailedTest {
 
    public String testName;
@@ -23,11 +21,11 @@ public class FailedTest {
      *   stderr - string
      *   stdout - string
      */
-    public String testCase;
-    
-    public FailedTest(String testName, String buildUrl, String testCase) {
-        this.testName = testName;
-        this.buildUrl = buildUrl;
-        this.testCase = testCase;
-    }
+   public String testCase;
+
+   public FailedTest(String testName, String buildUrl, String testCase) {
+      this.testName = testName;
+      this.buildUrl = buildUrl;
+      this.testCase = testCase;
+   }
 }
