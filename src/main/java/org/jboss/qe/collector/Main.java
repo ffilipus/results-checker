@@ -128,7 +128,7 @@ public class Main {
       String printableUlr = getPrintableUrl((String) job.get("url"), (String) job.get("result"));
       System.out.println(printableUlr);
       // handle single
-      Set<String> cases = new HashSet<String>();
+      List<String> cases = new LinkedList<String>();
       PageParser data = JobService.getTestReport(jobName, buildNum, null, cacheValidity);
       // ignore runs without any results
       if (data != null) {
@@ -154,7 +154,7 @@ public class Main {
       } else {
          System.out.println(dyeText(" - NO RESULTS AVAILABLE", Colour.BLACK_BOLD));
       }
-      //failures.put(printableUlr, cases);
+      failures.put(printableUlr, cases);
    }
 
    /**
@@ -223,7 +223,7 @@ public class Main {
       int buildsInMatrix = 0;
 
       String printableUlr = getPrintableUrl(job.get("url"), job.get("result"));
-      Map<String, Set<Map>> jobFailures = new TreeMap<String, Set<Map>>();
+      Map<String, List<String>> jobFailures = new HashMap<String, List<String>>();
       // use List to be able to count the occurrence of the failure in aggregated results
       List<String> cases = new LinkedList<String>();
       Set<String> matrixJobs = getMatrixJobUrls(job);
@@ -231,9 +231,9 @@ public class Main {
          int buildsInMatrixOneJob = handleMatrixConfiguration(jobUrl, jobName, cases);
          buildsInMatrix += buildsInMatrixOneJob;
       }
-      //jobFailures.put(printableUlr, cases);
+      jobFailures.put(printableUlr, cases);
       buildsPerMatrix.put(printableUlr, buildsInMatrix);
-      //failures.putAll(jobFailures);
+      failures.putAll(jobFailures);
    }
 
    /**
