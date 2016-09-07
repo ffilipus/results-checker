@@ -24,11 +24,12 @@ public class FailedTest {
      *   stderr - string
      *   stdout - string
      */
-    public List testCase;
+    public String testCase;
     
     public FailedTest(String testName, String buildUrl, String testCase) {
         this.testName = testName;
         this.buildUrl = buildUrl;
+        this.testCase = testCase;
     }
 
 }

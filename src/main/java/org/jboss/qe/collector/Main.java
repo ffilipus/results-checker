@@ -153,17 +153,11 @@ public class Main {
                 //System.out.println(casesObject.getJSONObject(i));
                 if(casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
                     //System.out.println("Failed or regression: ");
-                    String processedIssue = processIssues(new FailedTest("testName: "+casesObject.getJSONObject(i).getString("className")+"#"+casesObject.getJSONObject(i).getString("name"), "buildUrl: "+job.get("url"), "testCase: "+casesObject.getJSONObject(i)));
+                    String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className")+"#"+casesObject.getJSONObject(i).getString("name"), "buildUrl: "+job.get("url"), "testCase: "+casesObject.getJSONObject(i)));
                     cases.add(processedIssue);
                     System.out.println(" - "+processedIssue);
                     if (printErrorDetails) {
-                        //System.out.println(printError(casesObject.getJSONObject(i)));
-                        Iterator<JSONObject> keys = casesObject.getJSONObject(i).keys();
-                        Map<String, String> casesMap = new HashMap();
-                        while(keys.hasNext()) {
-                            System.out.println(keys.next());
-                            //casesMap.put(keys.next(), name);
-                        }
+                        System.out.println(printError(casesObject.getJSONObject(i)));
                     }
                 }
             }
@@ -220,22 +214,16 @@ public class Main {
                     //System.out.println(casesObject.getJSONObject(i));
                     if(casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
                         //System.out.println("Failed or regression: ");
-                        String processedIssue = processIssues(new FailedTest("testName: " + casesObject.getJSONObject(i).getString("className") + "#" + casesObject.getJSONObject(i).getString("name"), "buildUrl: " + configurationUrl, "testCase: " + casesObject.getJSONObject(i)));
-                        //synchronized (this) {
+                        String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#" + casesObject.getJSONObject(i).getString("name"), "buildUrl: " + configurationUrl, "testCase: " + casesObject.getJSONObject(i)));
+                        synchronized (Main.class) {
                             
                             cases.add(processedIssue);
-                        //}
+                        }
                         result.append("  -- "+processedIssue+"\n");
                         System.out.println(" - "+processedIssue);
                         
                         if (printErrorDetails) {
-                            //System.out.println("printErrorDetails");
-                            Iterator<JSONObject> keys = casesObject.getJSONObject(i).keys();
-                            Map<String, String> casesMap = new HashMap();
-                            while(keys.hasNext()) {
-                                System.out.println(keys.next());
-                                //casesMap.put(keys.next(), name);
-                            }
+                            result.append(casesObject.getJSONObject(i));
                         }
                     }
                 } catch (JSONException ex) {
@@ -282,12 +270,16 @@ public class Main {
      * Print details about test case failure
      * @param testCase Tast case which failed
      */
-    private static String printError(Map testCase) {
+    private static String printError(JSONObject testCase) {
         String result = "";
-        result+="Age = "+testCase.get("age")+"\n";
-        result+="Status = "+testCase.get("status")+"\n";
-        result+=testCase.get("errorDetails") +"\n";
-        result+=testCase.get("errorStackTrace") +"\n";
+        try {
+            result+="Age = "+testCase.getString("age")+"\n";
+            result+="Status = "+testCase.getString("status")+"\n";
+            result+=testCase.getString("errorDetails") +"\n";
+            result+=testCase.getString("errorStackTrace") +"\n";
+        } catch (JSONException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return result;
     }
 
