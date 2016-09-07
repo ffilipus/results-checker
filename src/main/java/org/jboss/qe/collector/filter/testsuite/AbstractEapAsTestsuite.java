@@ -4,7 +4,6 @@ import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.filter.AbstractFilter;
 import org.jboss.qe.collector.filter.Category;
 
-import javax.swing.text.html.HTMLDocument;
 import java.util.Iterator;
 import java.util.Map;
 

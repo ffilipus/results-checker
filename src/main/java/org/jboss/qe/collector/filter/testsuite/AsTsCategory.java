@@ -1,7 +1,5 @@
 package org.jboss.qe.collector.filter.testsuite;
 
-import org.jboss.qe.collector.filter.Category;
-
 /**
  * Created by mkopecky on 8/17/15.
  */
