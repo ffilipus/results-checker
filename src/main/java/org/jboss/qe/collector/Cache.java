@@ -2,7 +2,12 @@ package org.jboss.qe.collector;
 
 import org.apache.cxf.helpers.IOUtils;
 
-import java.io.*;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.FileInputStream;
 import java.util.Date;
 
 /**

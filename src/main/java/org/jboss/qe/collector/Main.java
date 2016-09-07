@@ -1,14 +1,20 @@
 package org.jboss.qe.collector;
 
-import org.jboss.qe.collector.filter.*;
-import org.jboss.qe.collector.filter.cli.*;
-import org.jboss.qe.collector.filter.installer.*;
-import org.jboss.qe.collector.filter.messaging.*;
-import org.jboss.qe.collector.filter.resteasy.*;
-import org.jboss.qe.collector.filter.scripts.*;
-import org.jboss.qe.collector.filter.testsuite.*;
-import org.jboss.qe.collector.service.*;
+import org.jboss.qe.collector.filter.Filter;
+import org.jboss.qe.collector.filter.cli.Eap7xCliEmbeddedFilter;
+import org.jboss.qe.collector.filter.installer.Eap7xInstallerTestsuite;
+import org.jboss.qe.collector.filter.messaging.Eap7xArtemisTestsuite;
+import org.jboss.qe.collector.filter.messaging.Eap7xArtemisTestsuiteEUS;
+import org.jboss.qe.collector.filter.messaging.Eap7xHA;
+import org.jboss.qe.collector.filter.messaging.Eap7xMessagingInternalTestsuite;
+import org.jboss.qe.collector.filter.resteasy.Eap7xResteasyTestsuite;
+import org.jboss.qe.collector.filter.scripts.Eap6xScriptsTestsuite;
+import org.jboss.qe.collector.filter.scripts.Eap7xScriptsTestsuite;
+import org.jboss.qe.collector.filter.testsuite.Eap6xAsTestsuite;
+import org.jboss.qe.collector.filter.testsuite.Eap7xAsTestsuiteTest710;
+import org.jboss.qe.collector.service.JobService;
 import org.jboss.qe.collector.service.PageType.PageParser;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,94 +28,95 @@ import org.json.JSONArray;
 
 
 /**
- * // TODO store the results to cache on the first run, fetch them next time
- * // TODO we need a tool, that will go through all issues in filters and determine which are already resolved
- *
- * @author Petr Kremensky pkremens@redhat.com on 07/07/2015
- */
+* // TODO store the results to cache on the first run, fetch them next time
+* // TODO we need a tool, that will go through all issues in filters and determine which are already resolved
+*
+* @author Petr Kremensky pkremens@redhat.com on 07/07/2015
+*/
 public class Main {
-    private static Map<String, List<String>> failures = new LinkedHashMap<String, List<String>>();
-    private static Map<String, Integer> buildsPerMatrix = new HashMap<String, Integer>();
-    private static boolean failedOrAborted = false;
-    private static int totalBuilds = 0;
-    private static Filter filter;
-    private static final boolean printSecured = Boolean.valueOf(System.getProperty("print.secured", "true"));
-    private static final boolean printErrorDetails = Boolean.valueOf(System.getProperty("print.error.details", "false"));
-    private static int cacheValidity = 300; // 5 minutes
+    //private static final Closure filterFailed = { test -> test.status.matches("(FAILED|REGRESSION)") };
+   private static Map<String, List<String>> failures = new LinkedHashMap<String, List<String>>();
+   private static Map<String, Integer> buildsPerMatrix = new HashMap<String, Integer>();
+   private static boolean failedOrAborted = false;
+   private static int totalBuilds = 0;
+   private static Filter filter;
+   private static final boolean printSecured = Boolean.valueOf(System.getProperty("print.secured", "true"));
+   private static final boolean printErrorDetails = Boolean.valueOf(System.getProperty("print.error.details", "false"));
+   private static int cacheValidity = 300; // 5 minutes
 
-    public static void main(String[] args) {
+   public static void main(String[] args) {
 
-        if (args.length < 1) {
-            throw new IllegalArgumentException("You have to pass some job name for processing");
-        }
+       if (args.length < 1) {
+           throw new IllegalArgumentException("You have to pass some job name for processing");
+       }
 
-        // Filter configuration
-        // TODO - just temporary solution until we move core to separate project
-        // use first job to determine the filter
-        String firstJob = args[0];
+       // Filter configuration
+       // TODO - just temporary solution until we move core to separate project
+       // use first job to determine the filter
+       String firstJob = args[0];
 
-        if (firstJob.contains("eap-7x-as-testsuite-")) {
-            filter = new Eap7xAsTestsuiteTest710();
+      if (firstJob.contains("eap-7x-as-testsuite-")) {
+         filter = new Eap7xAsTestsuiteTest710();
 
-        } else if (firstJob.contains("eap-6x-as-testsuite-")) {
-            filter = new Eap6xAsTestsuite();
+      } else if (firstJob.contains("eap-6x-as-testsuite-")) {
+         filter = new Eap6xAsTestsuite();
 
-        } else if (firstJob.contains("eap-7x-installer-") || firstJob.matches("EAP-REGRESSION-.*")) {
-            filter = new Eap7xInstallerTestsuite();
+      } else if (firstJob.contains("eap-7x-installer-") || firstJob.matches("EAP-REGRESSION-.*")) {
+         filter = new Eap7xInstallerTestsuite();
 
-        } else if (firstJob.contains("eap-7x-scripts-")) {
-            filter = new Eap7xScriptsTestsuite();
+      } else if (firstJob.contains("eap-7x-scripts-")) {
+         filter = new Eap7xScriptsTestsuite();
 
-        } else if (firstJob.contains("eap-64x-patched-scripts")) {
-            filter = new Eap6xScriptsTestsuite();
+      } else if (firstJob.contains("eap-64x-patched-scripts")) {
+         filter = new Eap6xScriptsTestsuite();
 
-        } else if (firstJob.contains("resteasy")) {
-            filter = new Eap7xResteasyTestsuite();
-        } else if (firstJob.contains("artemis-project-testsuite-prepare")) {
-            filter = new Eap7xArtemisTestsuite();
-        } else if (firstJob.contains("artemis-project-testsuite-rhel")) {
-            filter = new Eap7xArtemisTestsuiteEUS();
-        } else if (firstJob.contains("eap7-artemis-qe-internal")) {
-            filter = new Eap7xMessagingInternalTestsuite();
-        } else if (firstJob.contains("eap-7x-cli-embedded")) {
-            filter = new Eap7xCliEmbeddedFilter();
-        } else if (firstJob.contains("eap7-artemis-ha-failover-bridges")) {
-            filter = new Eap7xHA();
-        }
-        // Print selected filter class name
-        System.out.println(dyeText("Filter class:", Colour.BLACK_BOLD));
-        System.out.println(filter == null ? " - no filter in use" : " - "+filter.getClass().getName());
+      } else if (firstJob.contains("resteasy")) {
+         filter = new Eap7xResteasyTestsuite();
+      } else if (firstJob.contains("artemis-project-testsuite-prepare")) {
+         filter = new Eap7xArtemisTestsuite();
+      } else if (firstJob.contains("artemis-project-testsuite-rhel")) {
+         filter = new Eap7xArtemisTestsuiteEUS();
+      } else if (firstJob.contains("eap7-artemis-qe-internal")) {
+         filter = new Eap7xMessagingInternalTestsuite();
+      } else if (firstJob.contains("eap-7x-cli-embedded")) {
+         filter = new Eap7xCliEmbeddedFilter();
+      } else if (firstJob.contains("eap7-artemis-ha-failover-bridges")) {
+         filter = new Eap7xHA();
+      }
+       // Print selected filter class name
+       System.out.println(dyeText("Filter class:", Colour.BLACK_BOLD));
+       System.out.println(filter == null ? " - no filter in use" : " - "+filter.getClass().getName());
 
-        // Introduction
-        System.out.println("\n"
-        +dyeText("Legend:", Colour.BLACK_BOLD)+"\n"+
-        " - "+dyeText("POSSIBLE REGRESSION", Colour.RED)+"\n"+
-        " - "+dyeText("KNOWN ISSUE", Colour.YELLOW)+"\n"+
-        " - "+dyeText("ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", Colour.PURPLE)+"\n"+
-        "");
+       // Introduction
+       System.out.println("\n"
+       +dyeText("Legend:", Colour.BLACK_BOLD)+"\n"+
+       " - "+dyeText("POSSIBLE REGRESSION", Colour.RED)+"\n"+
+       " - "+dyeText("KNOWN ISSUE", Colour.YELLOW)+"\n"+
+       " - "+dyeText("ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", Colour.PURPLE)+"\n"+
+       "");
 
-        System.out.println(dyeText("Collect results for:", Colour.BLACK_BOLD));
-        for (String it :args) {
-            System.out.println(" - "+it);
-        }
+       System.out.println(dyeText("Collect results for:", Colour.BLACK_BOLD));
+       for (String it :args) {
+           System.out.println(" - "+it);
+       }
 
-        // Handle phase - process the jobs
-        for (String jobName :args) {
-            String[] splitRes = jobName.split(":", 2);
-            jobName = splitRes[0];
-            String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
-            PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient(), cacheValidity);
-            System.out.println("\n"+dyeText(jobName, Colour.BLACK_BOLD));
-            if (JobService.isMatrix(job)) {
-                handleMatrix(jobName, job);
-            } else {
-                    handleSingle(jobName, job, buildNum, cacheValidity);
-            }
-        }
+       // Handle phase - process the jobs
+       for (String jobName :args) {
+           String[] splitRes = jobName.split(":", 2);
+           jobName = splitRes[0];
+           String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
+           PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient(), cacheValidity);
+           System.out.println("\n"+dyeText(jobName, Colour.BLACK_BOLD));
+           if (JobService.isMatrix(job)) {
+               handleMatrix(jobName, job);
+           } else {
+                   handleSingle(jobName, job, buildNum, cacheValidity);
+           }
+       }
 
-        // Results aggregation phase - process the results
-        printResults(args);
-    }
+       // Results aggregation phase - process the results
+       printResults(args);
+   }
 
     /**
      * Process single executor job.

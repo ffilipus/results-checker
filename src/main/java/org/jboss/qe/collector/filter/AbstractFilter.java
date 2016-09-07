@@ -2,9 +2,6 @@ package org.jboss.qe.collector.filter;
 
 import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
-import org.jboss.qe.collector.Main;
-
-import java.util.function.Function;
 
 /**
  * Basic methods for filter model.
@@ -41,7 +38,6 @@ public abstract class AbstractFilter implements Filter {
     * @return Error description for printing.
     */
    public String coreFilter(FailedTest failedTest, FilterItem... items) {
-      filterLoop:
       for (FilterItem filterItem : items) {
          boolean mainContinue = false;
          for (String urlPart : filterItem.getUrlRegEx()) {

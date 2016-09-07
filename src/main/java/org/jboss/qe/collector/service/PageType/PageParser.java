@@ -3,16 +3,12 @@ package org.jboss.qe.collector.service.PageType;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONArray;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Jiri Bilek
  */
 public class PageParser {
-    
+
    private String rawPage;
    private JSONObject obj;
 
@@ -48,13 +44,13 @@ public class PageParser {
          return null;
       }
    }
-   
+
    public JSONArray getCases() {
-        try {
-            return obj.getJSONArray("suites").getJSONObject(0).getJSONArray("cases");
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+      try {
+         return obj.getJSONArray("suites").getJSONObject(0).getJSONArray("cases");
+      } catch (JSONException e) {
+         e.printStackTrace();
+         return null;
+      }
+   }
 }
