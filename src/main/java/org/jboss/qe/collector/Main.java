@@ -19,10 +19,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONException;
-//import org.codehaus.jackson;
-
 
 
 /**
@@ -32,8 +28,6 @@ import org.json.JSONException;
  * @author Petr Kremensky pkremens@redhat.com on 07/07/2015
  */
 public class Main {
-    
-    //private static final Closure filterFailed = { test -> test.status.matches("(FAILED|REGRESSION)") };
     private static Map<String, List<String>> failures = new LinkedHashMap<String, List<String>>();
     private static Map<String, Integer> buildsPerMatrix = new HashMap<String, Integer>();
     private static boolean failedOrAborted = false;
