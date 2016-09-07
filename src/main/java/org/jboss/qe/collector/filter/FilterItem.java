@@ -32,6 +32,8 @@ public class FilterItem {
     */
    List<String> testsRegEx = new ArrayList<String>();
 
+   String[] testMatchers = new String[3];
+
    //List<Function> testMatchers = new ArrayList<Function>();
 
    /**
@@ -65,6 +67,12 @@ public class FilterItem {
       return this;
    }
 
+   public FilterItem addTestMatcher(String variable ,String value, String mode) {
+      this.testMatchers[0] = variable;
+      this.testMatchers[1] = value;
+      this.testMatchers[2] = mode;
+      return this;
+   }
     /*public FilterItem addTestMatcher(Function matcher) {
         this.testMatchers.add(matcher);
         return this;
@@ -106,7 +114,10 @@ public class FilterItem {
       return this.category;
    }
 
+   public  String[] getTestMatchers() {
+      return this.testMatchers;
+   }
     /*public List<Function> getTestMatchers(){
-        return this.testMatchers;
+        return this.testMTestMatchers;
     }*/
 }

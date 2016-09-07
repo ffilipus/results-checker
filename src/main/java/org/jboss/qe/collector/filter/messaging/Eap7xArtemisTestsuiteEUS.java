@@ -100,6 +100,29 @@ public class Eap7xArtemisTestsuiteEUS extends AbstractFilter {
            .addTest("org.apache.activemq.artemis.tests.integration.server.ScaleDownTest#.*")
            .addTest("org.apache.activemq.artemis.tests.integration.server.ScaleDownDirectTest#.*")
            .setErrorText("Not supported features"),
+       new FilterItem(Colour.YELLOW)
+               .addTestMatcher("errorDetails", "Thread leaked", "equals")
+               .setErrorText("Thread leaked"),
+       new FilterItem(Colour.YELLOW)
+               .addTestMatcher("errorDetails", "broadcast not received", "equals")
+               .setErrorText("broadcast not received"),
+       new FilterItem(Colour.YELLOW)
+               .addTestMatcher("errorDetails", "libAIO is not loaded", "startsWith")
+               .setErrorText("libAIO is not loaded"),
+       new FilterItem(Colour.RED_BOLD)
+               .addTestMatcher("errorDetails", "Didn\"t get the expected number of bindings, look at the logging for more information", "equals")
+               .setErrorText("Didn\"t get the expected number of bindings, look at the logging for more information"),
+       new FilterItem(Colour.YELLOW)
+               .addTestMatcher("errorDetails", "AMQ119007:", "startsWith")
+               .setErrorText("Cannot connect to server"),
+       new FilterItem(Colour.GREEN)
+               .addTest(".*ReplicatedNettyAsynchronousFailoverTest#testNonTransactional")
+               .addTest(".*ClientCrashTest#testCrashClient")
+               .addTest(".*ClusteredGroupingTest#testGroupingSendTo3queuesNoConsumerOnLocalQueue")
+               .addTest("org.apache.activemq.artemis.tests.integration.ssl.CoreClientOverOneWaySSLTest#.*")
+               .addTest(".*ReplicatedManyMultipleServerFailoverTest#test.*")
+               .addTest(".*ClusteredGroupingTest#testGroupingWith3Nodes")
+               .setErrorText("DEBUG"),
                 /*
                 TODO vyresit
 
