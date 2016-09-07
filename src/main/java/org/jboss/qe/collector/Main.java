@@ -87,19 +87,19 @@ public class Main {
       }
        // Print selected filter class name
        System.out.println(dyeText("Filter class:", Colour.BLACK_BOLD));
-       System.out.println(filter == null ? " - no filter in use" : " - "+filter.getClass().getName());
+       System.out.println(filter == null ? " - no filter in use" : " - " + filter.getClass().getName());
 
        // Introduction
        System.out.println("\n"
-       +dyeText("Legend:", Colour.BLACK_BOLD)+"\n"+
-       " - "+dyeText("POSSIBLE REGRESSION", Colour.RED)+"\n"+
-       " - "+dyeText("KNOWN ISSUE", Colour.YELLOW)+"\n"+
-       " - "+dyeText("ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", Colour.PURPLE)+"\n"+
+       +dyeText("Legend:", Colour.BLACK_BOLD) + "\n" +
+       " - "+dyeText("POSSIBLE REGRESSION", Colour.RED) + "\n"+
+       " - "+dyeText("KNOWN ISSUE", Colour.YELLOW)+"\n" +
+       " - "+dyeText("ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", Colour.PURPLE) + "\n" +
        "");
 
        System.out.println(dyeText("Collect results for:", Colour.BLACK_BOLD));
        for (String it :args) {
-           System.out.println(" - "+it);
+           System.out.println(" - " + it);
        }
 
        // Handle phase - process the jobs
@@ -143,9 +143,9 @@ public class Main {
                  //System.out.println(casesObject.getJSONObject(i));
                  if(casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
                      //System.out.println("Failed or regression: ");
-                     String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className")+"#"+casesObject.getJSONObject(i).getString("name"), "buildUrl: "+job.get("url"), "testCase: "+casesObject.getJSONObject(i)));
+                     String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#"+casesObject.getJSONObject(i).getString("name"), "buildUrl: " + job.get("url"), "testCase: " + casesObject.getJSONObject(i)));
                      cases.add(processedIssue);
-                     System.out.println(" - "+processedIssue);
+                     System.out.println(" - " + processedIssue);
                      if (printErrorDetails) {
                          System.out.println(printError(casesObject.getJSONObject(i)));
                      }
@@ -242,7 +242,7 @@ public class Main {
      * Get url and its result.
      */
     private static String getPrintableUrl(String url, String result) {
-        return printSecured ? url.replace("http:", "https:") : url+" - "+dyeJobResult(result);
+        return printSecured ? url.replace("http:", "https:") : url + " - " + dyeJobResult(result);
     }
 
     /**
@@ -252,10 +252,10 @@ public class Main {
     private static String printError(JSONObject testCase) {
         String result = "";
         try {
-            result+="Age = "+testCase.getString("age")+"\n";
-            result+="Status = "+testCase.getString("status")+"\n";
-            result+=testCase.getString("errorDetails") +"\n";
-            result+=testCase.getString("errorStackTrace") +"\n";
+            result+="Age = "+testCase.getString("age") + "\n";
+            result+="Status = "+testCase.getString("status") + "\n";
+            result+=testCase.getString("errorDetails") + "\n";
+            result+=testCase.getString("errorStackTrace") + "\n";
         } catch (JSONException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -296,14 +296,14 @@ public class Main {
             }
             totalIssues.addAll(issues);
             for (String issue: issues){
-                System.out.println(" - "+Collections.frequency(issues, issue)+"x "+issue);
+                System.out.println(" - " + Collections.frequency(issues, issue) + "x " + issue);
             }
             System.out.println();
         }
 
         // do all results aggregation only in case there are more than one job to check
         if (args.length > 1) {
-            System.out.println("\n"+dyeText("########    AGGREGATION OF ALL RESULTS    ########", Colour.CYAN_BOLD));
+            System.out.println("\n" + dyeText("########    AGGREGATION OF ALL RESULTS    ########", Colour.CYAN_BOLD));
             System.out.println(dyeText("Collect results for:", Colour.BLACK_BOLD));
             for (String key:failures.keySet()){
                 System.out.println(" - "+key);
@@ -311,7 +311,7 @@ public class Main {
             System.out.println(dyeText("\nTOTAL FINISHED BUILDS: "+totalBuilds, Colour.BLACK_BOLD));
 
             for (String issue: new TreeSet<String>(totalIssues)){
-                System.out.println(" - "+Collections.frequency(totalIssues, issue)+"x "+issue);
+                System.out.println(" - " + Collections.frequency(totalIssues, issue) + "x " + issue);
             }
             System.out.println();
         }
@@ -331,7 +331,7 @@ public class Main {
      * @return Dyed text.
      */
     private static String dyeText(String text, Colour colour) {
-        return colour.getColour()+""+text+""+Colour.RESET.getColour();
+        return colour.getColour() + "" + text + "" + Colour.RESET.getColour();
     }
 
     /**
