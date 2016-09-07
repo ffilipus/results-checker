@@ -1,6 +1,5 @@
 package org.jboss.qe.collector.service;
 
-import org.apache.cxf.helpers.IOUtils;
 import org.jboss.qe.collector.Cache;
 import org.jboss.qe.collector.service.PageType.PageParser;
 
@@ -9,9 +8,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
-import java.io.*;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Date;
 
 /**
  * @author Petr Kremensky pkremens@redhat.com on 07/07/2015
