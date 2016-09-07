@@ -16,9 +16,9 @@ import java.net.URLDecoder;
  */
 public class JobService {
 
-   private static
+   private static final String CLIENT_URL = System.getProperty("jenkins.dn", "http://jenkinse.zloutek-soft.cz//hudson") + "/job/";
    //final String CLIENT_URL = System.getProperty("jenkins.dn", "http://jenkins.mw.lab.eng.bos.redhat.com/hudson")+"/job/";
-       final String CLIENT_URL = System.getProperty("jenkins.dn", "http://jenkinse.zloutek-soft.cz//hudson") + "/job/";
+
 
    //    private static waitResponseTime = 0
    private static Client client = ClientBuilder.newClient();
