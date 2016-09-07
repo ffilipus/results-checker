@@ -140,7 +140,7 @@ public class Main {
                //System.out.println(casesObject.getJSONObject(i));
                if (casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
                   //System.out.println("Failed or regression: ");
-                  String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#" + casesObject.getJSONObject(i).getString("name"), "buildUrl: " + job.get("url"), "testCase: " + casesObject.getJSONObject(i)));
+                  String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#" + casesObject.getJSONObject(i).getString("name"), "buildUrl: " + job.get("url"), casesObject.getJSONObject(i)));
                   cases.add(processedIssue);
                   System.out.println(" - " + processedIssue);
                   if (printErrorDetails) {
@@ -191,7 +191,7 @@ public class Main {
                //System.out.println(casesObject.getJSONObject(i));
                if (casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
                   //System.out.println("Failed or regression: ");
-                  String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#" + casesObject.getJSONObject(i).getString("name"), "buildUrl: " + configurationUrl, "testCase: " + casesObject.getJSONObject(i)));
+                  String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#" + casesObject.getJSONObject(i).getString("name"), "buildUrl: " + configurationUrl, casesObject.getJSONObject(i)));
                   synchronized (Main.class) {
                      cases.add(processedIssue);
                   }

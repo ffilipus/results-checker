@@ -4,11 +4,13 @@ import org.jboss.qe.collector.Colour;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.*;
 
 /**
  * Model for filter item. Failed tests can correspond with this rule.
  */
 public class FilterItem {
+   private Matcher testMatcher;
    /**
     * Create a new FilterItem
     *
@@ -31,8 +33,6 @@ public class FilterItem {
     * One regular expressions from this list must match with failed test name.
     */
    List<String> testsRegEx = new ArrayList<String>();
-
-   String[] testMatchers = new String[3];
 
    //List<Function> testMatchers = new ArrayList<Function>();
 
@@ -67,10 +67,8 @@ public class FilterItem {
       return this;
    }
 
-   public FilterItem addTestMatcher(String variable, String value, String mode) {
-      this.testMatchers[0] = variable;
-      this.testMatchers[1] = value;
-      this.testMatchers[2] = mode;
+   public FilterItem addTestMatcher(Matcher testMatcher) {
+      this.testMatcher = testMatcher;
       return this;
    }
     /*public FilterItem addTestMatcher(Function matcher) {
@@ -114,9 +112,10 @@ public class FilterItem {
       return this.category;
    }
 
-   public  String[] getTestMatchers() {
-      return this.testMatchers;
+   public  Matcher getTestMatchers() {
+      return testMatcher;
    }
+
     /*public List<Function> getTestMatchers(){
         return this.testMTestMatchers;
     }*/

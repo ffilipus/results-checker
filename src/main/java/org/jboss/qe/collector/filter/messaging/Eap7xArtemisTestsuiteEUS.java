@@ -5,6 +5,8 @@ import org.jboss.qe.collector.FailedTest;
 import org.jboss.qe.collector.filter.AbstractFilter;
 import org.jboss.qe.collector.filter.FilterItem;
 
+import java.util.regex.Pattern;
+
 public class Eap7xArtemisTestsuiteEUS extends AbstractFilter {
 
    static FilterItem[] items = {
@@ -101,19 +103,19 @@ public class Eap7xArtemisTestsuiteEUS extends AbstractFilter {
            .addTest("org.apache.activemq.artemis.tests.integration.server.ScaleDownDirectTest#.*")
            .setErrorText("Not supported features"),
        new FilterItem(Colour.YELLOW)
-               .addTestMatcher("errorDetails", "Thread leaked", "equals")
+               .addTestMatcher((String errorDetails) -> errorDetails == "Thread leaked")
                .setErrorText("Thread leaked"),
        new FilterItem(Colour.YELLOW)
-               .addTestMatcher("errorDetails", "broadcast not received", "equals")
+               .addTestMatcher((String errorDetails) -> errorDetails == "broadcast not received")
                .setErrorText("broadcast not received"),
        new FilterItem(Colour.YELLOW)
-               .addTestMatcher("errorDetails", "libAIO is not loaded", "startsWith")
+               .addTestMatcher((String errorDetails) -> Pattern.compile("(libAIO is not loaded).*").matcher(errorDetails).find())
                .setErrorText("libAIO is not loaded"),
        new FilterItem(Colour.RED_BOLD)
-               .addTestMatcher("errorDetails", "Didn\"t get the expected number of bindings, look at the logging for more information", "equals")
+               .addTestMatcher((String errorDetails) -> errorDetails == "Didn\"t get the expected number of bindings, look at the logging for more information")
                .setErrorText("Didn\"t get the expected number of bindings, look at the logging for more information"),
        new FilterItem(Colour.YELLOW)
-               .addTestMatcher("errorDetails", "AMQ119007:", "startsWith")
+               .addTestMatcher((String errorDetails) -> Pattern.compile("(AMQ119007:).*").matcher(errorDetails).find())
                .setErrorText("Cannot connect to server"),
        new FilterItem(Colour.GREEN)
                .addTest(".*ReplicatedNettyAsynchronousFailoverTest#testNonTransactional")
