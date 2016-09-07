@@ -215,8 +215,7 @@ public class Main {
                     if(casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
                         //System.out.println("Failed or regression: ");
                         String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#" + casesObject.getJSONObject(i).getString("name"), "buildUrl: " + configurationUrl, "testCase: " + casesObject.getJSONObject(i)));
-                        synchronized (Main.class) {
-                            
+                        synchronized (Main.class) {                 
                             cases.add(processedIssue);
                         }
                         result.append("  -- "+processedIssue+"\n");
