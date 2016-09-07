@@ -46,14 +46,14 @@ public class Main {
 
    public static void main(String[] args) {
 
-       if (args.length < 1) {
-           throw new IllegalArgumentException("You have to pass some job name for processing");
-       }
+      if (args.length < 1) {
+         throw new IllegalArgumentException("You have to pass some job name for processing");
+      }
 
        // Filter configuration
        // TODO - just temporary solution until we move core to separate project
        // use first job to determine the filter
-       String firstJob = args[0];
+      String firstJob = args[0];
 
       if (firstJob.contains("eap-7x-as-testsuite-")) {
          filter = new Eap7xAsTestsuiteTest710();
@@ -84,35 +84,35 @@ public class Main {
          filter = new Eap7xHA();
       }
        // Print selected filter class name
-       System.out.println(dyeText("Filter class:", Colour.BLACK_BOLD));
-       System.out.println(filter == null ? " - no filter in use" : " - " + filter.getClass().getName());
+      System.out.println(dyeText("Filter class:", Colour.BLACK_BOLD));
+      System.out.println(filter == null ? " - no filter in use" : " - " + filter.getClass().getName());
 
        // Introduction
-       System.out.println("\n"
-        + dyeText("Legend:", Colour.BLACK_BOLD) + "\n" +
-       " - " + dyeText("POSSIBLE REGRESSION", Colour.RED) + "\n" +
-       " - " + dyeText("KNOWN ISSUE", Colour.YELLOW) + "\n" +
-       " - " + dyeText("ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", Colour.PURPLE) + "\n" +
-       "");
+      System.out.println("\n"
+         + dyeText("Legend:", Colour.BLACK_BOLD) + "\n" +
+         " - " + dyeText("POSSIBLE REGRESSION", Colour.RED) + "\n" +
+         " - " + dyeText("KNOWN ISSUE", Colour.YELLOW) + "\n" +
+         " - " + dyeText("ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", Colour.PURPLE) + "\n" +
+         "");
 
-       System.out.println(dyeText("Collect results for:", Colour.BLACK_BOLD));
-       for (String it :args) {
-           System.out.println(" - " + it);
-       }
+      System.out.println(dyeText("Collect results for:", Colour.BLACK_BOLD));
+      for (String it :args) {
+         System.out.println(" - " + it);
+      }
 
        // Handle phase - process the jobs
-       for (String jobName :args) {
-           String[] splitRes = jobName.split(":", 2);
-           jobName = splitRes[0];
-           String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
-           PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient(), cacheValidity);
-           System.out.println("\n" + dyeText(jobName, Colour.BLACK_BOLD));
-           if (JobService.isMatrix(job)) {
-               handleMatrix(jobName, job);
-           } else {
-                   handleSingle(jobName, job, buildNum, cacheValidity);
-           }
-       }
+      for (String jobName :args) {
+         String[] splitRes = jobName.split(":", 2);
+         jobName = splitRes[0];
+         String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
+         PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient(), cacheValidity);
+         System.out.println("\n" + dyeText(jobName, Colour.BLACK_BOLD));
+         if (JobService.isMatrix(job)) {
+             handleMatrix(jobName, job);
+         } else {
+                 handleSingle(jobName, job, buildNum, cacheValidity);
+         }
+      }
 
        // Results aggregation phase - process the results
        printResults(args);
