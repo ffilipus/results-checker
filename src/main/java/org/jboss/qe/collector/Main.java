@@ -91,10 +91,10 @@ public class Main {
 
        // Introduction
        System.out.println("\n"
-       +dyeText("Legend:", Colour.BLACK_BOLD) + "\n" +
-       " - "+dyeText("POSSIBLE REGRESSION", Colour.RED) + "\n"+
-       " - "+dyeText("KNOWN ISSUE", Colour.YELLOW)+"\n" +
-       " - "+dyeText("ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", Colour.PURPLE) + "\n" +
+        + dyeText("Legend:", Colour.BLACK_BOLD) + "\n" +
+       " - " + dyeText("POSSIBLE REGRESSION", Colour.RED) + "\n" +
+       " - " + dyeText("KNOWN ISSUE", Colour.YELLOW) + "\n" +
+       " - " + dyeText("ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", Colour.PURPLE) + "\n" +
        "");
 
        System.out.println(dyeText("Collect results for:", Colour.BLACK_BOLD));
@@ -108,7 +108,7 @@ public class Main {
            jobName = splitRes[0];
            String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
            PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient(), cacheValidity);
-           System.out.println("\n"+dyeText(jobName, Colour.BLACK_BOLD));
+           System.out.println("\n" + dyeText(jobName, Colour.BLACK_BOLD));
            if (JobService.isMatrix(job)) {
                handleMatrix(jobName, job);
            } else {
@@ -143,7 +143,7 @@ public class Main {
                  //System.out.println(casesObject.getJSONObject(i));
                  if(casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
                      //System.out.println("Failed or regression: ");
-                     String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#"+casesObject.getJSONObject(i).getString("name"), "buildUrl: " + job.get("url"), "testCase: " + casesObject.getJSONObject(i)));
+                     String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#" + casesObject.getJSONObject(i).getString("name"), "buildUrl: " + job.get("url"), "testCase: " + casesObject.getJSONObject(i)));
                      cases.add(processedIssue);
                      System.out.println(" - " + processedIssue);
                      if (printErrorDetails) {
@@ -198,8 +198,8 @@ public class Main {
                         synchronized (Main.class) {                 
                             cases.add(processedIssue);
                         }
-                        result.append("  -- "+processedIssue+"\n");
-                        System.out.println(" - "+processedIssue);
+                        result.append("  -- " + processedIssue + "\n");
+                        System.out.println(" - " + processedIssue);
                         
                         if (printErrorDetails) {
                             result.append(casesObject.getJSONObject(i));
@@ -252,10 +252,10 @@ public class Main {
     private static String printError(JSONObject testCase) {
         String result = "";
         try {
-            result+="Age = "+testCase.getString("age") + "\n";
-            result+="Status = "+testCase.getString("status") + "\n";
-            result+=testCase.getString("errorDetails") + "\n";
-            result+=testCase.getString("errorStackTrace") + "\n";
+            result += "Age = " + testCase.getString("age") + "\n";
+            result += "Status = " + testCase.getString("status") + "\n";
+            result += testCase.getString("errorDetails") + "\n";
+            result += testCase.getString("errorStackTrace") + "\n";
         } catch (JSONException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -306,9 +306,9 @@ public class Main {
             System.out.println("\n" + dyeText("########    AGGREGATION OF ALL RESULTS    ########", Colour.CYAN_BOLD));
             System.out.println(dyeText("Collect results for:", Colour.BLACK_BOLD));
             for (String key:failures.keySet()){
-                System.out.println(" - "+key);
+                System.out.println(" - " + key);
             }
-            System.out.println(dyeText("\nTOTAL FINISHED BUILDS: "+totalBuilds, Colour.BLACK_BOLD));
+            System.out.println(dyeText("\nTOTAL FINISHED BUILDS: " + totalBuilds, Colour.BLACK_BOLD));
 
             for (String issue: new TreeSet<String>(totalIssues)){
                 System.out.println(" - " + Collections.frequency(totalIssues, issue) + "x " + issue);
