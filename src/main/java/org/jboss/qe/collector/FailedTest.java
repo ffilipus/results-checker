@@ -4,10 +4,9 @@ import java.util.List;
 
 public class FailedTest {
 
-    public String testName;
+   public String testName;
 
-    public String buildUrl;
-
+   public String buildUrl;
     /**
      * JSON Object which contains following properties:
      *   testActions - array
@@ -31,5 +30,4 @@ public class FailedTest {
         this.buildUrl = buildUrl;
         this.testCase = testCase;
     }
-
 }

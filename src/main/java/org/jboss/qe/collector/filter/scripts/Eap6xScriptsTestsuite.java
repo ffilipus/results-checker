@@ -10,20 +10,20 @@ import org.jboss.qe.collector.filter.FilterItem;
  */
 public class Eap6xScriptsTestsuite extends AbstractFilter {
 
-    public String filter(FailedTest failedTest) {
-        // model for filter
-        FilterItem[] items = {
+   public String filter(FailedTest failedTest) {
+      // model for filter
+      FilterItem[] items = {
 
-            new FilterItem().addTest(".*DomainCachedConfigurationTestCase.*")
-                    .setErrorText("tests was not finished").setColour(Colour.PURPLE),
+          new FilterItem().addTest(".*DomainCachedConfigurationTestCase.*")
+              .setErrorText("tests was not finished").setColour(Colour.PURPLE),
 
-            new FilterItem().addUrl(".*windows.*")
-                    .addTest("org.jboss.as.testsuite.integration.scripts.test.tools.JdrTestCase.*")
-                    .addTest(".*StandaloneRunTestCase#defaultDebugPort.*")
-                    .setErrorText("see testplan for more details").setColour(Colour.YELLOW),
+          new FilterItem().addUrl(".*windows.*")
+              .addTest("org.jboss.as.testsuite.integration.scripts.test.tools.JdrTestCase.*")
+              .addTest(".*StandaloneRunTestCase#defaultDebugPort.*")
+              .setErrorText("see testplan for more details").setColour(Colour.YELLOW),
 
-        };
+      };
 
-        return coreFilter(failedTest, items);
-    }
+      return coreFilter(failedTest, items);
+   }
 }

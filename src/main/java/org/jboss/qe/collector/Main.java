@@ -9,6 +9,8 @@ import org.jboss.qe.collector.filter.scripts.*;
 import org.jboss.qe.collector.filter.testsuite.*;
 import org.jboss.qe.collector.service.*;
 import org.jboss.qe.collector.service.PageType.PageParser;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.ws.rs.client.Client;
 import java.io.UnsupportedEncodingException;
@@ -30,6 +32,7 @@ import org.json.JSONException;
  * @author Petr Kremensky pkremens@redhat.com on 07/07/2015
  */
 public class Main {
+    
     //private static final Closure filterFailed = { test -> test.status.matches("(FAILED|REGRESSION)") };
     private static Map<String, List<String>> failures = new LinkedHashMap<String, List<String>>();
     private static Map<String, Integer> buildsPerMatrix = new HashMap<String, Integer>();
@@ -38,6 +41,7 @@ public class Main {
     private static Filter filter;
     private static final boolean printSecured = Boolean.valueOf(System.getProperty("print.secured", "true"));
     private static final boolean printErrorDetails = Boolean.valueOf(System.getProperty("print.error.details", "false"));
+    private static int cacheValidity = 300; // 5 minutes
 
     public static void main(String[] args) {
 
@@ -100,16 +104,12 @@ public class Main {
             String[] splitRes = jobName.split(":", 2);
             jobName = splitRes[0];
             String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
-            PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient());
+            PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient(), cacheValidity);
             System.out.println("\n"+dyeText(jobName, Colour.BLACK_BOLD));
             if (JobService.isMatrix(job)) {
                 handleMatrix(jobName, job);
             } else {
-                try {
-                    handleSingle(jobName, job, buildNum);
-                } catch (JSONException ex) {
-                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                    handleSingle(jobName, job, buildNum, cacheValidity);
             }
         }
 
@@ -122,44 +122,34 @@ public class Main {
      * @param jobName Name of the single executor job.
      * @param job JSON representation of the job
      */
-    private static void handleSingle(String jobName, PageParser job, String buildNum) throws JSONException {
-        String printableUlr = getPrintableUrl((String)job.get("url"), (String)job.get("result"));
-        System.out.println(printableUlr);
-        // handle single
-        Set<String> cases = new HashSet<String>();
-        PageParser data = JobService.getTestReport(jobName, buildNum, null);
-        // ignore runs without any results
-        if (data != null) {
-            totalBuilds++;
-            System.out.println(" - "+dyeText("PASSED: "+data.get("passCount")+", FAILED: "+data.get("failCount")+", SKIPPED: "+data.get("skipCount"), Colour.BLACK_BOLD));
-            /*for (List testCase : (List<List>) ((Map) data.get("suites")).get("cases")) {
+        //failures.put(printableUlr, cases);
 
-                testCase.findAll(filterFailed).each {
-                    // process the issue here to avoid mixing of platform specific issues in aggregation
-                    String processedIssue = processIssues(new FailedTest("testName: "+it.className+"#"+it.name+", buildUrl: "+job..containsKey("url")+", testCase: "+it));
-                    cases.add(processedIssue);
-                    System.out.println(" - "+processedIssue);
-                    if (printErrorDetails) {
-                        print printError(it);
-                    }
-                }
-            }*/
-            
-            //System.out.println(data.getObject().getJSONObject("suites").getJSONObject("cases").getString("age"));
-            //System.out.println(data.getObject().getString("suites"));
-            //System.out.println(data.getCases());
+   private static void handleSingle(String jobName, PageParser job, String buildNum, int cacheValidity) {
+      String printableUlr = getPrintableUrl((String) job.get("url"), (String) job.get("result"));
+      System.out.println(printableUlr);
+      // handle single
+      Set<String> cases = new HashSet<String>();
+      PageParser data = JobService.getTestReport(jobName, buildNum, null, cacheValidity);
+      // ignore runs without any results
+      if (data != null) {
+         totalBuilds++;
+         System.out.println(" - " + dyeText("PASSED: " + data.get("passCount") + ", FAILED: " + data.get("failCount") + ", SKIPPED: " + data.get("skipCount"), Colour.BLACK_BOLD));
             JSONArray casesObject = data.getCases();
             for(int i = 0; i < casesObject.length(); i++) {
-                //System.out.println(casesObject.getJSONObject(i));
-                if(casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
-                    //System.out.println("Failed or regression: ");
-                    String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className")+"#"+casesObject.getJSONObject(i).getString("name"), "buildUrl: "+job.get("url"), "testCase: "+casesObject.getJSONObject(i)));
-                    cases.add(processedIssue);
-                    System.out.println(" - "+processedIssue);
-                    if (printErrorDetails) {
-                        System.out.println(printError(casesObject.getJSONObject(i)));
-                    }
-                }
+             try {
+                 //System.out.println(casesObject.getJSONObject(i));
+                 if(casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
+                     //System.out.println("Failed or regression: ");
+                     String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className")+"#"+casesObject.getJSONObject(i).getString("name"), "buildUrl: "+job.get("url"), "testCase: "+casesObject.getJSONObject(i)));
+                     cases.add(processedIssue);
+                     System.out.println(" - "+processedIssue);
+                     if (printErrorDetails) {
+                         System.out.println(printError(casesObject.getJSONObject(i)));
+                     }
+                 }
+             } catch (JSONException ex) {
+                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+             }
             }
         } else {
             System.out.println(dyeText(" - NO RESULTS AVAILABLE", Colour.BLACK_BOLD));
@@ -167,46 +157,33 @@ public class Main {
         //failures.put(printableUlr, cases);
     }
 
-    /**
-     * Handle one configuration from the Matrix job.
-     * @param configurationUrl Url of job configuration
-     * @param jobName Name of the matrix parent
-     * @param cases Failed test cases. Items are add to this set in this function
-     * @return If this build was finished, returned value is 1. Otherwise 0.
-     */
-     private static int handleMatrixConfiguration(String configurationUrl, String jobName, List<String> cases) {
-        int buildsInMatrix = 0;
-        Client client = JobService.getNewRESTClient();
-        StringBuilder result = new StringBuilder();
-        String name = configurationUrl.substring(configurationUrl.indexOf(jobName));
-        // keep url in clickable form
-        String url = "";
-        try{
-            url = URLDecoder.decode(configurationUrl, "UTF-8").replaceAll("\\s", "%20");
-        } catch (UnsupportedEncodingException uee){
-            return -1;
-        }
-        PageParser matrixChild = JobService.getJob(name, "", client);
-        result.append(" - "+getPrintableUrl(url, (String)matrixChild.get("result")));
-         PageParser data = JobService.getTestReport(name, "", client);
-        if (data != null) {
-            totalBuilds++;
-            buildsInMatrix++;
-            result.append("  - "+dyeText("PASSED: "+data.get("passCount")+", FAILED: "+data.get("failCount")+", SKIPPED: +"+data.get("skipCount"), Colour.BLACK_BOLD)+"\n");
-            /*for (List testCase : data.get("suites").get("cases")) {
-                /*testCase.findAll(filterFailed).each {
-                    // process the issue here to avoid mixing of platform specific issues in aggregation
-                    String processedIssue = processIssues(new FailedTest(testName: "${it.className}#${it.name}", buildUrl: url, testCase: it));
-                    synchronized (this) {
-                        it.putAt("url", url);    // at least one item in case should be unique
-                        cases.add(processedIssue);
-                    }
-                    result.append("  -- "+processedIssue+"\n");
-                    if (printErrorDetails) {
-                        result.append(printError(it));
-                    }
-                }
-            }*/
+   /**
+    * Handle one configuration from the Matrix job.
+    *
+    * @param configurationUrl Url of job configuration
+    * @param jobName          Name of the matrix parent
+    * @param cases            Failed test cases. Items are add to this set in this function
+    * @return If this build was finished, returned value is 1. Otherwise 0.
+    */
+   private static int handleMatrixConfiguration(String configurationUrl, String jobName, List<String> cases) {
+      int buildsInMatrix = 0;
+      Client client = JobService.getNewRESTClient();
+      StringBuilder result = new StringBuilder();
+      String name = configurationUrl.substring(configurationUrl.indexOf(jobName));
+      // keep url in clickable form
+      String url = "";
+      try {
+         url = URLDecoder.decode(configurationUrl, "UTF-8").replaceAll("\\s", "%20");
+      } catch (UnsupportedEncodingException uee) {
+         return -1;
+      }
+      PageParser matrixChild = JobService.getJob(name, "", client, cacheValidity);
+      result.append(" - " + getPrintableUrl(url, (String) matrixChild.get("result")));
+      PageParser data = JobService.getTestReport(name, "", client, cacheValidity);
+      if (data != null) {
+         totalBuilds++;
+         buildsInMatrix++;
+         result.append("  - " + dyeText("PASSED: " + data.get("passCount") + ", FAILED: " + data.get("failCount") + ", SKIPPED: +" + data.get("skipCount"), Colour.BLACK_BOLD) + "\n");
             
             JSONArray casesObject = data.getCases();
             for(int i = 0; i < casesObject.length(); i++) {

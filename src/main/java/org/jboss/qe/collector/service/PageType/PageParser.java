@@ -1,51 +1,56 @@
 package org.jboss.qe.collector.service.PageType;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Jiri Bilek
  */
 public class PageParser {
-    private String rawPage;
-
-    public PageParser(String rawJSON){
-        this.rawPage=rawJSON;
-    }
-
-    public boolean isMatrix(){
-        return rawPage.contains("runs");
-    }
-
-    public String get(String key){
-
-        JSONObject obj = null;
-        try {
-            obj = new JSONObject(rawPage);
-            return obj.getString(key);
-            //System.out.println("Cislo bildu:"+obj.getJSONArray("runs").getJSONObject(0).getString("url"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
     
-    public JSONObject getObject() {
-        JSONObject obj = null;
+   private String rawPage;
+   private JSONObject obj;
+
+   public PageParser(String rawJSON) {
+      this.rawPage = rawJSON;
+      try {
+         obj = new JSONObject(rawPage);
+      } catch (JSONException e) {
+         e.printStackTrace();
+      }
+   }
+
+   public boolean isMatrix() {
+      return rawPage.contains("runs");
+   }
+
+   public String get(String key) {
+
+      try {
+         return obj.getString(key);
+      } catch (JSONException e) {
+         e.printStackTrace();
+         return null;
+      }
+   }
+
+   public JSONArray getRuns() {
+      try {
+         return obj.getJSONArray("runs");
+         //System.out.println("Cislo bildu:"+obj.getJSONArray("runs").getJSONObject(0).getString("url"));
+      } catch (JSONException e) {
+         e.printStackTrace();
+         return null;
+      }
+   }
+   
+   public JSONArray getCases() {
         try {
-            obj = new JSONObject(rawPage);
-            return obj;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    
-    public JSONArray getCases() {
-        JSONObject obj = null;
-        try {
-            obj = new JSONObject(rawPage);
             return obj.getJSONArray("suites").getJSONObject(0).getJSONArray("cases");
         } catch (JSONException e) {
             e.printStackTrace();
