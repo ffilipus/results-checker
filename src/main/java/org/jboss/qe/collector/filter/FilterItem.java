@@ -67,7 +67,7 @@ public class FilterItem {
       return this;
    }
 
-   public FilterItem addTestMatcher(String variable ,String value, String mode) {
+   public FilterItem addTestMatcher(String variable, String value, String mode) {
       this.testMatchers[0] = variable;
       this.testMatchers[1] = value;
       this.testMatchers[2] = mode;
