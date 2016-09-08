@@ -8,24 +8,31 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Date;
 
 /**
  * Created by fjerabek on 6.9.16.
  */
 public class Cache {
-   private String filePath;
+   private Path filePath;
    private File file;
 
    public Cache(String filename) {
-      this.filePath = "/tmp/" + filename;
-      file = new File(this.filePath);
+      Path path = null;
+      try {
+         path = Files.createTempDirectory("results_checker");
+      } catch (IOException e) {
+         e.printStackTrace();
+      }
+      this.filePath = path.resolve(filename);
+      file = new File(this.filePath.toString());
 
    }
 
    public void add(String data) {
-
-      try (FileOutputStream os = new FileOutputStream(filePath)) {
+      try (FileOutputStream os = new FileOutputStream(filePath.toString())) {
          os.write(data.getBytes()); //cache passed data
       } catch (FileNotFoundException e) {
          e.printStackTrace();
@@ -52,7 +59,7 @@ public class Cache {
    }
 
    public String getAll() {
-      try (FileInputStream is = new FileInputStream(filePath)) {
+      try (FileInputStream is = new FileInputStream(filePath.toString())) {
          String data = IOUtils.toString(is);
          return data;
       } catch (IOException e) {

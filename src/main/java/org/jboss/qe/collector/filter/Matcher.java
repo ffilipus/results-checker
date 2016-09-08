@@ -1,8 +1,10 @@
 package org.jboss.qe.collector.filter;
 
+import org.json.JSONObject;
+
 /**
  * Created by fjerabek on 7.9.16.
  */
 public interface Matcher {
-   boolean test(String a);
+   boolean test(JSONObject json);
 }

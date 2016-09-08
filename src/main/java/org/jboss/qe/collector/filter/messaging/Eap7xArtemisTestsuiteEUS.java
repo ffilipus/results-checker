@@ -4,6 +4,8 @@ import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
 import org.jboss.qe.collector.filter.AbstractFilter;
 import org.jboss.qe.collector.filter.FilterItem;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.regex.Pattern;
 
@@ -103,19 +105,54 @@ public class Eap7xArtemisTestsuiteEUS extends AbstractFilter {
            .addTest("org.apache.activemq.artemis.tests.integration.server.ScaleDownDirectTest#.*")
            .setErrorText("Not supported features"),
        new FilterItem(Colour.YELLOW)
-               .addTestMatcher((String errorDetails) -> errorDetails.equals("Thread leaked"))
+               .addTestMatcher((JSONObject errorDetails) -> {
+                  try {
+                     return errorDetails.get("errorDetails").equals("Thread leaked");
+                  } catch (JSONException e) {
+                     e.printStackTrace();
+                     return false;
+                  }
+               })
                .setErrorText("Thread leaked"),
        new FilterItem(Colour.YELLOW)
-               .addTestMatcher((String errorDetails) -> errorDetails.equals("broadcast not received"))
+               .addTestMatcher((JSONObject errorDetails) -> {
+                  try {
+                     return errorDetails.get("errorDetails").equals("broadcast not received");
+                  } catch (JSONException e) {
+                     e.printStackTrace();
+                     return false;
+                  }
+               })
                .setErrorText("broadcast not received"),
        new FilterItem(Colour.YELLOW)
-               .addTestMatcher((String errorDetails) -> Pattern.compile("(libAIO is not loaded).*").matcher(errorDetails).find())
+               .addTestMatcher((JSONObject errorDetails) -> {
+                  try {
+                     return Pattern.compile("(libAIO is not loaded).*").matcher((CharSequence) errorDetails.get("errorDetails")).find();
+                  } catch (JSONException e) {
+                     e.printStackTrace();
+                     return false;
+                  }
+               })
                .setErrorText("libAIO is not loaded"),
        new FilterItem(Colour.RED_BOLD)
-               .addTestMatcher((String errorDetails) -> errorDetails.equals("Didn\"t get the expected number of bindings, look at the logging for more information"))
+               .addTestMatcher((JSONObject errorDetails) -> {
+                  try {
+                     return errorDetails.get("errorDetails").equals("Didn\"t get the expected number of bindings, look at the logging for more information");
+                  } catch (JSONException e) {
+                     e.printStackTrace();
+                     return false;
+                  }
+               })
                .setErrorText("Didn\"t get the expected number of bindings, look at the logging for more information"),
        new FilterItem(Colour.YELLOW)
-               .addTestMatcher((String errorDetails) -> Pattern.compile("(AMQ119007:).*").matcher(errorDetails).find())
+               .addTestMatcher((JSONObject errorDetails) -> {
+                  try {
+                     return Pattern.compile("(AMQ119007:).*").matcher((CharSequence) errorDetails.get("errorDetails")).find();
+                  } catch (JSONException e) {
+                     e.printStackTrace();
+                     return false;
+                  }
+               })
                .setErrorText("Cannot connect to server"),
        new FilterItem(Colour.GREEN)
                .addTest(".*ReplicatedNettyAsynchronousFailoverTest#testNonTransactional")
