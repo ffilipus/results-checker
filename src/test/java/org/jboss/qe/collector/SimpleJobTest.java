@@ -6,7 +6,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by fjerabek on 8.9.16.
@@ -39,7 +43,7 @@ public class SimpleJobTest {
       Assert.assertTrue(cache.isActual(1));
    }
    @Before
-   public void prepare(){
+   public void prepare() {
       baos = new ByteArrayOutputStream();
       PrintStream ps = new PrintStream(baos);
       old = System.out;
@@ -48,28 +52,36 @@ public class SimpleJobTest {
    @Test
    public void testBasicFunctionality() {
       String test = "eap-70x-maven-repository-check-valid-POM-and-Metadata-files";
+
+
+      Path cashPath = Paths.get(System.getProperty("java.io.tmpdir"),test);
+      try {
+         FileOutputStream os = new FileOutputStream(cashPath.toString());
+      } catch (FileNotFoundException e) {
+         e.printStackTrace();
+      }
+
       new Main().main(new String[]{test});
       String output = baos.toString();
       String[] split = output.split("\n");
-      String[] correct;
       for (int i = 0; i < split.length; i++) {
          split[i] = split[i].replaceAll("\u001B\\[[;\\d]*m", "");
       }
-      Assert.assertEquals(split[1]," - no filter in use");
-      Assert.assertEquals(split[4]," - POSSIBLE REGRESSION");
-      Assert.assertEquals(split[5]," - KNOWN ISSUE");
-      Assert.assertEquals(split[6]," - ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA");
-      Assert.assertEquals(split[9]," - eap-70x-maven-repository-check-valid-POM-and-Metadata-files");
-      Assert.assertEquals(split[11],"eap-70x-maven-repository-check-valid-POM-and-Metadata-files");
-      Assert.assertEquals(split[12],"https://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/");
-      Assert.assertEquals(split[14]," - infinispan-directory-provider-8.1.4.Final-redhat-1#infinispan-directory-provider-8.1.4.Final-redhat-1");
-      Assert.assertEquals(split[15]," - infinispan-parent-8.1.4.Final-redhat-1#infinispan-parent-8.1.4.Final-redhat-1");
+      Assert.assertEquals("There is possibly filter in use", " - no filter in use", split[1]);
+      Assert.assertEquals("Legend was not shown", " - POSSIBLE REGRESSION", split[4]);
+      Assert.assertEquals("Legend was not shown", " - KNOWN ISSUE", split[5]);
+      Assert.assertEquals("Legend was not shown", " - ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", split[6]);
+      Assert.assertEquals("Wrong name of job shown", " - " + test, split[9]);
+      Assert.assertEquals("Wrong name of job shown", test, split[11]);
+      Assert.assertEquals("Wrong URL", "https://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/", split[12]);
+      Assert.assertEquals("Bad print of test status", " - PASSED: 308, FAILED: 2, SKIPPED: 0", split[13]);
+      Assert.assertEquals("Error was not shown", " - infinispan-directory-provider-8.1.4.Final-redhat-1#infinispan-directory-provider-8.1.4.Final-redhat-1", split[14]);
+      Assert.assertEquals("Error was not shown", " - infinispan-parent-8.1.4.Final-redhat-1#infinispan-parent-8.1.4.Final-redhat-1", split[15]);
+
    }
    @After
-   public void cleanup(){
+   public void cleanup() {
       System.out.flush();
       System.setOut(old);
    }
-
-
 }
