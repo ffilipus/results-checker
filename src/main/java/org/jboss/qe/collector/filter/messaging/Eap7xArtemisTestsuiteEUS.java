@@ -103,16 +103,16 @@ public class Eap7xArtemisTestsuiteEUS extends AbstractFilter {
            .addTest("org.apache.activemq.artemis.tests.integration.server.ScaleDownDirectTest#.*")
            .setErrorText("Not supported features"),
        new FilterItem(Colour.YELLOW)
-               .addTestMatcher((String errorDetails) -> errorDetails == "Thread leaked")
+               .addTestMatcher((String errorDetails) -> errorDetails.equals("Thread leaked"))
                .setErrorText("Thread leaked"),
        new FilterItem(Colour.YELLOW)
-               .addTestMatcher((String errorDetails) -> errorDetails == "broadcast not received")
+               .addTestMatcher((String errorDetails) -> errorDetails.equals("broadcast not received"))
                .setErrorText("broadcast not received"),
        new FilterItem(Colour.YELLOW)
                .addTestMatcher((String errorDetails) -> Pattern.compile("(libAIO is not loaded).*").matcher(errorDetails).find())
                .setErrorText("libAIO is not loaded"),
        new FilterItem(Colour.RED_BOLD)
-               .addTestMatcher((String errorDetails) -> errorDetails == "Didn\"t get the expected number of bindings, look at the logging for more information")
+               .addTestMatcher((String errorDetails) -> errorDetails.equals("Didn\"t get the expected number of bindings, look at the logging for more information"))
                .setErrorText("Didn\"t get the expected number of bindings, look at the logging for more information"),
        new FilterItem(Colour.YELLOW)
                .addTestMatcher((String errorDetails) -> Pattern.compile("(AMQ119007:).*").matcher(errorDetails).find())

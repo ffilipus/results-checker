@@ -57,9 +57,11 @@ public abstract class AbstractFilter implements Filter {
             }
          }
          try {
-            if (filterItem.getTestMatchers().test((String) failedTest.testCase.get("errorDetails"))) {
-               Category.increaseStatistics(filterItem.getCategory());
-               return getMessageFromFilterItem(failedTest, filterItem);
+            for (Matcher testMatcher : filterItem.getTestMatchers()) {
+               if (testMatcher.test((String) failedTest.testCase.get("errorDetails"))) {
+                  Category.increaseStatistics(filterItem.getCategory());
+                  return getMessageFromFilterItem(failedTest, filterItem);
+               }
             }
          } catch (JSONException e) {
             e.printStackTrace();

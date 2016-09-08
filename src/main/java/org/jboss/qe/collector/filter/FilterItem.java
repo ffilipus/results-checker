@@ -10,7 +10,7 @@ import java.util.regex.*;
  * Model for filter item. Failed tests can correspond with this rule.
  */
 public class FilterItem {
-   private Matcher testMatcher;
+   private List<Matcher> testMatcher = new ArrayList<Matcher>();
    /**
     * Create a new FilterItem
     *
@@ -68,7 +68,7 @@ public class FilterItem {
    }
 
    public FilterItem addTestMatcher(Matcher testMatcher) {
-      this.testMatcher = testMatcher;
+      this.testMatcher.add(testMatcher);
       return this;
    }
     /*public FilterItem addTestMatcher(Function matcher) {
@@ -112,7 +112,7 @@ public class FilterItem {
       return this.category;
    }
 
-   public  Matcher getTestMatchers() {
+   public  List<Matcher> getTestMatchers() {
       return testMatcher;
    }
 
