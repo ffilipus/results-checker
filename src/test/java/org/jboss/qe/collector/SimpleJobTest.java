@@ -39,12 +39,13 @@ public class SimpleJobTest {
       Assert.assertTrue(cache.isActual(1));
    }
    @Before
-   public void prepare(){
+   public void prepare() {
       baos = new ByteArrayOutputStream();
       PrintStream ps = new PrintStream(baos);
       old = System.out;
       System.setOut(ps);
    }
+
    @Test
    public void testBasicFunctionality() {
       String test = "eap-70x-maven-repository-check-valid-POM-and-Metadata-files";
@@ -65,8 +66,9 @@ public class SimpleJobTest {
       Assert.assertEquals(split[14]," - infinispan-directory-provider-8.1.4.Final-redhat-1#infinispan-directory-provider-8.1.4.Final-redhat-1");
       Assert.assertEquals(split[15]," - infinispan-parent-8.1.4.Final-redhat-1#infinispan-parent-8.1.4.Final-redhat-1");
    }
+
    @After
-   public void cleanup(){
+   public void cleanup() {
       System.out.flush();
       System.setOut(old);
    }
