@@ -49,6 +49,7 @@ public class SimpleJobTest {
       old = System.out;
       System.setOut(ps);
    }
+
    @Test
    public void testBasicFunctionality() {
       String test = "eap-70x-maven-repository-check-valid-POM-and-Metadata-files";
@@ -79,6 +80,7 @@ public class SimpleJobTest {
       Assert.assertEquals("Error was not shown", " - infinispan-parent-8.1.4.Final-redhat-1#infinispan-parent-8.1.4.Final-redhat-1", split[15]);
 
    }
+
    @After
    public void cleanup() {
       System.out.flush();
