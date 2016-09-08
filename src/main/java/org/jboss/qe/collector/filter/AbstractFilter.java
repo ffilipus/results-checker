@@ -4,6 +4,8 @@ import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
 import org.json.JSONException;
 
+import java.text.MessageFormat;
+
 /**
  * Basic methods for filter model.
  *
@@ -19,15 +21,19 @@ public abstract class AbstractFilter implements Filter {
     * @return Dyed text.
     */
    protected static String dyeText(String text, Colour colour) {
-      return "${colour.getColour()}${text}${Colour.RESET.getColour()}";
+      return colour.getColour() + text + Colour.RESET.getColour();
    }
 
    /**
     * Get text description with correct colour about test error.
     */
    public String getMessageFromFilterItem(FailedTest failedTest, FilterItem item) {
-      String category = item.category != null ? " " + dyeText("<${item.category}>", Colour.GRAY) : "";
-      return "${dyeText(failedTest.getTestName(), item.colour)} - ${item.errorText}${category}";
+      String category = item.category != null ? " " + dyeText(item.category, Colour.GRAY) : "";
+      String template = "{0} - {1} {2}";
+      Object[] values = new Object[] {
+          dyeText(failedTest.testName, item.colour), item.errorText, category
+      };
+      return MessageFormat.format(template, values);
    }
 
    /**
