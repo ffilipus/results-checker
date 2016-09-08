@@ -2,6 +2,7 @@ package org.jboss.qe.collector.filter;
 
 import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
+import org.json.JSONException;
 
 /**
  * Basic methods for filter model.
@@ -56,9 +57,13 @@ public abstract class AbstractFilter implements Filter {
             }
          }
          for (Matcher testMatcher : filterItem.getTestMatchers()) {
-            if (testMatcher.test(failedTest.testCase)) {
-               Category.increaseStatistics(filterItem.getCategory());
-               return getMessageFromFilterItem(failedTest, filterItem);
+            try {
+               if (testMatcher.test(failedTest.testCase)) {
+                  Category.increaseStatistics(filterItem.getCategory());
+                  return getMessageFromFilterItem(failedTest, filterItem);
+               }
+            } catch (JSONException e) {
+               e.printStackTrace();
             }
          }
          // TODO potreba vlastni implementace vyhodnocovani vyrazu

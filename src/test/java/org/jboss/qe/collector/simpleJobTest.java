@@ -9,10 +9,10 @@ import org.junit.Test;
 public class simpleJobTest {
    String filename = "test";
    String data = "This is testing string";
-    @Test
-   public void cacheMayCreateFile(){
-       Cache cache = new Cache(filename);
-       cache.add(data);
-       Assert.assertTrue(cache.exist());
-    }
+   @Test
+   public void cacheMayCreateFile() {
+      Cache cache = new Cache(filename);
+      cache.add(data);
+      Assert.assertTrue(cache.exist());
+   }
 }
