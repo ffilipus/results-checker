@@ -2,32 +2,21 @@ package org.jboss.qe.collector;
 
 import org.apache.cxf.helpers.IOUtils;
 
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.FileInputStream;
-import java.nio.file.Files;
+import java.io.*;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 
 /**
  * Created by fjerabek on 6.9.16.
  */
 public class Cache {
-   private Path filePath;
+   private Path filePath = null;
    private File file;
 
    public Cache(String filename) {
-      Path path = null;
-      try {
-         path = Files.createTempDirectory("results_checker");
-      } catch (IOException e) {
-         e.printStackTrace();
-      }
-      this.filePath = path.resolve(filename);
-      file = new File(this.filePath.toString());
+      filePath = Paths.get(System.getProperty("java.io.tmpdir"),filename);
+      file = new File(filePath.toString());
 
    }
 
