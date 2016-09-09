@@ -3,18 +3,18 @@
 
 **How to build results-checker**
 
-`mvn clean install
-`
+`mvn clean install`
+
 **How to run results-checker**
 
 Run as client application:
 
-`java -jar target/results-checker-* -j <job name> [-f <path to filter> {<path to filter>}] {-j <job name> [-f <path to filter> {<path to filter>}]}
-`
+`java -jar target/results-checker-* -j <job name> [-f <path to filter> {<path to filter>}] {-j <job name> [-f <path to filter> {<path to filter>}]}`
+
 Run as jenkinse post build action
 
-`java -jar target/results-checker-* -f <path to filter> {<path to filter>} -reports <path to junit reports>
-`
+`java -jar target/results-checker-* -f <path to filter> {<path to filter>} -reports <path to junit reports>`
+
 Possible optional settings:
 
 `CHECKER_ENVIRONMENT
