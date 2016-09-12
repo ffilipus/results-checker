@@ -19,6 +19,15 @@ public class ServerBasicTest {
    public void cleanup() {
       System.out.flush();
       System.setOut(old);
+
+      Map<String, String> env = new HashMap<>();
+      // TODO set environment variables:
+      // set servername
+      env.put("SERVER_NAME","jenkinse.zloutek-soft.cz");
+      // set cache validity to 0
+      env.put("CACHE_TIME_VALIDITY","300");
+
+      set(env);
    }
 
    @Before

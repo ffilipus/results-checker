@@ -10,6 +10,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Map;
 
 /**
  * @author Petr Kremensky pkremens@redhat.com on 07/07/2015
@@ -58,6 +59,15 @@ public class JobService {
    }
 
    private static PageParser getResponseData(String query, Client client_p, int cacheValidity) {
+
+      // TODO move this into some Tools.java
+      Map<String, String> env = System.getenv();
+      if (env.get("CACHE_TIME_VALIDITY") != null) {
+         cacheValidity = Integer.valueOf(env.get("CACHE_TIME_VALIDITY"));
+      }
+
+      //System.out.println("CACHE_TIME_VALIDITY=" + cacheValidity);
+
       if (client_p == null) {
          client_p = client;
       }
