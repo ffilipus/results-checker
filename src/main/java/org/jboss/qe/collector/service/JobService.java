@@ -17,9 +17,20 @@ import java.util.Map;
  */
 public class JobService {
 
-   private static final String CLIENT_URL = System.getProperty("jenkins.dn", "http://jenkinse.zloutek-soft.cz//hudson") + "/job/";
-   //final String CLIENT_URL = System.getProperty("jenkins.dn", "http://jenkins.mw.lab.eng.bos.redhat.com/hudson")+"/job/";
+   private static final String CLIENT_URL;
 
+   static {
+      // TODO move this into some Tools.java
+      Map<String, String> env = System.getenv();
+      if (env.get("SERVER_NAME") != null) {
+         String server_name = env.get("SERVER_NAME");
+         CLIENT_URL = System.getProperty("jenkins.dn", "http://" + server_name) + "/hudson/job/";
+      } else {
+         //String server_name = "jenkins.mw.lab.eng.bos.redhat.com";
+         String server_name = "jenkinse.zloutek-soft.cz";
+         CLIENT_URL = System.getProperty("jenkins.dn", "http://" + server_name) + "/hudson/job/";
+      }
+   }
 
    //    private static waitResponseTime = 0
    private static Client client = ClientBuilder.newClient();
@@ -39,7 +50,6 @@ public class JobService {
       //String query = name+"/"+(build.equals("") ? "" : build + "/")+"testReport/api/json";
       // temporary solution
       String query = name + "/" + (build.equals("") ? "" : build + "/") + "testReport/api/json/index.html";
-
       return getResponseData(query, client, cacheValidity);
    }
 
