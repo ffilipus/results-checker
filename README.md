@@ -1,46 +1,52 @@
-**RESULTS-CHECKER**
+#RESULTS-CHECKER
 
 
-**How to build results-checker**
+##How to build results-checker
 
-`mvn clean install`
+> `mvn clean install`
 
-**How to run results-checker**
+##How to run results-checker
 
-Run as client application:
+###Run as client application:
 
-`java -jar target/results-checker-* -j <job name> [-f <path to filter> {<path to filter>}] {-j <job name> [-f <path to filter> {<path to filter>}]}`
+ > `java -jar target/results-checker-* <job name> [<path to filter unit> ] {<job name> [<path to filter unit>]}`
 
-Run as jenkinse post build action
+###Run as jenkinse post build action:
 
-`java -jar target/results-checker-* -f <path to filter> {<path to filter>} -reports <path to junit reports>`
+> `java -jar target/results-checker-* <path to filter unit> -reports <path to junit reports>`
 
-Possible optional settings:
+###Possible optional settings:
 
-`CHECKER_ENVIRONMENT
-CACHE_TIME_VALIDITY`
+`CHECKER_ENVIRONMENT` - Possible set environment for tests ie. database, os. This is empty in default.
+
+`SERVER_NAME` - Set server name. Default value is "jenkins.mw.lab.eng.bos.redhat.com"
+
+`MATRIX_FULL` - Set behavior of checking matrix jobs. If variable is set to false (default), results-checker will download configurations of matrix that run in last execution of matrix.
+  If variable is set to true, it will download last run of each configuration.
+
+`CACHE_TIME_VALIDITY` - Validity of local cache in seconds. In default it is 300sec=5min
 
 
-Examples:
+###Examples:
+```
+export CHECKER_ENVIRONMENT="db2 jdk8 solaris10"
+java -jar target/results-checker-* filter_Eap7xHA -reports **/out/**/report/*.xml
 
-`export CHECKER_ENVIRONMENT="db2 jdk8 solaris10"
-java -jar target/results-checker-* -f filter_Eap7xHA.xml -reports **/out/**/report/*.xml
-`
+java -jar target/results-checker-* filter_Eap6xScriptsTestsuite.xml -reports reports/**
 
-`java -jar target/results-checker-* -f filter_Eap6xScriptsTestsuite.xml filter_ScriptsTestsuite.xml filter_basic.xml -reports reports/**
-`
+export CHECKER_ENVIRONMENT="oracle11 jdk7"
+java -jar target/results-checker-* my_test_filter.xml -reports **/target/surefire-reports/*.xml
 
-`export CHECKER_ENVIRONMENT="oracle11 jdk7"
-java -jar target/results-checker-* -f my_test_filter.xml -reports **/target/surefire-reports/*.xml
-`
+export CACHE_TIME_VALIDITY="0" # without cache
+java -jar target/results-checker-* eap-70x-maven-repository-check-valid-POM-and-Metadata-files
 
-`export CACHE_TIME_VALIDITY="0" # without cache
-java -jar target/results-checker-* -j eap-70x-maven-repository-check-valid-POM-and-Metadata-files
-`
+java -jar target/results-checker-* eap-70x-acceptance-multinode-win filters/basic_filter
 
-`java -jar target/results-checker-* -j eap-70x-acceptance-multinode-win -f filters/basic_filter.xml filters/multinode_filters.xml filters_multinode-win.xml
-`
+export CACHE_TIME_VALIDITY="600" # 600sec=10min
+export SERVER_NAME="jenkinse.zloutek-soft.cz"
+java -jar target/results-checker-* -eap-70x-acceptance-multinode-win filters_multinode-win eap-70x-super-job another_filter
+```
 
-`export CACHE_TIME_VALIDITY="600" # 600sec=10min
-java -jar target/results-checker-* -j eap-70x-acceptance-multinode-win -f filters_multinode-win.xml -j eap-70x-super-job -f another_filter.xml
-`
+##How to create your own filter
+
+> TODO
