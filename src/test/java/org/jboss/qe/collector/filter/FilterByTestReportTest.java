@@ -2,7 +2,7 @@ package org.jboss.qe.collector.filter;
 
 import org.jboss.qe.collector.CachePrepare;
 import org.jboss.qe.collector.Main;
-import org.jboss.qe.collector.filter.testFilters.TestFilterStackTrace;
+import org.jboss.qe.collector.filter.testFilters.TestFilterTestReport;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,9 +15,9 @@ import java.util.regex.Pattern;
 /**
  *  Created by fjerabek on 12.9.16.
  */
-public class FilterTestByStackTrace {
-   private ByteArrayOutputStream baos;
+public class FilterByTestReportTest {
    private PrintStream old = System.out;
+   private ByteArrayOutputStream baos;
 
    @Before
    public void before() {
@@ -27,23 +27,27 @@ public class FilterTestByStackTrace {
    }
 
    @Test
-   public void filterByStackTraceTest() {
+   public void testReportFilterTest() {
+      String[] resources = new String[]{"failedJob/lastBuild.json","failedJob/testReport.json"};
       String testName = "eap-70x-maven-repository-check-valid-POM-and-Metadata-files";
-      String[] resources = new String[] {"failedJob/testReport.json", "failedJob/lastBuild.json"};
-      Main.filter = new TestFilterStackTrace();
+      Main.filter = new TestFilterTestReport();
 
-      CachePrepare.prepare(testName, resources, getClass());
+      CachePrepare.prepare(testName,resources, getClass());
 
       Main.main(new String[]{testName});
+
       String output = baos.toString();
+
       String[] split = output.split("\n");
 
-      Pattern pattern = Pattern.compile("\u001B\\[36m");
-      Assert.assertTrue("Filter does not work", split[15].contains("Test filter by stack trace"));
-      Assert.assertTrue("Filter does not work", pattern.matcher(split[15]).find());
+      Pattern pattern = Pattern.compile("\u001B\\[34m");
+      Assert.assertTrue("Test filter does not work", split[15].contains("Test filter by test report"));
+      Assert.assertTrue("Test filter does not work", pattern.matcher(split[15]).find());
 
-      Assert.assertFalse("Filter does not work", split[16].contains("Test filter by stack trace"));
-      Assert.assertFalse("Filter does not work", pattern.matcher(split[16]).find());
+      Assert.assertFalse("Test filter does not work", split[16].contains("Test filter by test report"));
+      Assert.assertFalse("Test filter does not work", pattern.matcher(split[16]).find());
+
+
    }
 
    @After

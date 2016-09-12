@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  *  Created by fjerabek on 12.9.16.
  */
-public class FiltersTestByName {
+public class FilterByNameTest {
    private ByteArrayOutputStream baos;
    private PrintStream old = System.out;
 

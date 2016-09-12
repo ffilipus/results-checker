@@ -4,6 +4,7 @@ import org.apache.cxf.helpers.IOUtils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 
 /**
  *  Created by fjerabek on 12.9.16.
@@ -23,7 +24,9 @@ public abstract class CachePrepare {
    private static String[] getContentResourceFiles(String[] fileNames, Class it) {
       String[] resources = new String[fileNames.length];
       for (int i = 0; i < fileNames.length; i++) {
-         try (FileInputStream is = new FileInputStream(it.getClassLoader().getResource(fileNames[i]).getFile())) {
+         URL fn = it.getClassLoader().getResource(fileNames[i]);
+         assert fn != null;
+         try (FileInputStream is = new FileInputStream(fn.getFile())) {
             resources[i] = IOUtils.toString(is);
          } catch (IOException e) {
             e.printStackTrace();
