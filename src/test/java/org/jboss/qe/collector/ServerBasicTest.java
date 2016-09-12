@@ -42,6 +42,7 @@ public class ServerBasicTest {
       set(env);
    }
 
+   @SuppressWarnings("unchecked")
    private void set(Map<String, String> newenv) {
       try {
          try {
