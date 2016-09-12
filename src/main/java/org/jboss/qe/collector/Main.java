@@ -10,7 +10,6 @@ import org.jboss.qe.collector.filter.messaging.Eap7xMessagingInternalTestsuite;
 import org.jboss.qe.collector.filter.resteasy.Eap7xResteasyTestsuite;
 import org.jboss.qe.collector.filter.scripts.Eap6xScriptsTestsuite;
 import org.jboss.qe.collector.filter.scripts.Eap7xScriptsTestsuite;
-import org.jboss.qe.collector.filter.test.TestFilterName;
 import org.jboss.qe.collector.filter.testsuite.Eap6xAsTestsuite;
 import org.jboss.qe.collector.filter.testsuite.Eap7xAsTestsuiteTest710;
 import org.jboss.qe.collector.service.JobService;
@@ -39,7 +38,7 @@ public class Main {
    private static Map<String, Integer> buildsPerMatrix = new HashMap<String, Integer>();
    private static boolean failedOrAborted = false;
    private static int totalBuilds = 0;
-   private static Filter filter;
+   public static Filter filter;
    private static final boolean printSecured = Boolean.valueOf(System.getProperty("print.secured", "true"));
    private static final boolean printErrorDetails = Boolean.valueOf(System.getProperty("print.error.details", "false"));
    private static int cacheValidity = 300; // 5 minutes
@@ -82,8 +81,6 @@ public class Main {
          filter = new Eap7xCliEmbeddedFilter();
       } else if (firstJob.contains("eap7-artemis-ha-failover-bridges")) {
          filter = new Eap7xHA();
-      } else if (firstJob.contains("eap-70x-maven-repository-check-valid-POM-and-Metadata-files")) {
-         filter = new TestFilterName();
       }
       // Print selected filter class name
       System.out.println(dyeText("Filter class:", Colour.BLACK_BOLD));
