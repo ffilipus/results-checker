@@ -1,0 +1,236 @@
+{
+ "actions": [
+  {
+   "parameters": [
+    {
+     "name": "EAP_VERSION",
+     "value": "7.0.2.CP.CR1.1"
+    },
+    {
+     "name": "INCREMENTAL_REPO_ZIP",
+     "value": "/home/hudson/static_build_env/eap/7.0.2.CP.CR1.1/jboss-eap-7.0.2.CP.CR1.1-incremental-maven-repository.zip"
+    },
+    {
+     "name": "DELTA_REPO_DIR",
+     "value": "jboss-eap-7.0.2.GA-maven-repository-delta"
+    },
+    {
+     "name": "SETTINGS_XML_CENTRAL",
+     "value": "/home/hudson/private_maven_repos/eap-maven-repo-zip-tests/7.0.2.CP.CR1.1/m2-eap-7.0.2.CP.CR1.1-maven-repo-zip-plus-central/settings.xml"
+    },
+    {
+     "name": "SETTINGS_XML",
+     "value": "/home/hudson/private_maven_repos/eap-maven-repo-zip-tests/7.0.2.CP.CR1.1/m2-eap-7.0.2.CP.CR1.1-maven-repo-zip/settings.xml"
+    },
+    {
+     "name": "EAP_ZIP",
+     "value": "/home/hudson/static_build_env/eap/7.0.2.CP.CR1.1/jboss-eap-7.0.2.CP.CR1.1.zip"
+    },
+    {
+     "name": "REPO_ZIP",
+     "value": "/home/hudson/static_build_env/eap/7.0.2.CP.CR1.1/jboss-eap-7.0.2.CP.CR1.1-maven-repository.zip"
+    },
+    {
+     "name": "REPO_PATH",
+     "value": "/home/hudson/private_maven_repos/eap-maven-repo-zip-tests/7.0.2.CP.CR1.1"
+    },
+    {
+     "name": "EAP_DIR",
+     "value": "jboss-eap-7.0/"
+    },
+    {
+     "name": "MEAD_REPO_URL",
+     "value": "http://download.lab.bos.redhat.com/brewroot/repos/jb-eap-7.0-rhel-7-maven-build/latest/maven/"
+    },
+    {
+     "name": "REPO_DIR",
+     "value": "jboss-eap-7.0.2.GA-maven-repository"
+    },
+    {
+     "name": "EAP_VERSION_OLD",
+     "value": "7.0.0"
+    },
+    {
+     "name": "NEXUS_URL",
+     "value": "http://repository.jboss.org/nexus/content/groups/public/"
+    },
+    {
+     "name": "REPO_2_ZIP",
+     "value": "/home/hudson/static_build_env/eap/7.0.0/jboss-eap-7.0.0-maven-repository.zip"
+    },
+    {
+     "name": "REPO_1_ZIP",
+     "value": "/home/hudson/static_build_env/eap/7.0.2.CP.CR1.1/jboss-eap-7.0.2.CP.CR1.1-maven-repository.zip"
+    }
+   ]
+  },
+  {
+   "causes": [
+    {
+     "shortDescription": "Started by upstream project \"eap-70x-maven-repository-acceptance-prepare-and-trigger\" build number 8",
+     "upstreamBuild": 8,
+     "upstreamProject": "eap-70x-maven-repository-acceptance-prepare-and-trigger",
+     "upstreamUrl": "job/eap-70x-maven-repository-acceptance-prepare-and-trigger/"
+    }
+   ]
+  },
+  {
+
+  },
+  {
+
+  },
+  {
+   "buildsByBranchName": {
+    "origin/master": {
+     "buildNumber": 9,
+     "buildResult": null,
+     "marked": {
+      "SHA1": "b21fcca075922b3a8c2008f336625b701a237c09",
+      "branch": [
+       {
+        "SHA1": "b21fcca075922b3a8c2008f336625b701a237c09",
+        "name": "origin/master"
+       }
+      ]
+     },
+     "revision": {
+      "SHA1": "b21fcca075922b3a8c2008f336625b701a237c09",
+      "branch": [
+       {
+        "SHA1": "b21fcca075922b3a8c2008f336625b701a237c09",
+        "name": "origin/master"
+       }
+      ]
+     }
+    }
+   },
+   "lastBuiltRevision": {
+    "SHA1": "b21fcca075922b3a8c2008f336625b701a237c09",
+    "branch": [
+     {
+      "SHA1": "b21fcca075922b3a8c2008f336625b701a237c09",
+      "name": "origin/master"
+     }
+    ]
+   },
+   "remoteUrls": [
+    "git://git.app.eng.bos.redhat.com/jbossqe/eap-tests-scripts.git"
+   ],
+   "scmName": ""
+  },
+  {
+
+  },
+  {
+
+  },
+  {
+   "failCount": 2,
+   "skipCount": 0,
+   "totalCount": 310,
+   "urlName": "testReport"
+  },
+  {
+
+  },
+  {
+   "parameters": [
+    {
+     "name": "DESCRIPTION_SETTER_DESCRIPTION",
+     "value": "7.0.2.CP.CR1.1"
+    }
+   ]
+  },
+  {
+
+  },
+  {
+
+  }
+ ],
+ "artifacts": [
+  {
+   "displayPath": "README.txt",
+   "fileName": "README.txt",
+   "relativePath": "README.txt"
+  },
+  {
+   "displayPath": "test-output.txt",
+   "fileName": "test-output.txt",
+   "relativePath": "test-output.txt"
+  }
+ ],
+ "building": false,
+ "description": "7.0.2.CP.CR1.1",
+ "displayName": "#9",
+ "duration": 113884,
+ "estimatedDuration": 72232,
+ "executor": null,
+ "fullDisplayName": "eap-70x-maven-repository-check-valid-POM-and-Metadata-files #9",
+ "id": "9",
+ "keepLog": false,
+ "number": 9,
+ "queueId": 2921611,
+ "result": "UNSTABLE",
+ "timestamp": 1472035142320,
+ "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/",
+ "builtOn": "soa1",
+ "changeSet": {
+  "items": [
+   {
+    "affectedPaths": [
+     "compare-maven-repo/check-manifest-in-jars.sh"
+    ],
+    "commitId": "ddce346698a4392df5fe747a010026b91d4ceba0",
+    "timestamp": 1471340905000,
+    "author": {
+     "absoluteUrl": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/user/jstourac",
+     "fullName": "jstourac"
+    },
+    "comment": "check-manifest-in-jars: modified regexp to match filename with impl version\n\n- Created more strict regular expression for matching filename and its\n implementation-version value in manifest; there has been added list\n of allowed EAP qualificators that can occurr in the '.jar' filename.\n This list might be necessary to update during the time.\n",
+    "date": "2016-08-16T05:48:25-0400 +0200",
+    "id": "ddce346698a4392df5fe747a010026b91d4ceba0",
+    "msg": "check-manifest-in-jars: modified regexp to match filename with impl version",
+    "paths": [
+     {
+      "editType": "edit",
+      "file": "compare-maven-repo/check-manifest-in-jars.sh"
+     }
+    ]
+   },
+   {
+    "affectedPaths": [
+     "compare-maven-repo/compare-two-repos.sh"
+    ],
+    "commitId": "b21fcca075922b3a8c2008f336625b701a237c09",
+    "timestamp": 1471428063000,
+    "author": {
+     "absoluteUrl": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/user/nziakova",
+     "fullName": "nziakova"
+    },
+    "comment": "Fixed typo for nicer output\n",
+    "date": "2016-08-17T06:01:03-0400 +0200",
+    "id": "b21fcca075922b3a8c2008f336625b701a237c09",
+    "msg": "Fixed typo for nicer output",
+    "paths": [
+     {
+      "editType": "edit",
+      "file": "compare-maven-repo/compare-two-repos.sh"
+     }
+    ]
+   }
+  ],
+  "kind": "git"
+ },
+ "culprits": [
+  {
+   "absoluteUrl": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/user/jstourac",
+   "fullName": "jstourac"
+  },
+  {
+   "absoluteUrl": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/user/nziakova",
+   "fullName": "nziakova"
+  }
+ ]
+}

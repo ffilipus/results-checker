@@ -1,196 +1,229 @@
 {
- "actions": [
-  {
-   "parameterDefinitions": [
+  "actions": [
     {
-     "defaultParameterValue": {
-      "value": "7.0.0.CP.CR1"
-     },
-     "description": "",
-     "name": "EAP_VERSION",
-     "type": "StringParameterDefinition"
+      "parameterDefinitions": [
+        {
+          "defaultParameterValue": {
+            "value": "7.0.0.DR1"
+          },
+          "description": "",
+          "name": "EAP_VERSION",
+          "type": "StringParameterDefinition"
+        },
+        {
+          "defaultParameterValue": {
+            "value": "/home/hudson/static_build_env/eap/$EAP_VERSION/jboss-eap-$EAP_VERSION-maven-repository.zip"
+          },
+          "description": "",
+          "name": "REPO_ZIP",
+          "type": "StringParameterDefinition"
+        },
+        {
+          "defaultParameterValue": {
+            "value": "jboss-eap-7.0.0.Alpha1-maven-repository"
+          },
+          "description": "",
+          "name": "REPO_DIR",
+          "type": "StringParameterDefinition"
+        },
+        {
+          "defaultParameterValue": {
+            "value": "/home/hudson/private_maven_repos/eap-maven-repo-zip-tests/$EAP_VERSION/m2-eap-$EAP_VERSION-maven-repo-zip-plus-central/settings.xml"
+          },
+          "description": "",
+          "name": "SETTINGS_XML_CENTRAL",
+          "type": "StringParameterDefinition"
+        }
+      ]
     },
     {
-     "defaultParameterValue": {
-      "value": "/home/hudson/static_build_env/eap/$EAP_VERSION/jboss-eap-$EAP_VERSION-incremental-maven-repository.zip"
-     },
-     "description": "",
-     "name": "INCREMENTAL_REPO_ZIP",
-     "type": "StringParameterDefinition"
+
     },
     {
-     "defaultParameterValue": {
-      "value": "jboss-eap-7.0.0.GA-maven-repository-delta"
-     },
-     "description": "",
-     "name": "DELTA_REPO_DIR",
-     "type": "StringParameterDefinition"
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
+    },
+    {
+
     }
-   ]
-  },
-  {
-
-  },
-  {
-
-  },
-  {
-
-  },
-  {
-
-  },
-  {
-
-  },
-  {
-
-  },
-  {
-
-  },
-  {
-
-  }
- ],
- "description": "Checks that all POMs are valid\r\n   \r\nResults check\r\n  No failures expected.\r\n  All failures must be reported.\r\n   \r\nKnown issues\r\n [JBEAP-2057] POM files in EAP 7.0 Maven repository fails to validate: jackson artifacts\r\n [JBEAP-2058] POM files in EAP 7.0 Maven repository fails to validate: resteasy artifacts\r\n [JBEAP-2059] POM files in EAP 7.0 Maven repository fails to validate: asm artifacts\r\n [JBEAP-2060] POM files in EAP 7.0 Maven repository fails to validate: infinispan artifacts\r\n [JBEAP-2782] POM files in EAP 7.0 Maven repository fails to validate: jose-jwt artifacts\r\n  \r\nMOJO\r\n [DOC-982420] EAP 6 Maven repository Test Plan: technical details\r\n  \r\nTCMS/Polarion\r\n [TCMS] Maven repository zip\r\n  \r\nNotes\r\n Upstream poms are excluded from test report, list of invalid upstream poms can be found in archived invalid_upstream_poms.txt\r\n  \r\nContacts: \r\n Nikoleta Ziakova, nziakova@redhat.com (primary contact)\r\n Ivan Straka, istraka@redhat.com (backup)",
- "displayName": "eap-70x-maven-repository-check-valid-POM-and-Metadata-files",
- "displayNameOrNull": null,
- "name": "eap-70x-maven-repository-check-valid-POM-and-Metadata-files",
- "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/",
- "buildable": true,
- "builds": [
-  {
-   "number": 9,
-   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/"
-  },
-  {
-   "number": 8,
-   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/8/"
-  },
-  {
-   "number": 6,
-   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/6/"
-  },
-  {
-   "number": 5,
-   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/5/"
-  },
-  {
-   "number": 4,
-   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/4/"
-  },
-  {
-   "number": 3,
-   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/3/"
-  },
-  {
-   "number": 2,
-   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/2/"
-  }
- ],
- "color": "yellow",
- "firstBuild": {
-  "number": 2,
-  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/2/"
- },
- "healthReport": [
-  {
-   "description": "Test Result: 2 tests failing out of a total of 310 tests.",
-   "iconClassName": "icon-health-80plus",
-   "iconUrl": "health-80plus.png",
-   "score": 99
-  },
-  {
-   "description": "Build stability: No recent builds failed.",
-   "iconClassName": "icon-health-80plus",
-   "iconUrl": "health-80plus.png",
-   "score": 100
-  }
- ],
- "inQueue": false,
- "keepDependencies": false,
- "lastBuild": {
-  "number": 9,
-  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/"
- },
- "lastCompletedBuild": {
-  "number": 9,
-  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/"
- },
- "lastFailedBuild": null,
- "lastStableBuild": {
-  "number": 2,
-  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/2/"
- },
- "lastSuccessfulBuild": {
-  "number": 9,
-  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/"
- },
- "lastUnstableBuild": {
-  "number": 9,
-  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/"
- },
- "lastUnsuccessfulBuild": {
-  "number": 9,
-  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/"
- },
- "nextBuildNumber": 10,
- "property": [
-  {
-
-  },
-  {
-
-  },
-  {
-   "parameterDefinitions": [
+  ],
+  "description": "This job tries to build dependency tree on test pom including all dependencies defined in BOMs using maven repo zip + maven central\r\n  \r\nResults check\r\n No failures expected.\r\n All failures must be reported because eap-runtime-artifacts is the main EAP BOM, documented for customers usage.\r\n  \r\nKnown issues\r\n [JBEAP-1113] Unavailable artifacts referenced in eap-runtime-artifacts-7.0.0.Alpha1.pom BOM\r\n [JBEAP-1114] Unavailable artifacts referenced in jboss-javaee-7.0-eap-7.0.0.Alpha1.pom BOM\r\n [JBEAP-1116] Unavailable artifacts referenced in jboss-javaee-7.0-eap-with-spring3-7.0.0.Alpha1.pom BOM\r\n  \r\nMOJO\r\n [DOC-982420] EAP 6 Maven repository Test Plan: technical details\r\n  \r\nTCMS/Polarion\r\n [TCMS] Maven repository zip\r\n  \r\nContacts\r\n Nikoleta Ziakova, nziakova@redhat.com (primary contact)\r\n Ivan Straka, istraka@redhat.com (backup)",
+  "displayName": "eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central",
+  "displayNameOrNull": null,
+  "name": "eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central",
+  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/",
+  "buildable": true,
+  "builds": [
     {
-     "defaultParameterValue": {
-      "name": "EAP_VERSION",
-      "value": "7.0.0.CP.CR1"
-     },
-     "description": "",
-     "name": "EAP_VERSION",
-     "type": "StringParameterDefinition"
+      "number": 10,
+      "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/10/"
     },
     {
-     "defaultParameterValue": {
-      "name": "INCREMENTAL_REPO_ZIP",
-      "value": "/home/hudson/static_build_env/eap/$EAP_VERSION/jboss-eap-$EAP_VERSION-incremental-maven-repository.zip"
-     },
-     "description": "",
-     "name": "INCREMENTAL_REPO_ZIP",
-     "type": "StringParameterDefinition"
+      "number": 9,
+      "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/9/"
     },
     {
-     "defaultParameterValue": {
-      "name": "DELTA_REPO_DIR",
-      "value": "jboss-eap-7.0.0.GA-maven-repository-delta"
-     },
-     "description": "",
-     "name": "DELTA_REPO_DIR",
-     "type": "StringParameterDefinition"
+      "number": 8,
+      "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/8/"
+    },
+    {
+      "number": 7,
+      "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/7/"
+    },
+    {
+      "number": 6,
+      "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/6/"
+    },
+    {
+      "number": 5,
+      "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/5/"
+    },
+    {
+      "number": 4,
+      "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/4/"
+    },
+    {
+      "number": 3,
+      "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/3/"
+    },
+    {
+      "number": 2,
+      "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/2/"
+    },
+    {
+      "number": 1,
+      "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/1/"
     }
-   ]
+  ],
+  "color": "blue",
+  "firstBuild": {
+    "number": 1,
+    "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/1/"
   },
-  {
+  "healthReport": [
+    {
+      "description": "Test Result: 0 tests failing out of a total of 12 tests.",
+      "iconClassName": "icon-health-80plus",
+      "iconUrl": "health-80plus.png",
+      "score": 100
+    },
+    {
+      "description": "Build stability: No recent builds failed.",
+      "iconClassName": "icon-health-80plus",
+      "iconUrl": "health-80plus.png",
+      "score": 100
+    }
+  ],
+  "inQueue": false,
+  "keepDependencies": false,
+  "lastBuild": {
+    "number": 10,
+    "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/10/"
+  },
+  "lastCompletedBuild": {
+    "number": 10,
+    "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/10/"
+  },
+  "lastFailedBuild": null,
+  "lastStableBuild": {
+    "number": 10,
+    "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/10/"
+  },
+  "lastSuccessfulBuild": {
+    "number": 10,
+    "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/10/"
+  },
+  "lastUnstableBuild": {
+    "number": 9,
+    "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/9/"
+  },
+  "lastUnsuccessfulBuild": {
+    "number": 9,
+    "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central/9/"
+  },
+  "nextBuildNumber": 11,
+  "property": [
+    {
 
-  }
- ],
- "queueItem": null,
- "concurrentBuild": false,
- "downstreamProjects": [
+    },
+    {
 
- ],
- "scm": {
+    },
+    {
+      "parameterDefinitions": [
+        {
+          "defaultParameterValue": {
+            "name": "EAP_VERSION",
+            "value": "7.0.0.DR1"
+          },
+          "description": "",
+          "name": "EAP_VERSION",
+          "type": "StringParameterDefinition"
+        },
+        {
+          "defaultParameterValue": {
+            "name": "REPO_ZIP",
+            "value": "/home/hudson/static_build_env/eap/$EAP_VERSION/jboss-eap-$EAP_VERSION-maven-repository.zip"
+          },
+          "description": "",
+          "name": "REPO_ZIP",
+          "type": "StringParameterDefinition"
+        },
+        {
+          "defaultParameterValue": {
+            "name": "REPO_DIR",
+            "value": "jboss-eap-7.0.0.Alpha1-maven-repository"
+          },
+          "description": "",
+          "name": "REPO_DIR",
+          "type": "StringParameterDefinition"
+        },
+        {
+          "defaultParameterValue": {
+            "name": "SETTINGS_XML_CENTRAL",
+            "value": "/home/hudson/private_maven_repos/eap-maven-repo-zip-tests/$EAP_VERSION/m2-eap-$EAP_VERSION-maven-repo-zip-plus-central/settings.xml"
+          },
+          "description": "",
+          "name": "SETTINGS_XML_CENTRAL",
+          "type": "StringParameterDefinition"
+        }
+      ]
+    },
+    {
 
- },
- "upstreamProjects": [
-  {
-   "name": "eap-70x-maven-repository-acceptance-prepare-and-trigger",
-   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-acceptance-prepare-and-trigger/",
-   "color": "blue"
-  }
- ]
+    }
+  ],
+  "queueItem": null,
+  "concurrentBuild": false,
+  "downstreamProjects": [
+    {
+      "name": "eap-70x-maven-repository-check-dep-tree-wildfly-ejb-client-bom",
+      "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-dep-tree-wildfly-ejb-client-bom/",
+      "color": "blue"
+    }
+  ],
+  "scm": {
+
+  },
+  "upstreamProjects": [
+    {
+      "name": "eap-70x-maven-repository-check-boms-for-effective-pom-zip-plus-central",
+      "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-boms-for-effective-pom-zip-plus-central/",
+      "color": "blue"
+    }
+  ]
 }

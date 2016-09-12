@@ -10,6 +10,7 @@ import org.jboss.qe.collector.filter.messaging.Eap7xMessagingInternalTestsuite;
 import org.jboss.qe.collector.filter.resteasy.Eap7xResteasyTestsuite;
 import org.jboss.qe.collector.filter.scripts.Eap6xScriptsTestsuite;
 import org.jboss.qe.collector.filter.scripts.Eap7xScriptsTestsuite;
+import org.jboss.qe.collector.filter.test.TestFilterName;
 import org.jboss.qe.collector.filter.testsuite.Eap6xAsTestsuite;
 import org.jboss.qe.collector.filter.testsuite.Eap7xAsTestsuiteTest710;
 import org.jboss.qe.collector.service.JobService;
@@ -81,6 +82,8 @@ public class Main {
          filter = new Eap7xCliEmbeddedFilter();
       } else if (firstJob.contains("eap7-artemis-ha-failover-bridges")) {
          filter = new Eap7xHA();
+      } else if (firstJob.contains("eap-70x-maven-repository-check-valid-POM-and-Metadata-files")) {
+         filter = new TestFilterName();
       }
       // Print selected filter class name
       System.out.println(dyeText("Filter class:", Colour.BLACK_BOLD));

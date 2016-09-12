@@ -1,0 +1,196 @@
+{
+ "actions": [
+  {
+   "parameterDefinitions": [
+    {
+     "defaultParameterValue": {
+      "value": "7.0.0.CP.CR1"
+     },
+     "description": "",
+     "name": "EAP_VERSION",
+     "type": "StringParameterDefinition"
+    },
+    {
+     "defaultParameterValue": {
+      "value": "/home/hudson/static_build_env/eap/$EAP_VERSION/jboss-eap-$EAP_VERSION-incremental-maven-repository.zip"
+     },
+     "description": "",
+     "name": "INCREMENTAL_REPO_ZIP",
+     "type": "StringParameterDefinition"
+    },
+    {
+     "defaultParameterValue": {
+      "value": "jboss-eap-7.0.0.GA-maven-repository-delta"
+     },
+     "description": "",
+     "name": "DELTA_REPO_DIR",
+     "type": "StringParameterDefinition"
+    }
+   ]
+  },
+  {
+
+  },
+  {
+
+  },
+  {
+
+  },
+  {
+
+  },
+  {
+
+  },
+  {
+
+  },
+  {
+
+  },
+  {
+
+  }
+ ],
+ "description": "Checks that all POMs are valid\r\n   \r\nResults check\r\n  No failures expected.\r\n  All failures must be reported.\r\n   \r\nKnown issues\r\n [JBEAP-2057] POM files in EAP 7.0 Maven repository fails to validate: jackson artifacts\r\n [JBEAP-2058] POM files in EAP 7.0 Maven repository fails to validate: resteasy artifacts\r\n [JBEAP-2059] POM files in EAP 7.0 Maven repository fails to validate: asm artifacts\r\n [JBEAP-2060] POM files in EAP 7.0 Maven repository fails to validate: infinispan artifacts\r\n [JBEAP-2782] POM files in EAP 7.0 Maven repository fails to validate: jose-jwt artifacts\r\n  \r\nMOJO\r\n [DOC-982420] EAP 6 Maven repository Test Plan: technical details\r\n  \r\nTCMS/Polarion\r\n [TCMS] Maven repository zip\r\n  \r\nNotes\r\n Upstream poms are excluded from test report, list of invalid upstream poms can be found in archived invalid_upstream_poms.txt\r\n  \r\nContacts: \r\n Nikoleta Ziakova, nziakova@redhat.com (primary contact)\r\n Ivan Straka, istraka@redhat.com (backup)",
+ "displayName": "eap-70x-maven-repository-check-valid-POM-and-Metadata-files",
+ "displayNameOrNull": null,
+ "name": "eap-70x-maven-repository-check-valid-POM-and-Metadata-files",
+ "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/",
+ "buildable": true,
+ "builds": [
+  {
+   "number": 9,
+   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/"
+  },
+  {
+   "number": 8,
+   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/8/"
+  },
+  {
+   "number": 6,
+   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/6/"
+  },
+  {
+   "number": 5,
+   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/5/"
+  },
+  {
+   "number": 4,
+   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/4/"
+  },
+  {
+   "number": 3,
+   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/3/"
+  },
+  {
+   "number": 2,
+   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/2/"
+  }
+ ],
+ "color": "yellow",
+ "firstBuild": {
+  "number": 2,
+  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/2/"
+ },
+ "healthReport": [
+  {
+   "description": "Test Result: 2 tests failing out of a total of 310 tests.",
+   "iconClassName": "icon-health-80plus",
+   "iconUrl": "health-80plus.png",
+   "score": 99
+  },
+  {
+   "description": "Build stability: No recent builds failed.",
+   "iconClassName": "icon-health-80plus",
+   "iconUrl": "health-80plus.png",
+   "score": 100
+  }
+ ],
+ "inQueue": false,
+ "keepDependencies": false,
+ "lastBuild": {
+  "number": 9,
+  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/"
+ },
+ "lastCompletedBuild": {
+  "number": 9,
+  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/"
+ },
+ "lastFailedBuild": null,
+ "lastStableBuild": {
+  "number": 2,
+  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/2/"
+ },
+ "lastSuccessfulBuild": {
+  "number": 9,
+  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/"
+ },
+ "lastUnstableBuild": {
+  "number": 9,
+  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/"
+ },
+ "lastUnsuccessfulBuild": {
+  "number": 9,
+  "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-check-valid-POM-and-Metadata-files/9/"
+ },
+ "nextBuildNumber": 10,
+ "property": [
+  {
+
+  },
+  {
+
+  },
+  {
+   "parameterDefinitions": [
+    {
+     "defaultParameterValue": {
+      "name": "EAP_VERSION",
+      "value": "7.0.0.CP.CR1"
+     },
+     "description": "",
+     "name": "EAP_VERSION",
+     "type": "StringParameterDefinition"
+    },
+    {
+     "defaultParameterValue": {
+      "name": "INCREMENTAL_REPO_ZIP",
+      "value": "/home/hudson/static_build_env/eap/$EAP_VERSION/jboss-eap-$EAP_VERSION-incremental-maven-repository.zip"
+     },
+     "description": "",
+     "name": "INCREMENTAL_REPO_ZIP",
+     "type": "StringParameterDefinition"
+    },
+    {
+     "defaultParameterValue": {
+      "name": "DELTA_REPO_DIR",
+      "value": "jboss-eap-7.0.0.GA-maven-repository-delta"
+     },
+     "description": "",
+     "name": "DELTA_REPO_DIR",
+     "type": "StringParameterDefinition"
+    }
+   ]
+  },
+  {
+
+  }
+ ],
+ "queueItem": null,
+ "concurrentBuild": false,
+ "downstreamProjects": [
+
+ ],
+ "scm": {
+
+ },
+ "upstreamProjects": [
+  {
+   "name": "eap-70x-maven-repository-acceptance-prepare-and-trigger",
+   "url": "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-maven-repository-acceptance-prepare-and-trigger/",
+   "color": "blue"
+  }
+ ]
+}
