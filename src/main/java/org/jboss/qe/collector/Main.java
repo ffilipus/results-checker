@@ -32,7 +32,6 @@ public class Main {
    public static Filter filter;
    private static final boolean printSecured = Boolean.valueOf(System.getProperty("print.secured", "true"));
    private static final boolean printErrorDetails = Boolean.valueOf(System.getProperty("print.error.details", "false"));
-   private static int cacheValidity = 300; // 5 minutes
    private static Injector injector;
 
    public static void main(String[] args) {
@@ -72,12 +71,12 @@ public class Main {
          String[] splitRes = jobName.split(":", 2);
          jobName = splitRes[0];
          String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
-         PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient(), cacheValidity);
+         PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient());
          System.out.println("\n" + dyeText(jobName, Colour.BLACK_BOLD));
          if (JobService.isMatrix(job)) {
             handleMatrix(jobName, job);
          } else {
-            handleSingle(jobName, job, buildNum, cacheValidity);
+            handleSingle(jobName, job, buildNum);
          }
       }
 
@@ -92,12 +91,12 @@ public class Main {
     * @param job     JSON representation of the job
     */
    //failures.put(printableUlr, cases);
-   private static void handleSingle(String jobName, PageParser job, String buildNum, int cacheValidity) {
+   private static void handleSingle(String jobName, PageParser job, String buildNum) {
       String printableUlr = getPrintableUrl(job.get("url"), job.get("result"));
       System.out.println(printableUlr);
       // handle single
       List<String> cases = new LinkedList<>();
-      PageParser data = JobService.getTestReport(jobName, buildNum, null, cacheValidity);
+      PageParser data = JobService.getTestReport(jobName, buildNum, null);
       // ignore runs without any results
       if (data != null) {
          totalBuilds++;
@@ -145,9 +144,9 @@ public class Main {
       } catch (UnsupportedEncodingException uee) {
          return -1;
       }
-      PageParser matrixChild = JobService.getJob(name, "", client, cacheValidity);
+      PageParser matrixChild = JobService.getJob(name, "", client);
       result.append(" - ").append(getPrintableUrl(url, matrixChild.get("result")));
-      PageParser data = JobService.getTestReport(name, "", client, cacheValidity);
+      PageParser data = JobService.getTestReport(name, "", client);
       if (data != null) {
          totalBuilds++;
          buildsInMatrix++;
@@ -254,10 +253,7 @@ public class Main {
    private static void printResults(String[] args) {
       System.out.println("\n" + dyeText("########    AGGREGATED RESULTS PER JOB   ########", Colour.CYAN_BOLD));
       List<String> totalIssues = new ArrayList<>();
-      Iterator entries = failures.entrySet().iterator();
-      while (entries.hasNext()) {
-         Map.Entry<String, List<String>> thisEntry = (Map.Entry<String, List<String>>) entries.next();
-
+      for (Map.Entry<String,List<String>> thisEntry : failures.entrySet()) {
          String url = thisEntry.getKey();
          List<String> issues = thisEntry.getValue();
          System.out.println(url);

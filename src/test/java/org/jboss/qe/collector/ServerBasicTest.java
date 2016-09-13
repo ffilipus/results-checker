@@ -1,16 +1,13 @@
 package org.jboss.qe.collector;
 
+import org.jboss.qe.collector.filter.testFilters.EmptyFilter;
 import org.junit.*;
-
 import java.io.*;
-import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by jiri bilek on 12. 09. 2016.
+ * test if application can reach the server and without caching parse a data
  */
 public class ServerBasicTest {
    private PrintStream old = System.out;
@@ -20,53 +17,23 @@ public class ServerBasicTest {
       System.out.flush();
       System.setOut(old);
 
-      Map<String, String> env = new HashMap<>();
-      // TODO set environment variables:
       // set servername
-      env.put("SERVER_NAME","jenkinse.zloutek-soft.cz");
-      // set cache validity to 0
-      env.put("CACHE_TIME_VALIDITY","300");
-
-      set(env);
+      Tools.setEnvironmentVariable("SERVER_NAME","jenkinse.zloutek-soft.cz");
+      // set cache validity to default value 300
+      Tools.setEnvironmentVariable("CACHE_TIME_VALIDITY","300");
    }
 
    @Before
    public void prepare() {
-      Map<String, String> env = new HashMap<>();
-      // TODO set environment variables:
       // set servername
-      env.put("SERVER_NAME","jenkinse.zloutek-soft.cz");
+      Tools.setEnvironmentVariable("SERVER_NAME","jenkinse.zloutek-soft.cz");
       // set cache validity to 0
-      env.put("CACHE_TIME_VALIDITY","0");
-
-      set(env);
+      Tools.setEnvironmentVariable("CACHE_TIME_VALIDITY","0");
    }
 
-   @SuppressWarnings("unchecked")
-   private void set(Map<String, String> newenv) {
-      try {
-         try {
-            Class[] classes = Collections.class.getDeclaredClasses();
-            Map<String, String> env = System.getenv();
-            for (Class cl : classes) {
-               if ("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
-                  Field field = cl.getDeclaredField("m");
-                  field.setAccessible(true);
-                  Object obj = field.get(env);
-                  Map<String, String> map = (Map<String, String>) obj;
-                  map.clear();
-                  map.putAll(newenv);
-               }
-            }
-         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-         }
-      } catch (IllegalAccessException e) {
-         e.printStackTrace();
-      }
-   }
 
-   @Ignore
+
+   @Test
    //@Ignore("server does not work maybe")
    public void testBasicFunctionalityWithDataFromServer() {
       String testName = "eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central";
@@ -75,6 +42,7 @@ public class ServerBasicTest {
       PrintStream ps = new PrintStream(ba_stream);
       System.setOut(ps);
 
+      Main.filter = new EmptyFilter();
       Main.main(new String[]{testName});
       String output = ba_stream.toString();
 
@@ -83,7 +51,7 @@ public class ServerBasicTest {
          split[i] = split[i].replaceAll("\u001B\\[[;\\d]*m", "");
       }
 
-      Assert.assertEquals("There is possibly filter in use", " - no filter in use", split[Arrays.asList(split).indexOf("Filter class:") + 1]);
+      Assert.assertEquals("There is possibly filter in use", " - org.jboss.qe.collector.filter.testFilters.EmptyFilter", split[Arrays.asList(split).indexOf("Filter class:") + 1]);
       Assert.assertEquals("Legend was not shown", " - POSSIBLE REGRESSION", split[Arrays.asList(split).indexOf("Legend:") + 1]);
       Assert.assertEquals("Legend was not shown", " - KNOWN ISSUE", split[Arrays.asList(split).indexOf("Legend:") + 2]);
       Assert.assertEquals("Legend was not shown", " - ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", split[Arrays.asList(split).indexOf("Legend:") + 3]);

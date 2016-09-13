@@ -1,5 +1,6 @@
 package org.jboss.qe.collector;
 
+import org.jboss.qe.collector.filter.testFilters.EmptyFilter;
 import org.junit.*;
 
 import java.io.ByteArrayOutputStream;
@@ -21,19 +22,20 @@ public class BasicFunctionalityTest {
       System.setOut(ps);
    }
 
-   @Ignore
+   @Test
    public void testBasicFunctionality() {
       String testName = "eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central";
       String[] resourceFiles = new String[] {"simpleJob/lastBuild.json","simpleJob/testReport.json"};
       CachePrepare.prepare(testName, resourceFiles, getClass());
 
+      Main.filter = new EmptyFilter();
       Main.main(new String[]{testName});
       String output = baos.toString();
       String[] split = output.split("\n");
       for (int i = 0; i < split.length; i++) {
          split[i] = split[i].replaceAll("\u001B\\[[;\\d]*m", "");
       }
-      Assert.assertEquals("There is filter in use", " - no filter in use",split[1]);
+      Assert.assertEquals("There is filter in use", " - org.jboss.qe.collector.filter.testFilters.EmptyFilter",split[1]);
       Assert.assertEquals("Legend was not shown", " - POSSIBLE REGRESSION", split[4]);
       Assert.assertEquals("Legend was not shown", " - KNOWN ISSUE", split[5]);
       Assert.assertEquals("Legend was not shown", " - ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", split[6]);

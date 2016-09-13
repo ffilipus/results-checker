@@ -1,6 +1,7 @@
 package org.jboss.qe.collector.service;
 
 import org.jboss.qe.collector.Cache;
+import org.jboss.qe.collector.Tools;
 import org.jboss.qe.collector.service.PageType.PageParser;
 
 import javax.ws.rs.client.Client;
@@ -10,7 +11,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Map;
 
 /**
  * @author Petr Kremensky pkremens@redhat.com on 07/07/2015
@@ -20,16 +20,7 @@ public class JobService {
    private static final String CLIENT_URL;
 
    static {
-      // TODO move this into some Tools.java
-      Map<String, String> env = System.getenv();
-      if (env.get("SERVER_NAME") != null) {
-         String server_name = env.get("SERVER_NAME");
-         CLIENT_URL = System.getProperty("jenkins.dn", "http://" + server_name) + "/hudson/job/";
-      } else {
-         //String server_name = "jenkins.mw.lab.eng.bos.redhat.com";
-         String server_name = "jenkinse.zloutek-soft.cz";
-         CLIENT_URL = System.getProperty("jenkins.dn", "http://" + server_name) + "/hudson/job/";
-      }
+      CLIENT_URL = System.getProperty("jenkins.dn", "http://" + Tools.getEnvironmentVariable("SERVER_NAME")) + "/hudson/job/";
    }
 
    //    private static waitResponseTime = 0
@@ -46,11 +37,11 @@ public class JobService {
     * @param build Build number for the job. "lastBuild" is used by default. Use "" to omit the build number from request.
     * @return Test report of job in JSON format.
     */
-   public static PageParser getTestReport(String name, String build, Client client, int cacheValidity) {
+   public static PageParser getTestReport(String name, String build, Client client) {
       //String query = name+"/"+(build.equals("") ? "" : build + "/")+"testReport/api/json";
       // temporary solution
       String query = name + "/" + (build.equals("") ? "" : build + "/") + "testReport/api/json/index.html";
-      return getResponseData(query, client, cacheValidity);
+      return getResponseData(query, client);
    }
 
    /**
@@ -60,23 +51,17 @@ public class JobService {
     * @param build Build number for the job. "lastBuild" is used by default. Use "" to omit the build number from request.
     * @return Get job in JSON format.
     */
-   public static PageParser getJob(String name, String build, Client client, int cacheValidity) {
+   public static PageParser getJob(String name, String build, Client client) {
       //String query = name+"/"+(build.equals("") ? "" : build + "/")+"api/json";
       // temporary solution
       String query = name + "/" + (build.equals("") ? "" : build + "/") + "api/json/index.html";
 
-      return getResponseData(query, client, cacheValidity);
+      return getResponseData(query, client);
    }
 
-   private static PageParser getResponseData(String query, Client client_p, int cacheValidity) {
+   private static PageParser getResponseData(String query, Client client_p) {
 
-      // TODO move this into some Tools.java
-      Map<String, String> env = System.getenv();
-      if (env.get("CACHE_TIME_VALIDITY") != null) {
-         cacheValidity = Integer.valueOf(env.get("CACHE_TIME_VALIDITY"));
-      }
-
-      //System.out.println("CACHE_TIME_VALIDITY=" + cacheValidity);
+      int cacheValidity = Integer.valueOf(Tools.getEnvironmentVariable("CACHE_TIME_VALIDITY"));
 
       if (client_p == null) {
          client_p = client;

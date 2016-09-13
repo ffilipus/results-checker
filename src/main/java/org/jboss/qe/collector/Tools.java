@@ -1,8 +1,8 @@
 package org.jboss.qe.collector;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  *
@@ -148,5 +148,57 @@ public class Tools {
          }
       }
       return testFiles;
+   }
+
+   public static String getEnvironmentVariable(String name) {
+      Map<String, String> env = System.getenv();
+
+      if (env.get(name) != null) {
+         return env.get(name);
+      } else {
+         switch (name) {
+            case "CACHE_TIME_VALIDITY":
+               return "300";
+            case "SERVER_NAME":
+               return "jenkinse.zloutek-soft.cz";
+               //return "jenkins.mw.lab.eng.bos.redhat.com";
+            case "MATRIX_FULL":
+               return "false";
+            case "CHECKER_ENVIRONMENT":
+               return "";
+            default:
+               throw new IllegalStateException("Unexpected environment variable: " + name);
+         }
+      }
+   }
+
+   public static void setEnvironmentVariable(String key, String value) {
+      Map<String, String> env = new HashMap<>();
+      env.put(key,value);
+      set(env);
+   }
+
+   @SuppressWarnings("unchecked")
+   private static void set(Map<String, String> newenv) {
+      try {
+         try {
+            Class[] classes = Collections.class.getDeclaredClasses();
+            Map<String, String> env = System.getenv();
+            for (Class cl : classes) {
+               if ("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
+                  Field field = cl.getDeclaredField("m");
+                  field.setAccessible(true);
+                  Object obj = field.get(env);
+                  Map<String, String> map = (Map<String, String>) obj;
+                  map.clear();
+                  map.putAll(newenv);
+               }
+            }
+         } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+         }
+      } catch (IllegalAccessException e) {
+         e.printStackTrace();
+      }
    }
 }

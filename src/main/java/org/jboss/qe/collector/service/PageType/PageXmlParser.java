@@ -1,6 +1,5 @@
 package org.jboss.qe.collector.service.PageType;
 
-import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
 import org.jboss.qe.collector.Tools;
 import org.jboss.qe.collector.filter.Filter;
