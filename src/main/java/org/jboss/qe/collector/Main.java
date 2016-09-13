@@ -5,11 +5,13 @@ import com.google.inject.Injector;
 import org.jboss.qe.collector.filter.Filter;
 import org.jboss.qe.collector.service.JobService;
 import org.jboss.qe.collector.service.PageType.PageParser;
+import org.jboss.qe.collector.service.PageType.PageXmlParser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.ws.rs.client.Client;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
@@ -41,32 +43,65 @@ public class Main {
       }
 
       // Filter configuration
-      // TODO - just temporary solution until we move core to separate project
-      // use first job to determine the filter
-
       if (filter == null) {
          injector = Guice.createInjector(new FilterInjector(args));
          filter = injector.getInstance(Filter.class);
       }
 
-      // Print selected filter class name
+      // TODO solve it
+      boolean app_use_case = true;
+
+      if (app_use_case) { // using like client application - will download data from server and show list of failed tests
+         // Print selected filter class name
+         printSelectedFilters();
+         // Introduction
+         printHelp();
+         printJobs(args);
+         // Handle phase - process the jobs
+         handleJobsFromServer(args);
+         // Results aggregation phase - process the results
+         printResults(args);
+      } else { // using like jenkins post build action - will modify surfire reports
+         printWellcomeScreen();
+         // Print selected filter class name
+         printSelectedFilters();
+         // Handle phrase - modify surfire-reports on server
+         String path_to_reports = args[0];
+         PageXmlParser xmlParser = new PageXmlParser(filter);
+         try {
+            xmlParser.run(path_to_reports);
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+      }
+   }
+
+   private static void printWellcomeScreen() {
+      System.out.println("*** RESULTS-CHECKER ***");
+   }
+
+   private static void printSelectedFilters() {
       System.out.println(dyeText("Filter class:", Colour.BLACK_BOLD));
       System.out.println(filter == null ? " - no filter in use" : " - " + filter.getClass().getName());
+   }
 
-      // Introduction
+   private static void printHelp() {
       System.out.println("\n"
-          + dyeText("Legend:", Colour.BLACK_BOLD) + "\n" +
-          " - " + dyeText("POSSIBLE REGRESSION", Colour.RED) + "\n" +
-          " - " + dyeText("KNOWN ISSUE", Colour.YELLOW) + "\n" +
-          " - " + dyeText("ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", Colour.PURPLE) + "\n" +
-          "");
+            + dyeText("Legend:", Colour.BLACK_BOLD) + "\n" +
+            " - " + dyeText("POSSIBLE REGRESSION", Colour.RED) + "\n" +
+            " - " + dyeText("KNOWN ISSUE", Colour.YELLOW) + "\n" +
+            " - " + dyeText("ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", Colour.PURPLE) + "\n" +
+            "");
+   }
 
+   private static void printJobs(String[] args) {
       System.out.println(dyeText("Collect results for:", Colour.BLACK_BOLD));
       for (String it : args) {
          System.out.println(" - " + it);
       }
+   }
 
-      // Handle phase - process the jobs
+   private static void handleJobsFromServer(String[] args) {
       for (String jobName : args) {
          String[] splitRes = jobName.split(":", 2);
          jobName = splitRes[0];
@@ -79,9 +114,6 @@ public class Main {
             handleSingle(jobName, job, buildNum);
          }
       }
-
-      // Results aggregation phase - process the results
-      printResults(args);
    }
 
    /**
