@@ -19,27 +19,20 @@ import java.util.regex.Pattern;
 public class FilterTestCase {
    private List<FailedTest> failedTests;
    private List<FailedTest> filteredTests;
-   private final String ESCAPED_YELLOW = "\u001B\\[33m";
-   private final String ESCAPED_RED = "\u001B\\[31m";
 
    @Test
    public void test1() throws JSONException {
       SetFailedTests1();
       Filter filter = new TestFilter1();
-      Pattern pattern;
 
       // this cases should not be matched by a filter so final color should be red
-      pattern = Pattern.compile(ESCAPED_RED);
       for (FailedTest ft : failedTests) {
-         String ff = filter.filter(ft);
-         Assert.assertTrue("Test case " + ft.testName + " should be YELLOW but found RED", pattern.matcher(ff).find());
+         Assert.assertFalse("Test case " + ft.testName + " was matched, but it should not be", filter.filter(ft).isMatch());
       }
 
       // this cases should be matched by a filter so final color should be yellow
-      pattern = Pattern.compile(ESCAPED_YELLOW);
       for (FailedTest ft : filteredTests) {
-         String ff = filter.filter(ft);
-         Assert.assertTrue("Test case " + ft.testName + " should be YELLOW but found RED", pattern.matcher(ff).find());
+         Assert.assertTrue("Test case " + ft.testName + " was not matched, but it should be", filter.filter(ft).isMatch());
       }
    }
 
@@ -48,18 +41,15 @@ public class FilterTestCase {
    public void test2() throws JSONException {
       SetFailedTests1();
       Filter filter = new TestFilter1();
-      Pattern pattern;
 
       // this cases should not be matched by a filter so final color should be red
-      pattern = Pattern.compile(ESCAPED_RED);
       for (FailedTest ft : failedTests) {
-         Assert.assertTrue("Filer does have wrong color", pattern.matcher(filter.filter(ft)).find());
+         Assert.assertFalse("Test case " + ft.testName + " was matched, but it should not be", filter.filter(ft).isMatch());
       }
 
       // this cases should be matched by a filter so final color should be yellow
-      pattern = Pattern.compile(ESCAPED_YELLOW);
       for (FailedTest ft : filteredTests) {
-         Assert.assertTrue("Filer does have wrong color", pattern.matcher(filter.filter(ft)).find());
+         Assert.assertTrue("Test case " + ft.testName + " was not matched, but it should be", filter.filter(ft).isMatch());
       }
    }
 
