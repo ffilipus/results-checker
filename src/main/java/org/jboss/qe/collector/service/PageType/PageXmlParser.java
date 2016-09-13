@@ -1,6 +1,5 @@
 package org.jboss.qe.collector.service.PageType;
 
-import org.jboss.qe.collector.test_filter.TestFilter;
 import org.jboss.qe.collector.filter.Filter;
 import java.io.File;
 import java.io.FileWriter;
@@ -16,15 +15,16 @@ import org.jboss.qe.collector.Tools;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
-
-
 public class PageXmlParser {
-   private static Filter filter;
-   private static List<File> files;
-   public static void run(String path) throws IOException {
-      filter = new TestFilter();
+   private Filter filter;
+
+   public PageXmlParser(Filter f) {
+      this.filter = f;
+   }
+
+   public void run(String path) throws IOException {
       SAXBuilder builder = new SAXBuilder();
-      files = Tools.fileLoader(path);
+      List<File> files = Tools.fileLoader(path);
       for (File file : files) {
          System.out.println(file.getAbsolutePath());
       }
@@ -32,11 +32,11 @@ public class PageXmlParser {
       for (File file : files) {
          try {
             if (file.exists()) {
-               Document document = (Document) builder.build(file);
+               Document document = builder.build(file);
                List testSuite = document.getRootElement().getChildren();
                //System.out.println(file.getName());
-               for (int i = 0; i < testSuite.size(); i++) {
-                  Element testCase = (Element) testSuite.get(i);
+               for (Object aTestSuite : testSuite) {
+                  Element testCase = (Element) aTestSuite;
                   if (testCase.getName().equals("testcase") && ((testCase.getChild("failure") != null) || testCase.getChild("error") != null)) {
                      String errorChildName = "failure";
                      if (testCase.getChild("error") != null) {
@@ -64,11 +64,11 @@ public class PageXmlParser {
       }
    }
 
-   private static String dyeText(String text, Colour colour) {
+   private String dyeText(String text, Colour colour) {
       return colour.getColour() + "" + text + "" + Colour.RESET.getColour();
    }
 
-   private static String processIssues(FailedTest failedTest) {
+   private String processIssues(FailedTest failedTest) {
       if (filter != null) {
          return filter.filter(failedTest);
       } else {
