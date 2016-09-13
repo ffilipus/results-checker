@@ -46,7 +46,7 @@ public class Main {
       // use first job to determine the filter
 
       if (filter == null) {
-         injector = Guice.createInjector(new FilterInjector("/home/fjerabek/Dokumenty/results-checker-filters-0.0.1-SNAPSHOT.jar", "org.jboss.qe.collector.filter.scripts.Eap6xScriptsTestsuite"));
+         injector = Guice.createInjector(new FilterInjector(args));
          filter = injector.getInstance(Filter.class);
       }
 

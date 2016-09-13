@@ -87,8 +87,8 @@ public class FilterInjector extends AbstractModule {
 
    @Override
    protected void configure() {
-      //Filter filter = choseFilter(jobs[0]);
-      Filter filter = getFilterFromFile(path, pckg);
+      Filter filter = choseFilter(jobs[0]);
+      //Filter filter = getFilterFromFile(path, pckg);
       bind(Filter.class).to(filter.getClass());
    }
 }

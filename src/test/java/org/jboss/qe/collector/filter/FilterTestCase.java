@@ -2,6 +2,7 @@ package org.jboss.qe.collector.filter;
 
 import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
+import org.jboss.qe.collector.FilterResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -10,7 +11,6 @@ import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Created by jbilek on 13/09/16.
@@ -106,7 +106,7 @@ public class FilterTestCase {
 
    private class TestFilter1 extends AbstractFilter {
       @Override
-      public String filter(FailedTest failedTest) {
+      public FilterResult filter(FailedTest failedTest) {
          FilterItem[] items = new FilterItem[]{
 
                new FilterItem(Colour.YELLOW).setErrorText("JBEAP-5382 - Embedded server started non-modular use only first --jboss-home for FS paths")
@@ -145,7 +145,7 @@ public class FilterTestCase {
 
    private class TestFilter2 extends AbstractFilter {
       @Override
-      public String filter(FailedTest failedTest) {
+      public FilterResult filter(FailedTest failedTest) {
          FilterItem[] items = new FilterItem[]{
                new FilterItem(Colour.YELLOW)
                      .addTest("testFailedJob.*")

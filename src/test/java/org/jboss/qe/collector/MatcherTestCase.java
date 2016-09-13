@@ -73,7 +73,7 @@ public class MatcherTestCase {
    private static String getFilterResult(Cache cache, Filter filter) throws JSONException {
       JSONObject jsonObject = parsePage(cache);
       FailedTest failedTest = new FailedTest("test", "http://test.url", jsonObject);
-      return filter.filter(failedTest);
+      return filter.filter(failedTest).getJobError();
    }
 
    private static class TestFilter extends AbstractFilter {
@@ -92,7 +92,7 @@ public class MatcherTestCase {
       };
 
       @Override
-      public String filter(FailedTest failedTest) {
+      public FilterResult filter(FailedTest failedTest) {
          return coreFilter(failedTest, items);
       }
    }
