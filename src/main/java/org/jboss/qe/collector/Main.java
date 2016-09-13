@@ -236,10 +236,14 @@ public class Main {
     */
    private static List<String> getMatrixJobUrls(PageParser job) {
       List<String> triggeredConfiguration = new LinkedList<>();
+      String buildNumber = job.get("number");
       for (int i = 0;i < job.getRuns().length();i++) {
          try {
             JSONObject it = job.getRuns().getJSONObject(i);
-            triggeredConfiguration.add(it.getString("url"));
+            Boolean fullMatrix = Boolean.getBoolean(Tools.getEnvironmentVariable("MATRIX_FULL"));
+            if (it.get("number").equals(buildNumber) || fullMatrix) {
+               triggeredConfiguration.add(it.getString("url"));
+            }
          } catch (JSONException e) {
             e.printStackTrace();
          }
