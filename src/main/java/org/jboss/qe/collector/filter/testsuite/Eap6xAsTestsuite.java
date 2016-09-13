@@ -2,6 +2,7 @@ package org.jboss.qe.collector.filter.testsuite;
 
 import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
+import org.jboss.qe.collector.FilterResult;
 import org.jboss.qe.collector.filter.FilterItem;
 
 /**
@@ -10,7 +11,7 @@ import org.jboss.qe.collector.filter.FilterItem;
 
 public class Eap6xAsTestsuite extends AbstractEapAsTestsuite {
 
-   public String filter(FailedTest failedTest) {
+   public FilterResult filter(FailedTest failedTest) {
       // model for filter
       FilterItem[] items = {
 
@@ -186,7 +187,7 @@ public class Eap6xAsTestsuite extends AbstractEapAsTestsuite {
               .setCategory(AsTsCategory.DOMAIN)
       };
 
-      String output = coreFilter(failedTest, items);
+      FilterResult output = coreFilter(failedTest, items);
       if (output != null) {
          return output;
       }
@@ -195,10 +196,10 @@ public class Eap6xAsTestsuite extends AbstractEapAsTestsuite {
       if ((failedTest.buildUrl.contains("solaris") && failedTest.buildUrl.contains("sparc")) &&
           (failedTest.testName.contains("org.jboss.as.test.integration.security.loginmodules.LdapExtLikeAdvancedLdapLMTestCase")
               || failedTest.testName.contains("org.jboss.as.test.integration.security.loginmodules.LdapExtLoginModuleTestCase"))) {
-         return dyeText(failedTest.testName, Colour.YELLOW) + " - https://bugzilla.redhat.com/show_bug.cgi?id=1251476";
+         return new FilterResult(true, dyeText(failedTest.testName, Colour.YELLOW) + " - https://bugzilla.redhat.com/show_bug.cgi?id=1251476");
 
       } else {
-         return dyeText(failedTest.testName, Colour.RED);
+         return new FilterResult(true, dyeText(failedTest.testName, Colour.RED));
       }
    }
 }

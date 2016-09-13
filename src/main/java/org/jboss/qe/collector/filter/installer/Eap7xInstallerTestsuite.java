@@ -2,6 +2,7 @@ package org.jboss.qe.collector.filter.installer;
 
 import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
+import org.jboss.qe.collector.FilterResult;
 import org.jboss.qe.collector.filter.AbstractFilter;
 import org.jboss.qe.collector.filter.FilterItem;
 
@@ -26,7 +27,7 @@ public class Eap7xInstallerTestsuite extends AbstractFilter {
            .addTest(".*.auto.ShortcutsTestCase#shortcutsTest"),
    };
 
-   public String filter(FailedTest failedTest) {
+   public FilterResult filter(FailedTest failedTest) {
       return coreFilter(failedTest, FILTER_ITEMS);
    }
 }

@@ -2,6 +2,7 @@ package org.jboss.qe.collector.filter.testsuite;
 
 import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
+import org.jboss.qe.collector.FilterResult;
 import org.jboss.qe.collector.filter.FilterItem;
 
 /**
@@ -9,7 +10,7 @@ import org.jboss.qe.collector.filter.FilterItem;
  */
 public class Eap7xAsTestsuiteTest710 extends AbstractEapAsTestsuite {
 
-   public String filter(FailedTest failedTest) {
+   public FilterResult filter(FailedTest failedTest) {
       return coreFilter(failedTest, FILTER_ITEMS);
    }
 

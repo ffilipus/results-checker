@@ -2,6 +2,7 @@ package org.jboss.qe.collector.filter.resteasy;
 
 import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
+import org.jboss.qe.collector.FilterResult;
 import org.jboss.qe.collector.filter.AbstractFilter;
 import org.jboss.qe.collector.filter.FilterItem;
 
@@ -37,7 +38,7 @@ public class Eap7xResteasyTestsuite extends AbstractFilter {
            .setErrorText("https://gitlab.mw.lab.eng.bos.redhat.com/jbossqe-eap/eap7-resteasy-ts/merge_requests/114 - TraceTest needs fix").setColour(Colour.PURPLE)
    };
 
-   public String filter(FailedTest failedTest) {
+   public FilterResult filter(FailedTest failedTest) {
       return coreFilter(failedTest, items);
    }
 }

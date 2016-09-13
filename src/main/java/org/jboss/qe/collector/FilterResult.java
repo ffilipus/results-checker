@@ -7,7 +7,7 @@ public class FilterResult {
    private boolean match;
    private String jobError;
 
-   public FilterResult(boolean match, String jobError){
+   public FilterResult(boolean match, String jobError) {
       this.jobError = jobError;
       this.match = match;
    }

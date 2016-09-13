@@ -1,17 +1,8 @@
 package org.jboss.qe.collector;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.jboss.qe.collector.filter.Filter;
-import org.jboss.qe.collector.filter.cli.Eap7xCliEmbeddedFilter;
-import org.jboss.qe.collector.filter.installer.Eap7xInstallerTestsuite;
-import org.jboss.qe.collector.filter.messaging.Eap7xArtemisTestsuite;
-import org.jboss.qe.collector.filter.messaging.Eap7xArtemisTestsuiteEUS;
-import org.jboss.qe.collector.filter.messaging.Eap7xHA;
-import org.jboss.qe.collector.filter.messaging.Eap7xMessagingInternalTestsuite;
-import org.jboss.qe.collector.filter.resteasy.Eap7xResteasyTestsuite;
-import org.jboss.qe.collector.filter.scripts.Eap6xScriptsTestsuite;
-import org.jboss.qe.collector.filter.scripts.Eap7xScriptsTestsuite;
-import org.jboss.qe.collector.filter.testsuite.Eap6xAsTestsuite;
-import org.jboss.qe.collector.filter.testsuite.Eap7xAsTestsuiteTest710;
 import org.jboss.qe.collector.service.JobService;
 import org.jboss.qe.collector.service.PageType.PageParser;
 import org.json.JSONArray;
@@ -42,6 +33,7 @@ public class Main {
    private static final boolean printSecured = Boolean.valueOf(System.getProperty("print.secured", "true"));
    private static final boolean printErrorDetails = Boolean.valueOf(System.getProperty("print.error.details", "false"));
    private static int cacheValidity = 300; // 5 minutes
+   private static Injector injector;
 
    public static void main(String[] args) {
 
@@ -52,36 +44,12 @@ public class Main {
       // Filter configuration
       // TODO - just temporary solution until we move core to separate project
       // use first job to determine the filter
-      String firstJob = args[0];
 
-      if (firstJob.contains("eap-7x-as-testsuite-")) {
-         filter = new Eap7xAsTestsuiteTest710();
-
-      } else if (firstJob.contains("eap-6x-as-testsuite-")) {
-         filter = new Eap6xAsTestsuite();
-
-      } else if (firstJob.contains("eap-7x-installer-") || firstJob.matches("EAP-REGRESSION-.*")) {
-         filter = new Eap7xInstallerTestsuite();
-
-      } else if (firstJob.contains("eap-7x-scripts-")) {
-         filter = new Eap7xScriptsTestsuite();
-
-      } else if (firstJob.contains("eap-64x-patched-scripts")) {
-         filter = new Eap6xScriptsTestsuite();
-
-      } else if (firstJob.contains("resteasy")) {
-         filter = new Eap7xResteasyTestsuite();
-      } else if (firstJob.contains("artemis-project-testsuite-prepare")) {
-         filter = new Eap7xArtemisTestsuite();
-      } else if (firstJob.contains("artemis-project-testsuite-rhel")) {
-         filter = new Eap7xArtemisTestsuiteEUS();
-      } else if (firstJob.contains("eap7-artemis-qe-internal")) {
-         filter = new Eap7xMessagingInternalTestsuite();
-      } else if (firstJob.contains("eap-7x-cli-embedded")) {
-         filter = new Eap7xCliEmbeddedFilter();
-      } else if (firstJob.contains("eap7-artemis-ha-failover-bridges")) {
-         filter = new Eap7xHA();
+      if (filter == null) {
+         injector = Guice.createInjector(new FilterInjector("/home/fjerabek/Dokumenty/results-checker-filters-0.0.1-SNAPSHOT.jar", "org.jboss.qe.collector.filter.scripts.Eap6xScriptsTestsuite"));
+         filter = injector.getInstance(Filter.class);
       }
+
       // Print selected filter class name
       System.out.println(dyeText("Filter class:", Colour.BLACK_BOLD));
       System.out.println(filter == null ? " - no filter in use" : " - " + filter.getClass().getName());
@@ -373,10 +341,6 @@ public class Main {
     * @return Pre-formatted test case report ready for printing.
     */
    private static String processIssues(FailedTest failedTest) {
-      if (filter != null) {
-         return filter.filter(failedTest);
-      } else {
-         return dyeText(failedTest.testName, Colour.RED);
-      }
+      return filter.filter(failedTest).getJobError();
    }
 }

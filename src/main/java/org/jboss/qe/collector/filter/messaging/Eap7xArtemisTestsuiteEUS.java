@@ -2,6 +2,7 @@ package org.jboss.qe.collector.filter.messaging;
 
 import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
+import org.jboss.qe.collector.FilterResult;
 import org.jboss.qe.collector.filter.AbstractFilter;
 import org.jboss.qe.collector.filter.FilterItem;
 import org.json.JSONObject;
@@ -155,7 +156,7 @@ public class Eap7xArtemisTestsuiteEUS extends AbstractFilter {
 
    };
 
-   public String filter(FailedTest failedTest) {
+   public FilterResult filter(FailedTest failedTest) {
       return coreFilter(failedTest, items);
    }
 }

@@ -2,6 +2,7 @@ package org.jboss.qe.collector.filter;
 
 import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
+import org.jboss.qe.collector.FilterResult;
 import org.json.JSONException;
 
 import java.text.MessageFormat;
@@ -39,12 +40,12 @@ public abstract class AbstractFilter implements Filter {
    /**
     * Check failed test and filter it based on filter item model. Dye text to red if the failure was not recognized.
     *
-    * @param failedTest Test name.
     * @param url        Url of failed configuration.
+    * @param failedTest Test name.
     * @param items      Filter model
     * @return Error description for printing.
     */
-   public String coreFilter(FailedTest failedTest, FilterItem... items) {
+   public FilterResult coreFilter(FailedTest failedTest, FilterItem... items) {
       for (FilterItem filterItem : items) {
          boolean mainContinue = false;
          for (String urlPart : filterItem.getUrlRegEx()) {
@@ -59,14 +60,14 @@ public abstract class AbstractFilter implements Filter {
          for (String regExpTest : filterItem.getTestsRegEx()) {
             if (failedTest.testName.matches(regExpTest)) {
                Category.increaseStatistics(filterItem.getCategory());
-               return getMessageFromFilterItem(failedTest, filterItem);
+               return new FilterResult(true, getMessageFromFilterItem(failedTest, filterItem));
             }
          }
          for (Matcher testMatcher : filterItem.getTestMatchers()) {
             try {
                if (testMatcher.test(failedTest.testCase)) {
                   Category.increaseStatistics(filterItem.getCategory());
-                  return getMessageFromFilterItem(failedTest, filterItem);
+                  return new FilterResult(true, getMessageFromFilterItem(failedTest, filterItem));
                }
             } catch (JSONException e) {
                e.printStackTrace();
@@ -81,7 +82,7 @@ public abstract class AbstractFilter implements Filter {
             }*/
 
       }
-      return dyeText(failedTest.testName, Colour.RED);
+      return new FilterResult(false, dyeText(failedTest.testName, Colour.RED));
    }
 
    /**

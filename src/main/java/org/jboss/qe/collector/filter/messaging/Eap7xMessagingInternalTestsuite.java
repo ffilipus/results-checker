@@ -2,6 +2,7 @@ package org.jboss.qe.collector.filter.messaging;
 
 import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
+import org.jboss.qe.collector.FilterResult;
 import org.jboss.qe.collector.filter.AbstractFilter;
 import org.jboss.qe.collector.filter.FilterItem;
 
@@ -31,7 +32,7 @@ public class Eap7xMessagingInternalTestsuite extends AbstractFilter {
            .setColour(Colour.YELLOW)
    };
 
-   public String filter(FailedTest failedTest) {
+   public FilterResult filter(FailedTest failedTest) {
       return coreFilter(failedTest, items);
    }
 }

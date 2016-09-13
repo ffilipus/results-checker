@@ -1,6 +1,7 @@
 package org.jboss.qe.collector.filter;
 
 import org.jboss.qe.collector.FailedTest;
+import org.jboss.qe.collector.FilterResult;
 
 /**
  * @author Petr Kremensky pkremens@redhat.com on 28/07/2015
@@ -14,7 +15,7 @@ public interface Filter {
     * @param failedTest Full qualified name of failed test case in format like org.package.test.TestCase#testMethod.
     * @return Pre-formatted test case report ready for printing.
     */
-   String filter(FailedTest failedTest);
+   FilterResult filter(FailedTest failedTest);
 
    // TODO move it from interface
 

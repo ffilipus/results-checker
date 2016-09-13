@@ -1,19 +1,20 @@
 package org.jboss.qe.collector.service.PageType;
 
+import org.jboss.qe.collector.Colour;
+import org.jboss.qe.collector.FailedTest;
+import org.jboss.qe.collector.Tools;
 import org.jboss.qe.collector.filter.Filter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import java.util.List;
-import org.jboss.qe.collector.Colour;
-import org.jboss.qe.collector.FailedTest;
-import org.jboss.qe.collector.Tools;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
 
 public class PageXmlParser {
    private Filter filter;
@@ -55,10 +56,9 @@ public class PageXmlParser {
                      }
                   }
                }
-           //System.out.println(count);
+               //System.out.println(count);
             }
-         }
-         catch (JDOMException jdomex) {
+         } catch (JDOMException jdomex) {
             System.out.println(jdomex.getMessage());
          }
       }
@@ -69,10 +69,6 @@ public class PageXmlParser {
    }
 
    private String processIssues(FailedTest failedTest) {
-      if (filter != null) {
-         return filter.filter(failedTest);
-      } else {
-         return dyeText(failedTest.testName, Colour.RED);
-      }
+      return filter.filter(failedTest).getJobError();
    }
 }

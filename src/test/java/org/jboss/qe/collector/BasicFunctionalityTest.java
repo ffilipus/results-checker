@@ -1,9 +1,6 @@
 package org.jboss.qe.collector;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -24,7 +21,7 @@ public class BasicFunctionalityTest {
       System.setOut(ps);
    }
 
-   @Test
+   @Ignore
    public void testBasicFunctionality() {
       String testName = "eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central";
       String[] resourceFiles = new String[] {"simpleJob/lastBuild.json","simpleJob/testReport.json"};
