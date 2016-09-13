@@ -25,8 +25,8 @@ import java.util.logging.Logger;
  */
 public class Main {
    //private static final Closure filterFailed = { test -> test.status.matches("(FAILED|REGRESSION)") };
-   private static Map<String, List<String>> failures = new LinkedHashMap<String, List<String>>();
-   private static Map<String, Integer> buildsPerMatrix = new HashMap<String, Integer>();
+   private static Map<String, List<String>> failures = new LinkedHashMap<>();
+   private static Map<String, Integer> buildsPerMatrix = new HashMap<>();
    private static boolean failedOrAborted = false;
    private static int totalBuilds = 0;
    public static Filter filter;
@@ -93,10 +93,10 @@ public class Main {
     */
    //failures.put(printableUlr, cases);
    private static void handleSingle(String jobName, PageParser job, String buildNum, int cacheValidity) {
-      String printableUlr = getPrintableUrl((String) job.get("url"), (String) job.get("result"));
+      String printableUlr = getPrintableUrl(job.get("url"), job.get("result"));
       System.out.println(printableUlr);
       // handle single
-      List<String> cases = new LinkedList<String>();
+      List<String> cases = new LinkedList<>();
       PageParser data = JobService.getTestReport(jobName, buildNum, null, cacheValidity);
       // ignore runs without any results
       if (data != null) {
@@ -139,19 +139,19 @@ public class Main {
       StringBuilder result = new StringBuilder();
       String name = configurationUrl.substring(configurationUrl.indexOf(jobName));
       // keep url in clickable form
-      String url = "";
+      String url;
       try {
          url = URLDecoder.decode(configurationUrl, "UTF-8").replaceAll("\\s", "%20");
       } catch (UnsupportedEncodingException uee) {
          return -1;
       }
       PageParser matrixChild = JobService.getJob(name, "", client, cacheValidity);
-      result.append(" - " + getPrintableUrl(url, (String) matrixChild.get("result")));
+      result.append(" - ").append(getPrintableUrl(url, matrixChild.get("result")));
       PageParser data = JobService.getTestReport(name, "", client, cacheValidity);
       if (data != null) {
          totalBuilds++;
          buildsInMatrix++;
-         result.append("  - " + dyeText("PASSED: " + data.get("passCount") + ", FAILED: " + data.get("failCount") + ", SKIPPED: +" + data.get("skipCount"), Colour.BLACK_BOLD) + "\n");
+         result.append("  - ").append(dyeText("PASSED: " + data.get("passCount") + ", FAILED: " + data.get("failCount") + ", SKIPPED: +" + data.get("skipCount"), Colour.BLACK_BOLD)).append("\n");
 
          JSONArray casesObject = data.getCases();
          for (int i = 0; i < casesObject.length(); i++) {
@@ -163,7 +163,7 @@ public class Main {
                   synchronized (Main.class) {
                      cases.add(processedIssue);
                   }
-                  result.append("  -- " + processedIssue + "\n");
+                  result.append("  -- ").append(processedIssue).append("\n");
                   System.out.println(" - " + processedIssue);
 
                   if (printErrorDetails) {
@@ -191,9 +191,9 @@ public class Main {
       int buildsInMatrix = 0;
 
       String printableUlr = getPrintableUrl(job.get("url"), job.get("result"));
-      Map<String, List<String>> jobFailures = new HashMap<String, List<String>>();
+      Map<String, List<String>> jobFailures = new HashMap<>();
       // use List to be able to count the occurrence of the failure in aggregated results
-      List<String> cases = new LinkedList<String>();
+      List<String> cases = new LinkedList<>();
       List<String> matrixJobs = getMatrixJobUrls(job);
       for (String jobUrl : matrixJobs) {
          int buildsInMatrixOneJob = handleMatrixConfiguration(jobUrl, jobName, cases);
@@ -282,7 +282,7 @@ public class Main {
          }
          System.out.println(dyeText("\nTOTAL FINISHED BUILDS: " + totalBuilds, Colour.BLACK_BOLD));
 
-         for (String issue : new TreeSet<String>(totalIssues)) {
+         for (String issue : new TreeSet<>(totalIssues)) {
             System.out.println(" - " + Collections.frequency(totalIssues, issue) + "x " + issue);
          }
          System.out.println();
@@ -316,18 +316,24 @@ public class Main {
     */
    private static String dyeJobResult(String jobResult) {
       String result = null;
-      if (jobResult.equals("ABORTED")) {
-         result = dyeText(jobResult, Colour.BLACK_BOLD);
-         failedOrAborted = true;
-      } else if (jobResult.equals("FAILURE")) {
-         result = dyeText(jobResult, Colour.RED_BOLD);
-         failedOrAborted = true;
-      } else if (jobResult.equals("SUCCESS")) {
-         result = dyeText(jobResult, Colour.BLUE_BOLD);
-      } else if (jobResult.equals("UNSTABLE")) {
-         result = dyeText(jobResult, Colour.YELLOW_BOLD);
-      } else if (jobResult.equals("")) {
-         result = dyeText("RUNNING", Colour.PURPLE_BOLD);
+      switch (jobResult) {
+         case "ABORTED":
+            result = dyeText(jobResult, Colour.BLACK_BOLD);
+            failedOrAborted = true;
+            break;
+         case "FAILURE":
+            result = dyeText(jobResult, Colour.RED_BOLD);
+            failedOrAborted = true;
+            break;
+         case "SUCCESS":
+            result = dyeText(jobResult, Colour.BLUE_BOLD);
+            break;
+         case "UNSTABLE":
+            result = dyeText(jobResult, Colour.YELLOW_BOLD);
+            break;
+         case "":
+            result = dyeText("RUNNING", Colour.PURPLE_BOLD);
+            break;
       }
       return result;
    }

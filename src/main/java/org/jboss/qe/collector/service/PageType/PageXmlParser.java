@@ -35,28 +35,15 @@ public class PageXmlParser {
             if (file.exists()) {
                Document document = builder.build(file);
                List testSuite = document.getRootElement().getChildren();
-               //System.out.println(file.getName());
                for (Object aTestSuite : testSuite) {
                   Element testCase = (Element) aTestSuite;
                   if (testCase.getName().equals("testcase") && ((testCase.getChild("failure") != null) || testCase.getChild("error") != null)) {
-                     String errorChildName = "failure";
-                     if (testCase.getChild("error") != null) {
-                        errorChildName = "error";
-                     }
+                     String errorChildName = testCase.getChild("error") != null ? "error" : "failure";
                      String processedIssue = processIssues(new FailedTest(testCase.getAttributeValue("classname") + "#" + testCase.getAttributeValue("name"), "", testCase.getChildText(errorChildName)));
-                     System.out.println(" - " + processedIssue);
-                     String[] processedIssues = processedIssue.split("-");
                      testCase.removeChild(errorChildName);
-                     if (processedIssues.length > 1) {
-                        testCase.addContent(new Element("errormessage").setText(processedIssues[1]));
-                        System.out.println(testCase.getChildText("errormessage"));
-                        XMLOutputter xmlOutput = new XMLOutputter();
-                        xmlOutput.setFormat(Format.getPrettyFormat());
-                        xmlOutput.output(document, new FileWriter(file.getAbsolutePath()));
-                     }
+                     addErrorMessage(testCase, processedIssue, document, file);
                   }
                }
-               //System.out.println(count);
             }
          } catch (JDOMException jdomex) {
             System.out.println(jdomex.getMessage());
@@ -64,8 +51,15 @@ public class PageXmlParser {
       }
    }
 
-   private String dyeText(String text, Colour colour) {
-      return colour.getColour() + "" + text + "" + Colour.RESET.getColour();
+   private void addErrorMessage(Element testCase, String processedIssue, Document document, File file) throws IOException {
+      String[] processedIssues = processedIssue.split("-");
+      if (processedIssues.length > 1) {
+         testCase.addContent(new Element("errormessage").setText(processedIssues[1]));
+         System.out.println(testCase.getChildText("errormessage"));
+         XMLOutputter xmlOutput = new XMLOutputter();
+         xmlOutput.setFormat(Format.getPrettyFormat());
+         xmlOutput.output(document, new FileWriter(file.getAbsolutePath()));
+      }
    }
 
    private String processIssues(FailedTest failedTest) {
