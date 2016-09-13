@@ -73,14 +73,6 @@ public abstract class AbstractFilter implements Filter {
                e.printStackTrace();
             }
          }
-         // TODO potreba vlastni implementace vyhodnocovani vyrazu
-            /*for (Function testMatcher : filterItem.getTestMatchers()) {
-                if (testMatcher.apply(failedTest.testCase);) {
-                    Category.increaseStatistics(filterItem.getCategory());
-                    return getMessageFromFilterItem(failedTest, filterItem);
-                }
-            }*/
-
       }
       return new FilterResult(false, dyeText(failedTest.testName, Colour.RED));
    }

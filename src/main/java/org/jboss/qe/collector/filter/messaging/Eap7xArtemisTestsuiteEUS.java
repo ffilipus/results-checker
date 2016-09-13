@@ -127,33 +127,6 @@ public class Eap7xArtemisTestsuiteEUS extends AbstractFilter {
                .addTest(".*ReplicatedManyMultipleServerFailoverTest#test.*")
                .addTest(".*ClusteredGroupingTest#testGroupingWith3Nodes")
                .setErrorText("DEBUG"),
-                /*
-                TODO vyresit
-
-                new FilterItem(Colour.YELLOW)
-                        .addTestMatcher { it.errorDetails == "Thread leaked" }
-                        .setErrorText("Thread leaked"),
-                new FilterItem(Colour.YELLOW)
-                        .addTestMatcher { it.errorDetails == "broadcast not received" }
-                        .setErrorText("broadcast not received"),
-                new FilterItem(Colour.YELLOW)
-                        .addTestMatcher { it.errorDetails?.startsWith("libAIO is not loaded") }
-                        .setErrorText("libAIO is not loaded"),
-                new FilterItem(Colour.RED_BOLD)
-                        .addTestMatcher { it.errorDetails == "Didn\"t get the expected number of bindings, look at the logging for more information" }
-                        .setErrorText("Didn\"t get the expected number of bindings, look at the logging for more information"),
-                new FilterItem(Colour.YELLOW)
-                        .addTestMatcher { it.errorDetails?.startsWith("AMQ119007:") }
-                        .setErrorText("Cannot connect to server"),
-                new FilterItem(Colour.GREEN)
-                        .addTest(".*ReplicatedNettyAsynchronousFailoverTest#testNonTransactional")
-                        .addTest(".*ClientCrashTest#testCrashClient")
-                        .addTest(".*ClusteredGroupingTest#testGroupingSendTo3queuesNoConsumerOnLocalQueue")
-                        .addTest("org.apache.activemq.artemis.tests.integration.ssl.CoreClientOverOneWaySSLTest#.*")
-                        .addTest(".*ReplicatedManyMultipleServerFailoverTest#test.*")
-                        .addTest(".*ClusteredGroupingTest#testGroupingWith3Nodes")
-                        .setErrorText("DEBUG"),*/
-
    };
 
    public FilterResult filter(FailedTest failedTest) {

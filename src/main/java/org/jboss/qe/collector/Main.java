@@ -20,8 +20,6 @@ import java.util.logging.Logger;
 
 
 /**
- * // TODO store the results to cache on the first run, fetch them next time
- * // TODO we need a tool, that will go through all issues in filters and determine which are already resolved
  *
  * @author Petr Kremensky pkremens@redhat.com on 07/07/2015
  */

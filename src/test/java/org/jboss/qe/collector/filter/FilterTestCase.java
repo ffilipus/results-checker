@@ -37,6 +37,7 @@ public class FilterTestCase {
    }
 
    @Test
+   // TODO
    @Ignore ("work in progress")
    public void test2() throws JSONException {
       SetFailedTests1();
