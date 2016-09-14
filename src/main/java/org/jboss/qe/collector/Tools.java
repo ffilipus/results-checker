@@ -3,6 +3,7 @@ package org.jboss.qe.collector;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -16,8 +17,8 @@ public class Tools {
          if (items[i].equals("**")) {
             String directoryPath = "";
             if (listOfDirectories.size() > 0) {
-               ArrayList<File> directories = new ArrayList();
-               listOfDirectories.get(listOfDirectories.size() - 1).stream().map((directory) -> directory.listFiles()).filter((it) -> (it != null)).forEach((it) -> {
+               ArrayList<File> directories = new ArrayList<>();
+               listOfDirectories.get(listOfDirectories.size() - 1).stream().map(File::listFiles).filter((it) -> (it != null)).forEach((it) -> {
                   for (File item : it) {
                      if (item.isDirectory()) {
                         directories.add(item);
@@ -33,7 +34,7 @@ public class Tools {
                File directory = new File(directoryPath);
                File[] listOfFiles = directory.listFiles();
                if (listOfFiles != null) {
-                  ArrayList<File> directories = new ArrayList();
+                  ArrayList<File> directories = new ArrayList<>();
                   for (File file : listOfFiles) {
                      if (file.isDirectory()) {
                         directories.add(file);
@@ -45,7 +46,7 @@ public class Tools {
          }
          else {
             if (!listOfDirectories.isEmpty()) {
-               ArrayList<File> directories = new ArrayList();
+               ArrayList<File> directories = new ArrayList<>();
                for (File directory : listOfDirectories.get(listOfDirectories.size() - 1)) {
                   if (!items[i].equals("*.xml")) {
                      directories.add(new File(directory.getAbsolutePath() + "/" + items[i]));
@@ -79,11 +80,11 @@ public class Tools {
          return testFiles;
       }
 
-      ArrayList<File> directories = listOfDirectories.get(listOfDirectories.size() - 2);
+      List<File> directories = listOfDirectories.get(listOfDirectories.size() - 2);
 
       if (items[items.length - 1].equals("*.xml") ) {
-         for (int i = 0; i < directories.size(); i++) {
-            File[] listOfFiles = directories.get(i).listFiles();
+         for (File directory : directories) {
+            File[] listOfFiles = directory.listFiles();
             if (listOfFiles != null) {
                for (File file : listOfFiles) {
                   String fileExtension = getFileExtension(file.getName());
@@ -95,14 +96,12 @@ public class Tools {
          }
       }
       else {
-         for (int i = 0; i < directories.size(); i++) {
-            testFiles.add(new File(directories.get(i).getAbsolutePath() + "/" + items[items.length - 1]));
-         }
+         testFiles.addAll(directories.stream().map(directory -> new File(directory.getAbsolutePath() + "/" + items[items.length - 1])).collect(Collectors.toList()));
       }
       return testFiles;
    }
 
-   public static String getFileExtension(String fileName) {
+   private static String getFileExtension(String fileName) {
       String fileExtension = "";
       int lastIndex = fileName.lastIndexOf(".");
       if (lastIndex > 0) {
@@ -166,5 +165,9 @@ public class Tools {
       } catch (IllegalAccessException e) {
          e.printStackTrace();
       }
+   }
+
+   public static boolean isRunningOnJenkinse() {
+      return isDefinedEnvironmentVariable("JOB_NAME") && isDefinedEnvironmentVariable("HUDSON_HOME");
    }
 }
