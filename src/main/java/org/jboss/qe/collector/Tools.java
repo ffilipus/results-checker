@@ -116,7 +116,7 @@ public class Tools {
    public static String getEnvironmentVariable(String name) {
       Map<String, String> env = System.getenv();
 
-      if (env.get(name) != null) {
+      if (isDefinedEnvironmentVariable(name)) {
          return env.get(name);
       } else {
          switch (name) {
@@ -135,7 +135,12 @@ public class Tools {
       }
    }
 
-   public static void setEnvironmentVariable(String key, String value) {
+   static boolean isDefinedEnvironmentVariable(String name) {
+      Map<String, String> env = System.getenv();
+      return env.get(name) != null;
+   }
+
+   static void setEnvironmentVariable(String key, String value) {
       Map<String, String> env = new HashMap<>();
       env.put(key,value);
       set(env);
