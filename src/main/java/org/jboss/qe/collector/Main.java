@@ -47,7 +47,7 @@ public class Main {
 
       if (Tools.isRunningOnJenkinse()) { // using like jenkins post build action - will modify surfire reports
          printWellcomeScreen();
-         if (! Tools.isDefinedEnvironmentVariable("REPORTS_DIRECTORY")) {
+         if (!Tools.isDefinedEnvironmentVariable("REPORTS_DIRECTORY")) {
             System.err.println("ERROR: There are not set reports directory\nuse:\n\texport REPORTS_DIRECTORY=<reports-directory>");
             System.exit(1);
          }
