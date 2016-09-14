@@ -6,7 +6,7 @@ import java.util.*;
 
 /**
  *
- * @author jan
+ * @author Jan Dobes
  */
 public class Tools {
    public static List<File> fileLoader(String path) {
@@ -21,10 +21,12 @@ public class Tools {
                ArrayList<File> directories = new ArrayList();
                for (File directory : listOfDirectories.get(listOfDirectories.size() - 1)) {
                   File[] it = directory.listFiles();
-                  for (File item : it) {
-                     if (item.isDirectory()) {
-                        directories.add(item);
-                        //System.out.println(item.getName());
+                  if (it != null) {
+                     for (File item : it) {
+                        if (item.isDirectory()) {
+                           directories.add(item);
+                           //System.out.println(item.getName());
+                        }
                      }
                   }
                   //System.out.println(directoryPath);
