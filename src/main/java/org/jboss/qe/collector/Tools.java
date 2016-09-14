@@ -80,8 +80,6 @@ public class Tools {
       }
 
       ArrayList<File> directories = listOfDirectories.get(listOfDirectories.size() - 2);
-      if (listOfDirectories.get(listOfDirectories.size() - 1).isEmpty()) {
-      }
 
       if (items[items.length - 1].equals("*.xml") ) {
          for (int i = 0; i < directories.size(); i++) {
