@@ -29,14 +29,12 @@ public class PageXmlParser {
       List<File> files = Tools.fileLoader(path);
 
       for (File file : files) {
-         System.out.println("**" + file.getAbsolutePath() + "lets start");
          try {
             if (file.exists()) {
                Document document = builder.build(file);
                List testSuite = document.getRootElement().getChildren();
                for (Object aTestSuite : testSuite) {
                   Element testCase = (Element) aTestSuite;
-                  System.out.println(file.getAbsolutePath() + "\n" + testCase.getContent().toString());
                   if (testCase.getName().equals("testcase") && ((testCase.getChild("failure") != null) || testCase.getChild("error") != null)) {
                      String errorChildName = testCase.getChild("error") != null ? "error" : "failure";
                      String classname = testCase.getAttributeValue("classname") + "#" + testCase.getAttributeValue("name");
