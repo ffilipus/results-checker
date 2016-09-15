@@ -1,6 +1,5 @@
 package org.jboss.qe.collector;
 
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import org.jboss.qe.collector.filterslists.FiltersFromFile;
