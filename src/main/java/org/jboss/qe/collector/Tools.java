@@ -126,6 +126,10 @@ public class Tools {
                return "false";
             case "CHECKER_ENVIRONMENT":
                return "";
+            case "JAR_PATH":
+               return "./results-checker-filters.jar";
+            case "PACKAGE":
+               throw new IllegalStateException("Package variable must be set");
             default:
                throw new IllegalStateException("Unexpected environment variable: " + name);
          }
@@ -137,7 +141,7 @@ public class Tools {
       return env.get(name) != null;
    }
 
-   static void setEnvironmentVariable(String key, String value) {
+   public static void setEnvironmentVariable(String key, String value) {
       Map<String, String> env = new HashMap<>();
       env.put(key,value);
       set(env);

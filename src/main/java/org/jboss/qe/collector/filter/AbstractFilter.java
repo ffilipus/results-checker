@@ -40,7 +40,6 @@ public abstract class AbstractFilter implements Filter {
    /**
     * Check failed test and filter it based on filter item model. Dye text to red if the failure was not recognized.
     *
-    * @param url        Url of failed configuration.
     * @param failedTest Test name.
     * @param items      Filter model
     * @return Error description for printing.

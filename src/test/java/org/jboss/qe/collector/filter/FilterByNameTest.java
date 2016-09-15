@@ -2,11 +2,8 @@ package org.jboss.qe.collector.filter;
 
 import org.jboss.qe.collector.CachePrepare;
 import org.jboss.qe.collector.Main;
-import org.jboss.qe.collector.filter.testFilters.TestFilterName;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.jboss.qe.collector.Tools;
+import org.junit.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -24,13 +21,14 @@ public class FilterByNameTest {
       baos = new ByteArrayOutputStream();
       PrintStream ps = new PrintStream(baos);
       System.setOut(ps);
+      Tools.setEnvironmentVariable("JAR_PATH", "./results-checker-filters");
+      Tools.setEnvironmentVariable("PACKAGE", "org.jboss.qe.collector.filter.testfilters.TestFilterName");
    }
 
    @Test
    public void filterByNameTest() {
       String testName = "eap-70x-maven-repository-check-valid-POM-and-Metadata-files";
-      String[] resourceFiles = new String[]{"failedJob/lastBuild.json","failedJob/testReport.json"};
-      Main.filter = new TestFilterName();
+      String[] resourceFiles = new String[]{"failedJob/lastBuild.json", "failedJob/testReport.json"};
 
       CachePrepare.prepare(testName, resourceFiles, getClass());
 
@@ -40,11 +38,12 @@ public class FilterByNameTest {
 
       Pattern pattern = Pattern.compile("\u001B\\[33m");
 
-      Assert.assertTrue("Filer does have wrong color", pattern.matcher(split[15]).find());
-      Assert.assertTrue("Filters does not work", split[15].contains("Testing filter by name"));
+      System.out.println(split[15]);
+      Assert.assertTrue("Filter does have wrong color", pattern.matcher(split[15]).find());
+      Assert.assertTrue("FiltersFromFile does not work", split[15].contains("Testing filter by name"));
 
       Assert.assertFalse("Filer does have wrong color", pattern.matcher(split[16]).find());
-      Assert.assertFalse("Filters does not work", split[16].contains("Testing filter by name"));
+      Assert.assertFalse("FiltersFromFile does not work", split[16].contains("Testing filter by name"));
    }
 
    @After

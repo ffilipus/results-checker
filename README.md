@@ -40,7 +40,7 @@ java -jar target/results-checker-* my_test_filter.xml -reports **/target/surefir
 export CACHE_TIME_VALIDITY="0" # without cache
 java -jar target/results-checker-* eap-70x-maven-repository-check-valid-POM-and-Metadata-files
 
-java -jar target/results-checker-* eap-70x-acceptance-multinode-win filters/basic_filter
+java -jar target/results-checker-* eap-70x-acceptance-multinode-win listFilters/basic_filter
 
 export CACHE_TIME_VALIDITY="600" # 600sec=10min
 export SERVER_NAME="jenkinse.zloutek-soft.cz"

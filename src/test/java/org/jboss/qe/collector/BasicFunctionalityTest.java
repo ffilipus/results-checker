@@ -1,6 +1,5 @@
 package org.jboss.qe.collector;
 
-import org.jboss.qe.collector.filter.testFilters.EmptyFilter;
 import org.junit.*;
 
 import java.io.ByteArrayOutputStream;
@@ -20,6 +19,8 @@ public class BasicFunctionalityTest {
       baos = new ByteArrayOutputStream();
       PrintStream ps = new PrintStream(baos);
       System.setOut(ps);
+      Tools.setEnvironmentVariable("JAR_PATH", "./results-checker-filters");
+      Tools.setEnvironmentVariable("PACKAGE", "org.jboss.qe.collector.filter.testfilters.EmptyFilter");
    }
 
    @Test
@@ -28,14 +29,15 @@ public class BasicFunctionalityTest {
       String[] resourceFiles = new String[] {"simpleJob/lastBuild.json","simpleJob/testReport.json"};
       CachePrepare.prepare(testName, resourceFiles, getClass());
 
-      Main.filter = new EmptyFilter();
       Main.main(new String[]{testName});
+
       String output = baos.toString();
+
       String[] split = output.split("\n");
       for (int i = 0; i < split.length; i++) {
          split[i] = split[i].replaceAll("\u001B\\[[;\\d]*m", "");
-      }
-      Assert.assertEquals("There is filter in use", " - org.jboss.qe.collector.filter.testFilters.EmptyFilter",split[1]);
+      }System.out.println(split[1]);
+      Assert.assertEquals("There is filter in use", " - org.jboss.qe.collector.filter.testfilters.EmptyFilter",split[1]);
       Assert.assertEquals("Legend was not shown", " - POSSIBLE REGRESSION", split[4]);
       Assert.assertEquals("Legend was not shown", " - KNOWN ISSUE", split[5]);
       Assert.assertEquals("Legend was not shown", " - ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", split[6]);

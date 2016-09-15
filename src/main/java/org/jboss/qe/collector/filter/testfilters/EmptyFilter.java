@@ -1,4 +1,4 @@
-package org.jboss.qe.collector.filter.testFilters;
+package org.jboss.qe.collector.filter.testfilters;
 
 import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
