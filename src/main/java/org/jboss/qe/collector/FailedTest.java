@@ -1,6 +1,9 @@
 package org.jboss.qe.collector;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Map;
 
 public class FailedTest {
 
@@ -30,8 +33,15 @@ public class FailedTest {
       this.testCase = testCase;
    }
 
-   public FailedTest(String testName, String buildUrl, String testCase) {
+   public FailedTest(String testName, String buildUrl, Map testCase) {
       this.testName = testName;
       this.buildUrl = buildUrl;
+      try {
+         this.testCase = new JSONObject();
+         this.testCase.put("errorDetails",testCase.get("errorDetails"));
+         this.testCase.put("errorStackTrace",testCase.get("errorStackTrace"));
+      } catch (JSONException e) {
+         e.printStackTrace();
+      }
    }
 }

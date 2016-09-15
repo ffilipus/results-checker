@@ -13,7 +13,9 @@ import org.jdom.output.XMLOutputter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PageXmlParser {
    private Filter filter;
@@ -37,7 +39,11 @@ public class PageXmlParser {
                   System.out.println(file.getAbsolutePath() + "\n" + testCase.getContent().toString());
                   if (testCase.getName().equals("testcase") && ((testCase.getChild("failure") != null) || testCase.getChild("error") != null)) {
                      String errorChildName = testCase.getChild("error") != null ? "error" : "failure";
-                     String processedIssue = processIssues(new FailedTest(testCase.getAttributeValue("classname") + "#" + testCase.getAttributeValue("name"), "", testCase.getChildText(errorChildName)));
+                     String classname = testCase.getAttributeValue("classname") + "#" + testCase.getAttributeValue("name");
+                     Map<String, java.io.Serializable> detailes = new HashMap<>();
+                     detailes.put("errorDetails",testCase.getChild(errorChildName).getAttribute("message").getValue());
+                     detailes.put("errorStackTrace",testCase.getChild(errorChildName).getValue());
+                     String processedIssue = processIssues(new FailedTest(classname, "", detailes));
                      testCase.removeChild(errorChildName);
                      addErrorMessage(testCase, processedIssue, document, file);
                   }
