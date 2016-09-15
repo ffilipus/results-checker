@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite errors="0" failures="7" name="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser.EvaluateMultipleJarsReport" skipped="0" tests="7" time="0">
+    <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
+        <failure message="39 duplicate classes found in JARs: [commons-beanutils-1.8.3.redhat-6.jar, commons-collections-3.2.1.redhat-7.jar]&#10;org.apache.commons.collections.ArrayStack&#10;org.apache.commons.collections.Buffer&#10;org.apache.commons.collections.BufferUnderflowException&#10;org.apache.commons.collections.FastHashMap&#10;org.apache.commons.collections.FastHashMap$1&#10;org.apache.commons.collections.FastHashMap$CollectionView&#10;org.apache.commons.collections.FastHashMap$CollectionView$CollectionViewIterator&#10;org.apache.commons.collections.FastHashMap$EntrySet&#10;org.apache.commons.collections.FastHashMap$KeySet&#10;org.apache.commons.collections.FastHashMap$Values" type=""/>
+    </testcase>
+    <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
+        <failure message="39 duplicate classes found in JARs: [org.apache.felix.configadmin-1.2.8.redhat-4.jar, org.osgi.enterprise-4.2.0.redhat-10.jar]&#10;org.osgi.service.cm.Configuration&#10;org.osgi.service.cm.ConfigurationAdmin&#10;org.osgi.service.cm.ConfigurationEvent&#10;org.osgi.service.cm.ConfigurationException&#10;org.osgi.service.cm.ConfigurationListener&#10;org.osgi.service.cm.ConfigurationPermission&#10;org.osgi.service.cm.ConfigurationPermissionCollection&#10;org.osgi.service.cm.ConfigurationPermissionCollection$1&#10;org.osgi.service.cm.ConfigurationPlugin&#10;org.osgi.service.cm.ManagedService&#10;org.osgi.service.cm.ManagedServiceFactory" type=""/>
+    </testcase>
+    <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
+        <error message="39 duplicate classes found in JARs: [jboss-as-osgi-http-7.5.10.Final-redhat-2.jar, org.osgi.enterprise-4.2.0.redhat-10.jar]&#10;org.osgi.service.http.HttpContext&#10;org.osgi.service.http.HttpService&#10;org.osgi.service.http.NamespaceException" type=""/>
+    </testcase>
+    <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
+        <failure message="39 duplicate classes found in JARs: [jboss-as-osgi-jpa-7.5.10.Final-redhat-2.jar, org.osgi.enterprise-4.2.0.redhat-10.jar]&#10;org.osgi.service.jpa.EntityManagerFactoryBuilder" type=""/>
+    </testcase>
+    <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
+        <failure message="39 duplicate classes found in JARs: [org.apache.felix.log-1.0.0.redhat-3.jar, org.osgi.enterprise-4.2.0.redhat-10.jar]&#10;org.osgi.service.log.LogEntry&#10;org.osgi.service.log.LogListener&#10;org.osgi.service.log.LogReaderService&#10;org.osgi.service.log.LogService" type=""/>
+    </testcase>
+    <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
+        <failure message="39 duplicate classes found in JARs: [jbosgi-resolver-api-3.0.1.Final-redhat-2.jar, org.apache.felix.configadmin-1.2.8.redhat-4.jar, org.osgi.enterprise-4.2.0.redhat-10.jar]&#10;org.osgi.util.tracker.AbstractTracked&#10;org.osgi.util.tracker.BundleTracker&#10;org.osgi.util.tracker.BundleTracker$Tracked&#10;org.osgi.util.tracker.BundleTrackerCustomizer&#10;org.osgi.util.tracker.ServiceTracker&#10;org.osgi.util.tracker.ServiceTracker$1&#10;org.osgi.util.tracker.ServiceTracker$AllTracked&#10;org.osgi.util.tracker.ServiceTracker$Tracked&#10;org.osgi.util.tracker.ServiceTrackerCustomizer" type=""/>
+    </testcase>
+    <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
+        <failure message="39 duplicate classes found in JARs: [jbosgi-resolver-api-3.0.1.Final-redhat-2.jar, org.osgi.enterprise-4.2.0.redhat-10.jar]&#10;org.osgi.util.xml.XMLParserActivator" type=""/>
+    </testcase>
+</testsuite>

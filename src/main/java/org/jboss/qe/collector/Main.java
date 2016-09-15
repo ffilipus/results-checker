@@ -32,7 +32,6 @@ public class Main {
    public static Filter filter;
    private static final boolean printSecured = Boolean.valueOf(System.getProperty("print.secured", "true"));
    private static final boolean printErrorDetails = Boolean.valueOf(System.getProperty("print.error.details", "false"));
-   private static Injector injector;
 
    public static void main(String[] args) {
 
@@ -42,14 +41,27 @@ public class Main {
 
       // Filter configuration
       if (filter == null) {
-         injector = Guice.createInjector(new FilterInjector(args));
+         Injector injector = Guice.createInjector(new FilterInjector(args));
          filter = injector.getInstance(Filter.class);
       }
 
-      // TODO solve it
-      boolean app_use_case = true;
-
-      if (app_use_case) { // using like client application - will download data from server and show list of failed tests
+      if (Tools.isRunningOnJenkinse()) { // using like jenkins post build action - will modify surfire reports
+         printWellcomeScreen();
+         if (!Tools.isDefinedEnvironmentVariable("REPORTS_DIRECTORY")) {
+            System.err.println("ERROR: There are not set reports directory\nuse:\n\texport REPORTS_DIRECTORY=<reports-directory>");
+            System.exit(1);
+         }
+         // Print selected filter class name
+         printSelectedFilters();
+         // Handle phrase - modify surfire-reports on server
+         String path_to_reports = Tools.getEnvironmentVariable("REPORTS_DIRECTORY");
+         PageXmlParser xmlParser = new PageXmlParser(filter);
+         try {
+            xmlParser.run(path_to_reports);
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+      } else { // using like client application - will download data from server and show list of failed tests
          // Print selected filter class name
          printSelectedFilters();
          // Introduction
@@ -59,18 +71,6 @@ public class Main {
          handleJobsFromServer(args);
          // Results aggregation phase - process the results
          printResults(args);
-      } else { // using like jenkins post build action - will modify surfire reports
-         printWellcomeScreen();
-         // Print selected filter class name
-         printSelectedFilters();
-         // Handle phrase - modify surfire-reports on server
-         String path_to_reports = args[0];
-         PageXmlParser xmlParser = new PageXmlParser(filter);
-         try {
-            xmlParser.run(path_to_reports);
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
       }
    }
 

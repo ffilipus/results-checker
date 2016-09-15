@@ -25,9 +25,6 @@ public class PageXmlParser {
    public void run(String path) throws IOException {
       SAXBuilder builder = new SAXBuilder();
       List<File> files = Tools.fileLoader(path);
-      for (File file : files) {
-         System.out.println(file.getAbsolutePath());
-      }
 
       for (File file : files) {
          try {
@@ -45,7 +42,7 @@ public class PageXmlParser {
                }
             }
          } catch (JDOMException jdomex) {
-            System.out.println(jdomex.getMessage());
+            jdomex.printStackTrace();
          }
       }
    }
@@ -54,7 +51,6 @@ public class PageXmlParser {
       String[] processedIssues = processedIssue.split("-");
       if (processedIssues.length > 1) {
          testCase.addContent(new Element("errormessage").setText(processedIssues[1]));
-         System.out.println(testCase.getChildText("errormessage"));
          XMLOutputter xmlOutput = new XMLOutputter();
          xmlOutput.setFormat(Format.getPrettyFormat());
          xmlOutput.output(document, new FileWriter(file.getAbsolutePath()));
