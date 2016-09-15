@@ -11,15 +11,15 @@ import java.util.stream.Collectors;
  */
 public class Tools {
 
-   public static List<File> fileLoader(String path) {
+   /*public static List<File> fileLoader(String path) {
       String[] names = path.split(" ");
       List<File> listFiles = new LinkedList<>();
       for (String name : names) {
          listFiles.add(new File(name));
       }
       return listFiles;
-   }
-   public static List<File> fileLoader_temporarySwitchedOff(String path) {
+   }*/
+   public static List<File> fileLoader(String path) {
       String[] items = path.split("/");
       ArrayList<ArrayList<File>> listOfDirectories = new ArrayList<>();
       for (int i = 0; i < items.length; i++) {
