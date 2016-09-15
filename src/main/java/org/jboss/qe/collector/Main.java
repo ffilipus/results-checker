@@ -51,7 +51,7 @@ public class Main {
             System.exit(1);
          }
          // Print selected filter class name
-         printSelectedFilters();
+         printSelectedFiltersOnServer();
          // Handle phrase - modify surfire-reports on server
          String path_to_reports = Tools.getEnvironmentVariable("REPORTS_DIRECTORY");
          for (Filter filter : filters.getFilters()) {
@@ -85,6 +85,11 @@ public class Main {
       for (Filter filter : filters.getFilters()) {
          System.out.println(filters == null ? " - no filter in use" : " - " + filter.getClass().getName());
       }
+   }
+
+   private static void printSelectedFiltersOnServer() {
+      System.out.println("Filter class:");
+      System.out.println(filter == null ? " - no filter in use" : " - " + filter.getClass().getName());
    }
 
    private static void printHelp() {
