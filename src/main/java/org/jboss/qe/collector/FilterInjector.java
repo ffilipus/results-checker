@@ -11,6 +11,7 @@ import org.jboss.qe.collector.filter.messaging.Eap7xMessagingInternalTestsuite;
 import org.jboss.qe.collector.filter.resteasy.Eap7xResteasyTestsuite;
 import org.jboss.qe.collector.filter.scripts.Eap6xScriptsTestsuite;
 import org.jboss.qe.collector.filter.scripts.Eap7xScriptsTestsuite;
+import org.jboss.qe.collector.filter.tattletale.Eap64xTattletale;
 import org.jboss.qe.collector.filter.testsuite.Eap6xAsTestsuite;
 import org.jboss.qe.collector.filter.testsuite.Eap7xAsTestsuiteTest710;
 
@@ -62,6 +63,8 @@ public class FilterInjector extends AbstractModule {
          return new Eap7xCliEmbeddedFilter();
       } else if (firstJob.contains("eap7-artemis-ha-failover-bridges")) {
          return new Eap7xHA();
+      } else if (firstJob.contains("eap-64x-patched-manu-acceptance-tattletale")) {
+         return new Eap64xTattletale();
       } else
          throw new IllegalStateException("No filter chosen");
    }

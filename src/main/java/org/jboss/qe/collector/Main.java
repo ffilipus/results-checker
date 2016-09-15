@@ -131,17 +131,22 @@ public class Main {
       if (data != null) {
          totalBuilds++;
          System.out.println(" - " + dyeText("PASSED: " + data.get("passCount") + ", FAILED: " + data.get("failCount") + ", SKIPPED: " + data.get("skipCount"), Colour.BLACK_BOLD));
-         JSONArray casesObject = data.getCases();
-         for (int i = 0; i < casesObject.length(); i++) {
+         JSONArray suites = data.getSuites();
+         for (int s = 0; s < suites.length(); s++) {
             try {
-               //System.out.println(casesObject.getJSONObject(i));
-               if (casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
-                  //System.out.println("Failed or regression: ");
-                  String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#" + casesObject.getJSONObject(i).getString("name"), "buildUrl: " + job.get("url"), casesObject.getJSONObject(i)));
-                  cases.add(processedIssue);
-                  System.out.println(" - " + processedIssue);
-                  if (printErrorDetails) {
-                     System.out.println(printError(casesObject.getJSONObject(i)));
+               JSONArray casesObject = PageParser.getCases(suites.getJSONObject(s));
+               if (casesObject != null) {
+                  for (int i = 0; i < casesObject.length(); i++) {
+                     //System.out.println(casesObject.getJSONObject(i));
+                     if (casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
+                        //System.out.println("Failed or regression: ");
+                        String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#" + casesObject.getJSONObject(i).getString("name"), "buildUrl: " + job.get("url"), casesObject.getJSONObject(i)));
+                        cases.add(processedIssue);
+                        System.out.println(" - " + processedIssue);
+                        if (printErrorDetails) {
+                           System.out.println(printError(casesObject.getJSONObject(i)));
+                        }
+                     }
                   }
                }
             } catch (JSONException ex) {
@@ -182,21 +187,26 @@ public class Main {
          buildsInMatrix++;
          result.append("  - ").append(dyeText("PASSED: " + data.get("passCount") + ", FAILED: " + data.get("failCount") + ", SKIPPED: +" + data.get("skipCount"), Colour.BLACK_BOLD)).append("\n");
 
-         JSONArray casesObject = data.getCases();
-         for (int i = 0; i < casesObject.length(); i++) {
+         JSONArray suites = data.getSuites();
+         for (int s = 0; s < suites.length(); s++) {
             try {
-               //System.out.println(casesObject.getJSONObject(i));
-               if (casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
-                  //System.out.println("Failed or regression: ");
-                  String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#" + casesObject.getJSONObject(i).getString("name"), "buildUrl: " + configurationUrl, casesObject.getJSONObject(i)));
-                  synchronized (Main.class) {
-                     cases.add(processedIssue);
-                  }
-                  result.append("  -- ").append(processedIssue).append("\n");
-                  System.out.println(" - " + processedIssue);
+               JSONArray casesObject = PageParser.getCases(suites.getJSONObject(s));
+               if (casesObject != null) {
+                  for (int i = 0; i < casesObject.length(); i++) {
+                     //System.out.println(casesObject.getJSONObject(i));
+                     if (casesObject.getJSONObject(i).getString("status").equals("FAILED") || casesObject.getJSONObject(i).getString("status").equals("REGRESSION")) {
+                        //System.out.println("Failed or regression: ");
+                        String processedIssue = processIssues(new FailedTest(casesObject.getJSONObject(i).getString("className") + "#" + casesObject.getJSONObject(i).getString("name"), "buildUrl: " + configurationUrl, casesObject.getJSONObject(i)));
+                        synchronized (Main.class) {
+                           cases.add(processedIssue);
+                        }
+                        result.append("  -- ").append(processedIssue).append("\n");
+                        System.out.println(" - " + processedIssue);
 
-                  if (printErrorDetails) {
-                     result.append(casesObject.getJSONObject(i));
+                        if (printErrorDetails) {
+                           result.append(casesObject.getJSONObject(i));
+                        }
+                     }
                   }
                }
             } catch (JSONException ex) {

@@ -61,9 +61,10 @@ public class MatcherTestCase {
       Assert.assertEquals(expected, result);
    }
 
-   private static JSONObject parsePage(Cache cache) throws JSONException {
+   private static JSONObject parsePage(Cache cache) throws JSONException, NullPointerException {
       PageParser parsedPage = new PageParser(cache.getAll());
-      return parsedPage.getCases().getJSONObject(0);
+      JSONObject obj = parsedPage.getSuites().getJSONObject(0);
+      return PageParser.getCases(obj).getJSONObject(0);
    }
 
    private static String getFilterResult(Cache cache) throws JSONException {

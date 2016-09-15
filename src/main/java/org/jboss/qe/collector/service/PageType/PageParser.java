@@ -45,9 +45,18 @@ public class PageParser {
       }
    }
 
-   public JSONArray getCases() {
+   public JSONArray getSuites() {
       try {
-         return obj.getJSONArray("suites").getJSONObject(0).getJSONArray("cases");
+         return obj.getJSONArray("suites");
+      } catch (JSONException e) {
+         e.printStackTrace();
+         return null;
+      }
+   }
+
+   public static JSONArray getCases(JSONObject suite) {
+      try {
+         return suite.getJSONArray("cases");
       } catch (JSONException e) {
          e.printStackTrace();
          return null;
