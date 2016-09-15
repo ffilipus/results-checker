@@ -12,7 +12,7 @@ public class CacheTestCase {
    @Test
    public void testCacheExists() {
       Cache cache = new Cache("test_exists");
-      //cache.add("{}");
+      cache.add("{}");
       Assert.assertTrue("Cache doesn't exist", cache.exist());
    }
 
