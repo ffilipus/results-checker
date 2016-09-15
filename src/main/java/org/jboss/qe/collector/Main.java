@@ -52,7 +52,7 @@ public class Main {
             System.exit(1);
          }
          // Print selected filter class name
-         printSelectedFilters();
+         printSelectedFiltersOnServer();
          // Handle phrase - modify surfire-reports on server
          String path_to_reports = Tools.getEnvironmentVariable("REPORTS_DIRECTORY");
          PageXmlParser xmlParser = new PageXmlParser(filter);
@@ -80,6 +80,11 @@ public class Main {
 
    private static void printSelectedFilters() {
       System.out.println(dyeText("Filter class:", Colour.BLACK_BOLD));
+      System.out.println(filter == null ? " - no filter in use" : " - " + filter.getClass().getName());
+   }
+
+   private static void printSelectedFiltersOnServer() {
+      System.out.println("Filter class:");
       System.out.println(filter == null ? " - no filter in use" : " - " + filter.getClass().getName());
    }
 
