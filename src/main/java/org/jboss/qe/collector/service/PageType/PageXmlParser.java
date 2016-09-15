@@ -33,6 +33,7 @@ public class PageXmlParser {
                List testSuite = document.getRootElement().getChildren();
                for (Object aTestSuite : testSuite) {
                   Element testCase = (Element) aTestSuite;
+                  System.out.println(file.getAbsolutePath() + "\n" + testCase.getContent().toString());
                   if (testCase.getName().equals("testcase") && ((testCase.getChild("failure") != null) || testCase.getChild("error") != null)) {
                      String errorChildName = testCase.getChild("error") != null ? "error" : "failure";
                      String processedIssue = processIssues(new FailedTest(testCase.getAttributeValue("classname") + "#" + testCase.getAttributeValue("name"), "", testCase.getChildText(errorChildName)));
