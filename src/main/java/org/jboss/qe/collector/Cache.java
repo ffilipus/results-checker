@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.Date;
 
 /**
- * Created by fjerabek on 6.9.16.
+ *  Created by fjerabek on 6.9.16.
  */
 public class Cache {
    private Path filePath = null;
@@ -23,8 +23,6 @@ public class Cache {
    public void add(String data) {
       try (FileOutputStream os = new FileOutputStream(filePath.toString())) {
          os.write(data.getBytes()); //cache passed data
-      } catch (FileNotFoundException e) {
-         e.printStackTrace();
       } catch (IOException e) {
          e.printStackTrace();
       }
@@ -36,11 +34,7 @@ public class Cache {
       }
       Date lastModified = new Date(file.lastModified());
       long fileAge = (new Date().getTime() - lastModified.getTime()) / 1000;
-      if (fileAge > time) { //compare last date of modification of file with current time and date
-         return false;
-      } else {
-         return true;
-      }
+      return fileAge <= time;
    }
 
    public boolean exist() {
@@ -49,8 +43,7 @@ public class Cache {
 
    public String getAll() {
       try (FileInputStream is = new FileInputStream(filePath.toString())) {
-         String data = IOUtils.toString(is);
-         return data;
+         return IOUtils.toString(is);
       } catch (IOException e) {
          e.printStackTrace();
          return null;
