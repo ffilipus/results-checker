@@ -49,8 +49,6 @@ public class Main {
          if (!Tools.isDefinedEnvironmentVariable("REPORTS_DIRECTORY")) {
             System.err.println("ERROR: There are not set reports directory\nuse:\n\texport REPORTS_DIRECTORY=<reports-directory>");
             System.exit(1);
-         } else {
-            System.out.println(Tools.getEnvironmentVariable("REPORTS_DIRECTORY"));
          }
          // Print selected filter class name
          printSelectedFiltersOnServer();
