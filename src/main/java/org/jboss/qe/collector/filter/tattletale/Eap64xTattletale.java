@@ -33,7 +33,7 @@ public class Eap64xTattletale  extends AbstractFilter {
 */
             new FilterItem(Colour.YELLOW)
                   .addTest("org.jboss.manu.units.eap.tattletale.EapNoVersionReportParser.EvaluateNoVersionReport.jarswithoutversion.*")
-                  .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorDetails").toString().contains("Total JARs without a version found: 13\n"))
+                  .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorDetails").toString().contains("Total JARs without a version found: 13"))
                   .setErrorText("TODO add bugzilla ticket"),
 
       };
