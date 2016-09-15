@@ -27,6 +27,7 @@ public class PageXmlParser {
       List<File> files = Tools.fileLoader(path);
 
       for (File file : files) {
+         System.out.println("**" + file.getAbsolutePath() + "lets start");
          try {
             if (file.exists()) {
                Document document = builder.build(file);
