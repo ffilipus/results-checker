@@ -34,7 +34,7 @@
 
 
 ###Examples:
-```
+```Java
 export CHECKER_ENVIRONMENT="db2 jdk8 solaris10"
 export JAR_PATH="./filters.jar"
 
