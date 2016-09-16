@@ -116,17 +116,28 @@ public class Main {
    }
 
    private static void handleJobsFromServer(String[] args) {
-      for (String jobName : args) {
-         String[] splitRes = jobName.split(":", 2);
-         jobName = splitRes[0];
-         String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
-         PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient());
-         System.out.println("\n" + dyeText(jobName, Colour.BLACK_BOLD));
-         if (JobService.isMatrix(job)) {
-            handleMatrix(jobName, job);
-         } else {
-            handleSingle(jobName, job, buildNum);
+      for (String arg : args) {
+         if (TaskManager.isTask(arg)) {
+            for (String jobName : TaskManager.tasks.get(arg)) {
+               getJob(jobName);
+            }
          }
+         else {
+            getJob(arg);
+         }
+      }
+   }
+
+   private static void getJob(String jobName) {
+      String[] splitRes = jobName.split(":", 2);
+      jobName = splitRes[0];
+      String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
+      PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient());
+      System.out.println("\n" + dyeText(jobName, Colour.BLACK_BOLD));
+      if (JobService.isMatrix(job)) {
+         handleMatrix(jobName, job);
+      } else {
+         handleSingle(jobName, job, buildNum);
       }
    }
 
