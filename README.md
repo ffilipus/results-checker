@@ -34,7 +34,7 @@
 
 
 ###Examples:
-```Java
+```
 export CHECKER_ENVIRONMENT="db2 jdk8 solaris10"
 export JAR_PATH="./filters.jar"
 
@@ -66,7 +66,7 @@ java -jar target/results-checker-* -eap-70x-acceptance-multinode-win
 * At the end return core filters with arguments failedTest and your array of filter items.
 
 ###Example:
-```
+```java
 package org.jboss.qe.collector.filter;
 
 import org.jboss.qe.collector.Colour;
