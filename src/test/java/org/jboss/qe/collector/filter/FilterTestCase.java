@@ -39,12 +39,28 @@ public class FilterTestCase {
    }
 
    @Test
-   @Ignore
    // TODO
-   //@Ignore ("work in progress")
+   @Ignore ("work in progress")
    public void test2() throws JSONException {
       SetFailedTests2();
       Filter filter = new TestFilter2();
+
+      // this cases should not be matched by a filter so final color should be red
+      for (FailedTest ft : failedTests) {
+         Assert.assertFalse("Test case " + ft.testName + " was matched, but it should not be", filter.filter(ft).isMatch());
+      }
+
+      // this cases should be matched by a filter so final color should be yellow
+      for (FailedTest ft : filteredTests) {
+         Assert.assertTrue("Test case " + ft.testName + " was not matched, but it should be", filter.filter(ft).isMatch());
+      }
+   }
+
+   @Test
+   @Ignore
+   public void test3() throws JSONException {
+      SetFailedTests3();
+      Filter filter = new TestFilter3();
 
       // this cases should not be matched by a filter so final color should be red
       for (FailedTest ft : failedTests) {
@@ -272,6 +288,76 @@ public class FilterTestCase {
                      .addTest("org.jboss.qe.cli.embed.test.b")
                      .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorDetails").equals("nejaky blaf"))
                      .addTestMatcher((JSONObject errorStackTrace) -> errorStackTrace.get("errorStackTrace").equals("nejaky blaf"))
+         };
+
+         return coreFilter(failedTest, items);
+      }
+   }
+
+   private void SetFailedTests3() throws JSONException {
+      filteredTests = new LinkedList<>();
+      String errorDetails, errorStackTrace, className, buildUrl;
+
+      errorDetails = "random error";
+      errorStackTrace = "random stack";
+      className = "org.jboss.qe.cli.embed.common.ModularServerTestCase" + "#" + "multipleReloadOfRunningModeTest";
+      buildUrl = "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-acceptance-multinode-rhel/jdk=java18_default,label_exp=RHEL6%20&&%20x86%20&&%20eap-sustaining/";
+      filteredTests.add(new FailedTest(className, "buildUrl: " + buildUrl, testInfoFactory(errorDetails, errorStackTrace)));
+
+      errorDetails = "random error";
+      errorStackTrace = "random stack";
+      className = "org.jboss.qe.cli.embed.common.ModularServerTestCase" + "#" + "multipleReloadOfRunningModeTest";
+      buildUrl = "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-acceptance-multinode-rhel/jdk=java18_default,label_exp=RHEL6%20&&%20x86%20&&%20eap-sustaining/a";
+      filteredTests.add(new FailedTest(className, "buildUrl: " + buildUrl, testInfoFactory(errorDetails, errorStackTrace)));
+
+      errorDetails = "random error";
+      errorStackTrace = "random stack";
+      className = "org.jboss.qe.cli.embed.common.ModularServerTestCase" + "#" + "testCase";
+      buildUrl = "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-acceptance-multinode-rhel/jdk=java18_default,label_exp=RHEL6%20&&%20x86%20&&%20eap-sustaining/b";
+      filteredTests.add(new FailedTest(className, "buildUrl: " + buildUrl, testInfoFactory(errorDetails, errorStackTrace)));
+
+      failedTests = new LinkedList<>();
+
+      errorDetails = "random error";
+      errorStackTrace = "random";
+      className = "org.jboss.qe.cli.embed.common.ModularServerTestCase" + "#" + "differentTest";
+      buildUrl = "http://url.of.test.com/hudson/job/strasneHroznyNazevTestu";
+      failedTests.add(new FailedTest(className, "buildUrl: " + buildUrl, testInfoFactory(errorDetails, errorStackTrace)));
+
+      errorDetails = "random error";
+      errorStackTrace = "random stack";
+      className = "org.jboss.qe.cli.embed.common.ModularServerTestCase" + "#" + "multipleReloadOfRunningModeTest";
+      buildUrl = "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-acceptance-multinode-rhel/jdk=java18_default,label_exp=RHEL6%20&&%20x86%20&&%20eap-sustainin/";
+      failedTests.add(new FailedTest(className, "buildUrl: " + buildUrl, testInfoFactory(errorDetails, errorStackTrace)));
+
+      errorDetails = "random error";
+      errorStackTrace = "random";
+      className = "org.jboss.qe.cli.embed.common.ModularServerTestCase" + "#" + "multipleReloadOfRunningModeTest";
+      buildUrl = "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-acceptance-multinode-rhel/jdk=java18_default,label_exp=RHEL6%20&&%20x86%20&&%20eap-sustaining/a";
+      failedTests.add(new FailedTest(className, "buildUrl: " + buildUrl, testInfoFactory(errorDetails, errorStackTrace)));
+
+      errorDetails = "random error";
+      errorStackTrace = "random stack";
+      className = "org.jboss.qe.cli.embed.common.ModularServerTestCase.fail" + "#" + "multipleReloadOfRunningModeTest";
+      buildUrl = "http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-acceptance-multinode-rhel/jdk=java18_default,label_exp=RHEL6%20&&%20x86%20&&%20eap-sustaining/b";
+      failedTests.add(new FailedTest(className, "buildUrl: " + buildUrl, testInfoFactory(errorDetails, errorStackTrace)));
+   }
+
+   private class TestFilter3 extends AbstractFilter {
+      @Override
+      public FilterResult filter(FailedTest failedTest) {
+         FilterItem[] items = new FilterItem[]{
+
+               new FilterItem(Colour.YELLOW).setErrorText("JBEAP-5382 - Embedded server started non-modular use only first --jboss-home for FS paths")
+                     .addTestMatcher((JSONObject errorStackTrace) -> errorStackTrace.get("errorStackTrace").equals("random stack"))
+                     .addUrl(".*http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-acceptance-multinode-rhel/jdk=java18_default,label_exp=RHEL6%20&&%20x86%20&&%20eap-sustaining/"),
+               new FilterItem(Colour.YELLOW).setErrorText("JBEAP-5382 - Embedded server started non-modular use only first --jboss-home for FS paths")
+                     .addTestMatcher((JSONObject errorStackTrace) -> errorStackTrace.get("errorStackTrace").equals("random stack"))
+                     .addUrl(".*http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-acceptance-multinode-rhel/jdk=java18_default,label_exp=RHEL6%20&&%20x86%20&&%20eap-sustaining/a"),
+               new FilterItem(Colour.YELLOW).setErrorText("Error")
+                     .addTest("org.jboss.qe.cli.embed.common.ModularServerTestCase" + "#" + "testCase")
+                     .addUrl("http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-70x-acceptance-multinode-rhel/jdk=java18_default,label_exp=RHEL6%20&&%20x86%20&&%20eap-sustaining/b")
+                     .addTestMatcher((JSONObject errorStackTrace) -> errorStackTrace.get("errorStackTrace").equals("random stack")),
          };
 
          return coreFilter(failedTest, items);
