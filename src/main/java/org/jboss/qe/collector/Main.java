@@ -92,6 +92,11 @@ public class Main {
       System.out.println(filter == null ? " - no filter in use" : " - " + filter.getClass().getName());
    }
 
+   private static void printSelectedFiltersOnServer() {
+      System.out.println("Filter class:");
+      System.out.println(filter == null ? " - no filter in use" : " - " + filter.getClass().getName());
+   }
+
    private static void printHelp() {
       System.out.println("\n"
             + dyeText("Legend:", Colour.BLACK_BOLD) + "\n" +
