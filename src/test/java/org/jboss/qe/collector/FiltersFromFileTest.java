@@ -15,16 +15,16 @@ import java.util.List;
  */
 public class FiltersFromFileTest {
    @Test
-   public void filtersFromFile(){
+   public void filtersFromFile() throws JSONException {
       Tools.setEnvironmentVariable("PACKAGE", "org.jboss.qe.collector.filter.testfilters.TestFilterName");
       List<Filter> filters = new FiltersFromFile().getFilters();
       Filter filter = filters.get(0);
 
-      FailedTest failedTest = new FailedTest("testFailedJob", "failedUrl", "testingTestCase");
+      FailedTest failedTest = new FailedTest("testFailedJob", "buildUrl: " + "URL", testInfoFactory("errorDetails", "Test stack trace"));
       FilterResult result = filter.filter(failedTest);
       Assert.assertTrue("Test does not match failed test", result.isMatch());
 
-      FailedTest failedTest2 = new FailedTest("FailedJob", "failedUrl", "testingTestCase");
+      FailedTest failedTest2 = new FailedTest("Name", "buildUrl: " + "URL", testInfoFactory("errorDetails", "Test stack trace"));
       Assert.assertFalse("Filter matched when it should not", filter.filter(failedTest2).isMatch());
    }
 
