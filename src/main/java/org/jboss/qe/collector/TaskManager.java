@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public class TaskManager {
    public static final Map<String, ArrayList<String>> tasks;
-   
+
    static {
       tasks = new HashMap<>();
 
@@ -190,5 +190,12 @@ public class TaskManager {
       tasks.get("eap7_ha").add("eap7-artemis-ha-failover-replicated-journal-network-failures");
       tasks.get("eap7_ha").add("eap7-artemis-ha-failover-colocated-cluster-newconf");
       tasks.get("eap7_ha").add("eap7-artemis-ha-failover-jms20-clients");
+   }
+
+   public static boolean isTask(String name) {
+      if (tasks.get(name) != null) {
+         return true;
+      }
+      return false;
    }
 }

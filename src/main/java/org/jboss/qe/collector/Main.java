@@ -104,7 +104,14 @@ public class Main {
    private static void printJobs(String[] args) {
       System.out.println(dyeText("Collect results for:", Colour.BLACK_BOLD));
       for (String it : args) {
-         System.out.println(" - " + it);
+         if (TaskManager.isTask(it)) {
+            for (String job : TaskManager.tasks.get(it)) {
+               System.out.println(" - " + job);
+            }
+         }
+         else {
+            System.out.println(" - " + it);
+         }
       }
    }
 
