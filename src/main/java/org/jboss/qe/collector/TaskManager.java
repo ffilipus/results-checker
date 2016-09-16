@@ -95,5 +95,7 @@ public class TaskManager {
       tasks.get("EAP_7x_AS_TESTSUITE_TEST_INTEG").add("eap-7x-as-testsuite-test-integ-rhel");
       tasks.get("EAP_7x_AS_TESTSUITE_TEST_INTEG").add("eap-7x-as-testsuite-test-integ-solaris");
       tasks.get("EAP_7x_AS_TESTSUITE_TEST_INTEG").add("eap-7x-as-testsuite-test-integ-windows");
+
+      tasks.put("EAP_7x_AS_TESTSUITE_TEST_INTEG_SECMAN", new ArrayList<>());
    }
 }
