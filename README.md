@@ -9,7 +9,7 @@
 
 ###Set environment variables:
 
-> `export PACKAGE=`
+> `export PACKAGE= package in jar file with custom filters`
 
 ###Run as client application:
 
