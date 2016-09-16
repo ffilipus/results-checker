@@ -42,7 +42,7 @@ public class FiltersFromFileTest {
       List<FilterResult> results = new ArrayList<>();
 
       for (FailedTest test : failedTests) {
-          results.add(processIssues(test, filters));
+         results.add(processIssues(test, filters));
       }
 
       Assert.assertTrue("Filter did not match", results.get(0).isMatch());

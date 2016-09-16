@@ -6,11 +6,13 @@ import org.jboss.qe.collector.FilterResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
-//import org.junit.Ignore;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
+
+//import org.junit.Ignore;
 
 /**
  * Created by jbilek on 13/09/16.
@@ -37,6 +39,7 @@ public class FilterTestCase {
    }
 
    @Test
+   @Ignore
    // TODO
    //@Ignore ("work in progress")
    public void test2() throws JSONException {

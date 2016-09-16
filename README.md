@@ -7,9 +7,13 @@
 
 ##How to run results-checker
 
+###Set environment variables:
+
+> `export PACKAGE=`
+
 ###Run as client application:
 
- > `java -jar target/results-checker-* <job name> [<path to filter unit> ] {<job name> [<path to filter unit>]}`
+> `java -jar target/results-checker-* <job name>
 
 ###Run as jenkinse post build action:
 
