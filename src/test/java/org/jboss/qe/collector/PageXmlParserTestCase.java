@@ -33,11 +33,14 @@ public class PageXmlParserTestCase {
       } catch (IOException ex) {
          Logger.getLogger(PageXmlParserTestCase.class.getName()).log(Level.SEVERE, null, ex);
       }
+      Tools.setEnvironmentVariable("DELETE_IF_FILTERED","true");
+      Tools.setEnvironmentVariable("JOB_NAME","eap-64x-patched-manu-acceptance-tattletale");
    }
 
    @Test
    public void testReportWithoutError() {
-      PageXmlParser parser = new PageXmlParser(filter);
+      ReportCreator rc = new ReportCreator("results-checker-report.html");
+      PageXmlParser parser = new PageXmlParser(filter, rc);
       try {
          parser.run("./src/test/resources/pageXmlParser/output/test.xml");
          File testFile = new File("./src/test/resources/pageXmlParser/output/test.xml");
@@ -50,7 +53,8 @@ public class PageXmlParserTestCase {
 
    @Test
    public void testReportOneError() {
-      PageXmlParser parser = new PageXmlParser(filter);
+      ReportCreator rc = new ReportCreator("results-checker-report.html");
+      PageXmlParser parser = new PageXmlParser(filter, rc);
       try {
          parser.run("./src/test/resources/pageXmlParser/output/test2.xml");
          File testFile = new File("./src/test/resources/pageXmlParser/output/test2.xml");
@@ -63,7 +67,8 @@ public class PageXmlParserTestCase {
 
    @Test
    public void testReportMultipleErrors() {
-      PageXmlParser parser = new PageXmlParser(filter);
+      ReportCreator rc = new ReportCreator("results-checker-report.html");
+      PageXmlParser parser = new PageXmlParser(filter, rc);
       try {
          parser.run("./src/test/resources/pageXmlParser/output/test3.xml");
          File testFile = new File("./src/test/resources/pageXmlParser/output/test3.xml");

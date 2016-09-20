@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite errors="0" failures="7" name="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser.EvaluateMultipleJarsReport" skipped="0" tests="7" time="0">
   <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
-    <errormessage>Some classes was duplicated</errormessage>
+    <filtermessage>Some classes was duplicated</filtermessage>
   </testcase>
   <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
-    <errormessage>Some classes was duplicated</errormessage>
+    <filtermessage>Some classes was duplicated</filtermessage>
   </testcase>
   <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
-    <errormessage>Some classes was duplicated</errormessage>
+    <filtermessage>Some classes was duplicated</filtermessage>
   </testcase>
   <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
-    <errormessage>Some classes was duplicated</errormessage>
+    <filtermessage>Some classes was duplicated</filtermessage>
   </testcase>
   <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
-    <errormessage>Some classes was duplicated</errormessage>
+    <filtermessage>Some classes was duplicated</filtermessage>
   </testcase>
   <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
-    <errormessage>Some classes was duplicated</errormessage>
+    <filtermessage>Some classes was duplicated</filtermessage>
   </testcase>
   <testcase classname="org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser" name="EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars" time="0">
-    <errormessage>Some classes was duplicated</errormessage>
+    <filtermessage>Some classes was duplicated</filtermessage>
   </testcase>
 </testsuite>
 
