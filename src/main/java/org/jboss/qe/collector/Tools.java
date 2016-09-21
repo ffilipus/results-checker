@@ -10,6 +10,10 @@ import java.util.stream.Collectors;
  * @author Jan Dobes
  */
 public class Tools {
+   private static Map<String, String> env;
+   static {
+      env = new HashMap<>();
+   }
 
    /*public static List<File> fileLoader(String path) {
       String[] names = path.split(" ");
@@ -135,6 +139,8 @@ public class Tools {
                return "false";
             case "CHECKER_ENVIRONMENT":
                return "";
+            case "DELETE_IF_FILTERED":
+               return "false";
             case "JAR_PATH":
                return "./results-checker-filters.jar";
             case "PACKAGE":
@@ -151,7 +157,6 @@ public class Tools {
    }
 
    public static void setEnvironmentVariable(String key, String value) {
-      Map<String, String> env = new HashMap<>();
       env.put(key,value);
       set(env);
    }

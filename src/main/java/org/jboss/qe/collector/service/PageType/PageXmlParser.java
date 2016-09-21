@@ -1,6 +1,8 @@
 package org.jboss.qe.collector.service.PageType;
 
 import org.jboss.qe.collector.FailedTest;
+import org.jboss.qe.collector.FilterResult;
+import org.jboss.qe.collector.ReportCreator;
 import org.jboss.qe.collector.Tools;
 import org.jboss.qe.collector.filter.Filter;
 import org.jdom.Document;
@@ -19,9 +21,11 @@ import java.util.Map;
 
 public class PageXmlParser {
    private Filter filter;
+   private ReportCreator rc;
 
-   public PageXmlParser(Filter f) {
+   public PageXmlParser(Filter f, ReportCreator rc) {
       this.filter = f;
+      this.rc = rc;
    }
 
    public void run(String path) throws IOException {
@@ -41,8 +45,7 @@ public class PageXmlParser {
                      Map<String, java.io.Serializable> detailes = new HashMap<>();
                      detailes.put("errorDetails",testCase.getChild(errorChildName).getAttribute("message").getValue());
                      detailes.put("errorStackTrace",testCase.getChild(errorChildName).getValue());
-                     String processedIssue = processIssues(new FailedTest(classname, "", detailes));
-                     testCase.removeChild(errorChildName);
+                     FilterResult processedIssue = processIssues(new FailedTest(classname, "", detailes));
                      addErrorMessage(testCase, processedIssue, document, file);
                   }
                }
@@ -53,17 +56,25 @@ public class PageXmlParser {
       }
    }
 
-   private void addErrorMessage(Element testCase, String processedIssue, Document document, File file) throws IOException {
-      String[] processedIssues = processedIssue.split("-");
-      if (processedIssues.length > 1) {
-         testCase.addContent(new Element("errormessage").setText(processedIssues[1]));
+   private void addErrorMessage(Element testCase, FilterResult processedIssue, Document document, File file) throws IOException {
+      //String[] processedIssues = processedIssue.getJobError().split("-");
+      if (processedIssue.isMatch()) {
+         rc.addMatchedTestResult(testCase, processedIssue.getJobError().split("-")[1]);
+         String errorChildName = testCase.getChild("error") != null ? "error" : "failure";
+         // TODO removing is maybe not wanted
+         if (Tools.getEnvironmentVariable("DELETE_IF_FILTERED").equals("true")) {
+            testCase.removeChild(errorChildName);
+         }
+         testCase.addContent(new Element("filtermessage").setText(processedIssue.getJobError().split("-")[1]));
          XMLOutputter xmlOutput = new XMLOutputter();
          xmlOutput.setFormat(Format.getPrettyFormat());
          xmlOutput.output(document, new FileWriter(file.getAbsolutePath()));
+      } else {
+         rc.addNotMatchedTestResult(testCase);
       }
    }
 
-   private String processIssues(FailedTest failedTest) {
-      return filter.filter(failedTest).getJobError();
+   private FilterResult processIssues(FailedTest failedTest) {
+      return filter.filter(failedTest);
    }
 }

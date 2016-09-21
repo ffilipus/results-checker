@@ -54,14 +54,16 @@ public class Main {
          printSelectedFiltersOnServer();
          // Handle phrase - modify surfire-reports on server
          String path_to_reports = Tools.getEnvironmentVariable("REPORTS_DIRECTORY");
+         ReportCreator rc = new ReportCreator("results-checker-report.html");
          for (Filter filter : filters.getFilters()) {
-            PageXmlParser xmlParser = new PageXmlParser(filter);
+            PageXmlParser xmlParser = new PageXmlParser(filter, rc);
             try {
                xmlParser.run(path_to_reports);
             } catch (IOException e) {
                e.printStackTrace();
             }
          }
+         rc.printReport();
 
       } else { // using like client application - will download data from server and show list of failed tests
          // Print selected filter class name

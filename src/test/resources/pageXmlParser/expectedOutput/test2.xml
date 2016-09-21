@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuite errors="0" failures="1" name="org.jboss.manu.units.eap.tattletale.EapEliminateJarsReportParser.EvaluateEliminateJarsReport" skipped="0" tests="1" time="0">
   <testcase classname="org.jboss.manu.units.eap.tattletale.EapEliminateJarsReportParser" name="EvaluateEliminateJarsReport.jarswithdifferentversions" time="0">
-    <errormessage />
+    <filtermessage />
   </testcase>
 </testsuite>
 
