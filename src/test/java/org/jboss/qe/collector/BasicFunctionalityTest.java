@@ -19,7 +19,7 @@ public class BasicFunctionalityTest {
       baos = new ByteArrayOutputStream();
       PrintStream ps = new PrintStream(baos);
       System.setOut(ps);
-      Tools.setEnvironmentVariable("JAR_PATH", "./results-checker-filters");
+      Tools.setEnvironmentVariable("JAR_PATH", "results-checker-filters.jar");
       Tools.setEnvironmentVariable("PACKAGE", "org.jboss.qe.collector.filter.testfilters.EmptyFilter");
    }
 
