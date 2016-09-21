@@ -19,12 +19,19 @@ public class ReportCreator {
 
    private int id_test;
 
+   private int failed_not_matched;
+   private int failed_matched;
+   private int total_count_tests;
+
    ReportCreator(String filename) {
       this.filename = filename;
       finalContent = "";
       matchedTestsContent = "";
       notMatchedTestsContent = "";
       id_test = 0;
+      failed_not_matched = 0;
+      failed_matched = 0;
+      total_count_tests = 0;
    }
 
    private String getTestResultContent(Element testCase, String filterMessage) {
@@ -57,10 +64,10 @@ public class ReportCreator {
             "                  <div id=\"test-" + job_full_name + s_id_test + "/\" style=\"display: none;\" class=\"failure-summary\">\n";
 
       String testContentEnd = "                  </div>\n" +
-                  "               </td>\n" +
-                  "               <td style=\"text-align:right;\" data=\"0.0\" class=\"pane no-wrap\">" + run_time + " ms</td>\n" +
-                  "               <td class=\"pane\" style=\"text-align:right;\">" + age + "</td>\n" +
-                  "            </tr>";
+            "               </td>\n" +
+            "               <td style=\"text-align:right;\" data=\"0.0\" class=\"pane no-wrap\">" + run_time + " ms</td>\n" +
+            "               <td class=\"pane\" style=\"text-align:right;\">" + age + "</td>\n" +
+            "            </tr>";
 
       String testContent = "";
       testContent += testContentStart;
@@ -98,31 +105,39 @@ public class ReportCreator {
     */
    private String getContentAttributeIntoTestResult(String s_id_test, String type, String prompt, String cont, boolean show) {
       return "                     <h4><a id=\"" + s_id_test + "-" + type + "-showlink\" title=\"Show " + prompt + "\" style=\"display: " + (show ? "none" : "") + "\" href=\"javascript:showFailureSummary(&#39;" + s_id_test + "-" + type + "&#39;)\">\n" +
-                  "                        +&nbsp;" + prompt + "\n" +
-                  "                        </a><a id=\"" + s_id_test + "-" + type + "-hidelink\" title=\"Hide " + prompt + "\" style=\"display: " + (show ? "" : "none") + "\" href=\"javascript:hideFailureSummary(&#39;" + s_id_test + "-" + type + "&#39;)\">--&nbsp;" + prompt + "\n" +
-                  "                        </a>\n" +
-                  "                     </h4>\n" +
-                  "                     <pre id=\"" + s_id_test + "-" + type + "\" style=\"display: " + (show ? "" : "none") + "\">" + cont + "</pre>\n";
+            "                        +&nbsp;" + prompt + "\n" +
+            "                        </a><a id=\"" + s_id_test + "-" + type + "-hidelink\" title=\"Hide " + prompt + "\" style=\"display: " + (show ? "" : "none") + "\" href=\"javascript:hideFailureSummary(&#39;" + s_id_test + "-" + type + "&#39;)\">--&nbsp;" + prompt + "\n" +
+            "                        </a>\n" +
+            "                     </h4>\n" +
+            "                     <pre id=\"" + s_id_test + "-" + type + "\" style=\"display: " + (show ? "" : "none") + "\">" + cont + "</pre>\n";
    }
 
    public void addNotMatchedTestResult(Element testCase) {
+      failed_not_matched++;
+      total_count_tests++;
       notMatchedTestsContent += getTestResultContent(testCase,"");
    }
 
    public void addMatchedTestResult(Element testCase, String filterMessage) {
+      failed_matched++;
+      total_count_tests++;
       matchedTestsContent += getTestResultContent(testCase, filterMessage);
+   }
+
+   public void addSuccessTestResult() {
+      total_count_tests++;
    }
 
    private String getHeadContent() {
 
-      String job_name = "eap-64x-patched-manu-acceptance-tattletale-jbilek";
+      String job_name = Tools.getEnvironmentVariable("JOB_NAME");
       int run_number = 2;
       String job_url = "https://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-64x-patched-manu-acceptance-tattletale-jbilek/lastCompletedBuild/testReport/history";
-      double run_time = 0;
-      int test_failures = 7;
-      int diff_test_failures = -3;
-      int sum_tests = 12;
-      double success_line = (double)test_failures / sum_tests * 100;
+      String run_time = "#";
+      int test_failures = this.failed_not_matched + this.failed_matched;
+      int sum_tests = this.total_count_tests;
+      double matched_line = (double)test_failures / sum_tests * 100;
+      double unmatched_line = (double)failed_not_matched / sum_tests * 100;
 
       return "<!DOCTYPE html>\n" +
             "<html>\n" +
@@ -134,10 +149,12 @@ public class ReportCreator {
             "      <h1>Test Result</h1>\n" +
             "      <div>\n" +
             "         <div>\n" +
-            "            " + test_failures + " failures (" + diff_test_failures + ")\n" +
+            "            " + test_failures + " failures (known issues: " + this.failed_matched + ", unknown issues: " + this.failed_not_matched + ")\n" +
             "         </div>\n" +
             "         <div style=\"width:100%; height:1em; background-color: #729FCF\">\n" +
-            "            <div style=\"width:" + success_line + "%; height: 1em; background-color: #EF2929; float: left\">\n" +
+            "            <div style=\"width:" + matched_line + "%; height: 1em; background-color: #20941C; float: left\">\n" +
+            "            </div>\n" +
+            "            <div style=\"width:" + unmatched_line + "%; height: 1em; background-color: #EF2929; float: left\">\n" +
             "            </div>\n" +
             "            <div style=\"width:0.0%; height: 1em; background-color: #FCE94F; float: left\">\n" +
             "            </div>\n" +
