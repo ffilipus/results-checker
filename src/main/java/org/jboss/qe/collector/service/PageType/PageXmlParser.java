@@ -47,6 +47,8 @@ public class PageXmlParser {
                      detailes.put("errorStackTrace",testCase.getChild(errorChildName).getValue());
                      FilterResult processedIssue = processIssues(new FailedTest(classname, "", detailes));
                      addErrorMessage(testCase, processedIssue, document, file);
+                  } else {
+                     rc.addSuccessTestResult();
                   }
                }
             }
