@@ -1,8 +1,9 @@
 package org.jboss.qe.collector;
 
-import org.jboss.qe.collector.filter.testFilters.EmptyFilter;
 import org.junit.*;
-import java.io.*;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 
 /**
@@ -34,7 +35,7 @@ public class ServerBasicTest {
 
 
    @Test
-   //@Ignore("server does not work maybe")
+   @Ignore("server does not work maybe")
    public void testBasicFunctionalityWithDataFromServer() {
       String testName = "eap-70x-maven-repository-check-boms-for-dependency-tree-zip-plus-central";
 
@@ -42,7 +43,9 @@ public class ServerBasicTest {
       PrintStream ps = new PrintStream(ba_stream);
       System.setOut(ps);
 
-      Main.filter = new EmptyFilter();
+      Tools.setEnvironmentVariable("JAR_PATH", "./results-checker-filters");
+      Tools.setEnvironmentVariable("PACKAGE", "org.jboss.qe.collector.filter.testfilters.EmptyFilter");
+
       Main.main(new String[]{testName});
       String output = ba_stream.toString();
 
@@ -51,7 +54,7 @@ public class ServerBasicTest {
          split[i] = split[i].replaceAll("\u001B\\[[;\\d]*m", "");
       }
 
-      Assert.assertEquals("There is possibly filter in use", " - org.jboss.qe.collector.filter.testFilters.EmptyFilter", split[Arrays.asList(split).indexOf("Filter class:") + 1]);
+      Assert.assertEquals("There is possibly filter in use", " - org.jboss.qe.collector.filter.testfilters.EmptyFilter", split[Arrays.asList(split).indexOf("Filter class:") + 1]);
       Assert.assertEquals("Legend was not shown", " - POSSIBLE REGRESSION", split[Arrays.asList(split).indexOf("Legend:") + 1]);
       Assert.assertEquals("Legend was not shown", " - KNOWN ISSUE", split[Arrays.asList(split).indexOf("Legend:") + 2]);
       Assert.assertEquals("Legend was not shown", " - ENVIRONMENT ISSUES AND OTHERS WITHOUT BZ/JIRA", split[Arrays.asList(split).indexOf("Legend:") + 3]);

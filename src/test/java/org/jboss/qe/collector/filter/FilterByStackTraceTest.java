@@ -2,7 +2,7 @@ package org.jboss.qe.collector.filter;
 
 import org.jboss.qe.collector.CachePrepare;
 import org.jboss.qe.collector.Main;
-import org.jboss.qe.collector.filter.testFilters.TestFilterStackTrace;
+import org.jboss.qe.collector.Tools;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,13 +24,14 @@ public class FilterByStackTraceTest {
       baos = new ByteArrayOutputStream();
       PrintStream ps = new PrintStream(baos);
       System.setOut(ps);
+      Tools.setEnvironmentVariable("JAR_PATH", "./results-checker-filters");
+      Tools.setEnvironmentVariable("PACKAGE", "org.jboss.qe.collector.filter.testfilters.TestFilterStackTrace");
    }
 
    @Test
    public void filterByStackTraceTest() {
       String testName = "eap-70x-maven-repository-check-valid-POM-and-Metadata-files";
       String[] resources = new String[] {"failedJob/testReport.json", "failedJob/lastBuild.json"};
-      Main.filter = new TestFilterStackTrace();
 
       CachePrepare.prepare(testName, resources, getClass());
 

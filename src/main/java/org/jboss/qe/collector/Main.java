@@ -3,6 +3,7 @@ package org.jboss.qe.collector;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.jboss.qe.collector.filter.Filter;
+import org.jboss.qe.collector.filterslists.FiltersList;
 import org.jboss.qe.collector.service.JobService;
 import org.jboss.qe.collector.service.PageType.PageParser;
 import org.jboss.qe.collector.service.PageType.PageXmlParser;
@@ -29,7 +30,7 @@ public class Main {
    private static Map<String, Integer> buildsPerMatrix = new HashMap<>();
    private static boolean failedOrAborted = false;
    private static int totalBuilds = 0;
-   public static Filter filter;
+   public static FiltersList filters;
    private static final boolean printSecured = Boolean.valueOf(System.getProperty("print.secured", "true"));
    private static final boolean printErrorDetails = Boolean.valueOf(System.getProperty("print.error.details", "false"));
 
@@ -40,10 +41,8 @@ public class Main {
       }
 
       // Filter configuration
-      if (filter == null) {
-         Injector injector = Guice.createInjector(new FilterInjector(args));
-         filter = injector.getInstance(Filter.class);
-      }
+      Injector injector = Guice.createInjector(new FilterInjector());
+      filters = injector.getInstance(FiltersList.class);
 
       if (Tools.isRunningOnJenkinse()) { // using like jenkins post build action - will modify surfire reports
          printWellcomeScreen();
@@ -56,13 +55,16 @@ public class Main {
          // Handle phrase - modify surfire-reports on server
          String path_to_reports = Tools.getEnvironmentVariable("REPORTS_DIRECTORY");
          ReportCreator rc = new ReportCreator("results-checker-report.html");
-         PageXmlParser xmlParser = new PageXmlParser(filter, rc);
-         try {
-            xmlParser.run(path_to_reports);
-         } catch (IOException e) {
-            e.printStackTrace();
+         for (Filter filter : filters.getFilters()) {
+            PageXmlParser xmlParser = new PageXmlParser(filter, rc);
+            try {
+               xmlParser.run(path_to_reports);
+            } catch (IOException e) {
+               e.printStackTrace();
+            }
          }
          rc.printReport();
+
       } else { // using like client application - will download data from server and show list of failed tests
          // Print selected filter class name
          printSelectedFilters();
@@ -82,12 +84,14 @@ public class Main {
 
    private static void printSelectedFilters() {
       System.out.println(dyeText("Filter class:", Colour.BLACK_BOLD));
-      System.out.println(filter == null ? " - no filter in use" : " - " + filter.getClass().getName());
+      for (Filter filter : filters.getFilters()) {
+         System.out.println(filters == null ? " - no filter in use" : " - " + filter.getClass().getName());
+      }
    }
 
    private static void printSelectedFiltersOnServer() {
       System.out.println("Filter class:");
-      System.out.println(filter == null ? " - no filter in use" : " - " + filter.getClass().getName());
+      System.out.println(filters == null ? " - no filter in use" : " - " + filters.getClass().getName());
    }
 
    private static void printHelp() {
@@ -102,22 +106,40 @@ public class Main {
    private static void printJobs(String[] args) {
       System.out.println(dyeText("Collect results for:", Colour.BLACK_BOLD));
       for (String it : args) {
-         System.out.println(" - " + it);
+         if (TaskManager.isTask(it)) {
+            for (String job : TaskManager.tasks.get(it)) {
+               System.out.println(" - " + job);
+            }
+         }
+         else {
+            System.out.println(" - " + it);
+         }
       }
    }
 
    private static void handleJobsFromServer(String[] args) {
-      for (String jobName : args) {
-         String[] splitRes = jobName.split(":", 2);
-         jobName = splitRes[0];
-         String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
-         PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient());
-         System.out.println("\n" + dyeText(jobName, Colour.BLACK_BOLD));
-         if (JobService.isMatrix(job)) {
-            handleMatrix(jobName, job);
-         } else {
-            handleSingle(jobName, job, buildNum);
+      for (String arg : args) {
+         if (TaskManager.isTask(arg)) {
+            for (String jobName : TaskManager.tasks.get(arg)) {
+               getJob(jobName);
+            }
          }
+         else {
+            getJob(arg);
+         }
+      }
+   }
+
+   private static void getJob(String jobName) {
+      String[] splitRes = jobName.split(":", 2);
+      jobName = splitRes[0];
+      String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
+      PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient());
+      System.out.println("\n" + dyeText(jobName, Colour.BLACK_BOLD));
+      if (JobService.isMatrix(job)) {
+         handleMatrix(jobName, job);
+      } else {
+         handleSingle(jobName, job, buildNum);
       }
    }
 
@@ -335,7 +357,9 @@ public class Main {
          System.out.println();
       }
 
-      if (filter != null) filter.onFinish();
+      if (filters != null) {
+         filters.getFilters().forEach(Filter::onFinish);
+      }
 
       if (failedOrAborted) {
          System.out.println("Some job(s) finished with status FAILURE or ABORTED, further investigation is needed!");
@@ -394,6 +418,14 @@ public class Main {
     * @return Pre-formatted test case report ready for printing.
     */
    private static String processIssues(FailedTest failedTest) {
-      return filter.filter(failedTest).getJobError();
+      FilterResult result = null;
+      for (Filter filter : filters.getFilters()) {
+         result = filter.filter(failedTest);
+         if (result.isMatch()) {
+            return result.getJobError();
+         }
+      }
+      assert result != null;
+      return result.getJobError();
    }
 }

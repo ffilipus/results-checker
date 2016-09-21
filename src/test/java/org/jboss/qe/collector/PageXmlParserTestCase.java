@@ -8,12 +8,13 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.codehaus.plexus.util.FileUtils;
+import org.jboss.qe.collector.filter.AbstractFilter;
+import org.jboss.qe.collector.filter.FilterItem;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
 
 import org.jboss.qe.collector.service.PageType.PageXmlParser;
-import org.jboss.qe.collector.test_filter.TestFilter;
 
 /**
  *
@@ -76,6 +77,27 @@ public class PageXmlParserTestCase {
          Assert.assertTrue("Files aren't equals", FileUtils.contentEquals(testFile, expectedOutputFile));
       } catch (IOException ex) {
          Logger.getLogger(PageXmlParserTestCase.class.getName()).log(Level.SEVERE, null, ex);
+      }
+   }
+
+
+   private class TestFilter extends AbstractFilter {
+      FilterItem[] items = {
+            new FilterItem(Colour.RED).setErrorText("Wrong phone number size").addTest("org.jboss.as.quickstarts.bean_validation.test.FfValidationTest#testPhoneViolation"),
+            new FilterItem(Colour.RED).setErrorText("Wrong phone number size").addTest("org.jboss.as.quickstarts.bean_validation.test.MemberValidationTest#testPhoneViolation"),
+            new FilterItem(Colour.RED).setErrorText("Wrong name").addTest("org.jboss.as.quickstarts.bean_validation.test.FfValidationTest#testNameViolation"),
+            new FilterItem(Colour.RED).setErrorText("Wrong email format").addTest("org.jboss.as.quickstarts.bean_validation.test.MemberValidationTest#testEmailViolation"),
+            new FilterItem(Colour.RED).setErrorText("").addTest("org.jboss.manu.units.eap.tattletale.EapEliminateJarsReportParser#EvaluateEliminateJarsReport.jarswithdifferentversions"),
+            new FilterItem(Colour.RED).setErrorText("Version wasn't reported").addTest("org.jboss.manu.units.eap.tattletale.EapNoVersionReportParser#EvaluateNoVersionReport.jarswithoutversion"),
+            new FilterItem(Colour.RED).setErrorText("Multiple locations report").addTest("org.jboss.manu.units.eap.tattletale.EapMultipleLocationsReportParser#EvaluateMultipleLocationsReport.jarswithmultiplelocations"),
+            new FilterItem(Colour.RED).setErrorText("No signed jars found").addTest("org.jboss.manu.units.eap.tattletale.EapSigningInformationReportParser#EvaluateSigningInformationReport.signedjars"),
+            new FilterItem(Colour.RED).setErrorText("No black listed archives found.").addTest("org.jboss.manu.units.eap.tattletale.EapBlackListedReportParser#org.jboss.manu.units.eap.tattletale.EapBlackListedReportParser"),
+            new FilterItem(Colour.RED).setErrorText("Eliminate jars report").addTest("org.jboss.manu.units.eap.tattletale.EapEliminateJarsReportParser#EvaluateEliminateJarsReport.jarswithdifferentversions"),
+            new FilterItem(Colour.RED).setErrorText("Some classes was duplicated").addTest("org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser#EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars"),
+      };
+
+      public FilterResult filter(FailedTest failedTest) {
+         return coreFilter(failedTest, items);
       }
    }
 }

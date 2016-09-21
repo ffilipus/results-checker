@@ -1,10 +1,12 @@
 package org.jboss.qe.collector;
 
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Assert;
-import org.junit.Test;
 
 /**
  *
@@ -25,7 +27,7 @@ public class FileLoaderTestCase {
          Assert.assertTrue(file.getName() + " doesn't exists", file.exists());
       }
    }
-
+   @Ignore
    @Test
    public void testFileMatch() {
       List<File> loadedFiles = Tools.fileLoader("./src/test/resources/fileLoader/reports/**/**/*.xml");
