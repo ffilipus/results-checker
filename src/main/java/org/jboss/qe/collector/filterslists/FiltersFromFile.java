@@ -32,11 +32,8 @@ public class FiltersFromFile implements FiltersList {
          JarFile jarFile = new JarFile(file);
          classes = checkJarFile(jarFile, pckg);
          for (Class<?> aClass : classes) {
-            System.out.println("adding: " + aClass.getName());
-            if (Filter.class.isAssignableFrom(aClass)) {
+            if (Filter.class.isAssignableFrom(aClass))
                filters.add((Filter) aClass.newInstance());
-               System.out.println("added: " + filters.toString());
-            }
          }
       } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
          e.printStackTrace();
@@ -51,28 +48,18 @@ public class FiltersFromFile implements FiltersList {
       final Enumeration<JarEntry> entries = jarFile.entries();
       String name;
 
-      System.out.println("aaaa: " + pckgname);
       for (JarEntry jarEntry; entries.hasMoreElements()
           && ((jarEntry = entries.nextElement()) != null);) {
          name = jarEntry.getName();
-         System.out.println(name);
 
          if (name.contains(".class")) {
             name = name.substring(0, name.length() - 6).replace('/', '.');
-            System.out.println(name);
 
             if (name.contains(pckgname)) {
                classes.add(Class.forName(name));
-               System.out.println("TO JE ON");
             }
          }
       }
-
-      System.out.println("results");
-      for (Class a : classes) {
-         System.out.println(a.getName());
-      }
-
       return classes;
    }
 
