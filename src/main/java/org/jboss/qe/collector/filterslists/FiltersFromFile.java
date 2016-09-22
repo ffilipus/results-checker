@@ -48,15 +48,19 @@ public class FiltersFromFile implements FiltersList {
       final Enumeration<JarEntry> entries = jarFile.entries();
       String name;
 
+      System.out.println("aaaa: " + pckgname);
       for (JarEntry jarEntry; entries.hasMoreElements()
           && ((jarEntry = entries.nextElement()) != null);) {
          name = jarEntry.getName();
+         System.out.println(name);
 
          if (name.contains(".class")) {
             name = name.substring(0, name.length() - 6).replace('/', '.');
+            System.out.println(name);
 
             if (name.contains(pckgname)) {
                classes.add(Class.forName(name));
+               System.out.println("TO JE ON");
             }
          }
       }
