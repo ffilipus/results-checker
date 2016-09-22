@@ -44,8 +44,8 @@ public class Eap64xTattletale  extends AbstractFilter {
                         "org.apache.commons.collections.FastHashMap$EntrySet\n" +
                         "org.apache.commons.collections.FastHashMap$KeySet\n" +
                         "org.apache.commons.collections.FastHashMap$Values"))
-                  .setErrorText("TODO add bugzilla ticket"),
-            new FilterItem(Colour.YELLOW)
+                  .setErrorText("<a href=\"https://issues.jboss.org/browse/WFLY-7095\">https://issues.jboss.org/browse/WFLY-7095</a>"),
+            /*new FilterItem(Colour.YELLOW)
                   //.addTest("org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser.EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars.*")
                   .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorDetails").toString().equals("39 duplicate classes found in JARs: [org.apache.felix.configadmin-1.2.8.redhat-4.jar, org.osgi.enterprise-4.2.0.redhat-10.jar]\n" +
                         "org.osgi.service.cm.Configuration\n" +
@@ -59,7 +59,7 @@ public class Eap64xTattletale  extends AbstractFilter {
                         "org.osgi.service.cm.ConfigurationPlugin\n" +
                         "org.osgi.service.cm.ManagedService\n" +
                         "org.osgi.service.cm.ManagedServiceFactory"))
-                  .setErrorText("TODO add bugzilla ticket"),
+                  .setErrorText("TODO add bugzilla ticket"),*/
             new FilterItem(Colour.YELLOW)
                   //.addTest("org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser.EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars.*")
                   .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorDetails").toString().equals("39 duplicate classes found in JARs: [jboss-as-osgi-http-7.5.10.Final-redhat-2.jar, org.osgi.enterprise-4.2.0.redhat-10.jar]\n" +
