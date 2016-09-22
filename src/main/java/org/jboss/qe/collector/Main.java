@@ -87,7 +87,9 @@ public class Main {
 
    private static void printSelectedFiltersOnServer() {
       System.out.println("Filter class:");
-      System.out.println(filters == null ? " - no filter in use" : " - " + filters.getClass().getName());
+      for (Filter filter : filters.getFilters()) {
+         System.out.println(filters == null ? " - no filter in use" : " - " + filter.getClass().getName());
+      }
    }
 
    private static void printHelp() {
