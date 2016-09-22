@@ -36,10 +36,6 @@ public class Main {
 
    public static void main(String[] args) {
 
-      if (args.length < 1) {
-         throw new IllegalArgumentException("You have to pass some job name for processing");
-      }
-
       // Filter configuration
       Injector injector = Guice.createInjector(new FilterInjector());
       filters = injector.getInstance(FiltersList.class);
