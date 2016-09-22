@@ -36,6 +36,7 @@ public class PageXmlParserTestCase {
       }
       Tools.setEnvironmentVariable("DELETE_IF_FILTERED","true");
       Tools.setEnvironmentVariable("JOB_NAME","eap-64x-patched-manu-acceptance-tattletale");
+      Tools.setEnvironmentVariable("JOB_URL","http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-64x-patched-manu-acceptance-tattletale");
    }
 
    @Test
