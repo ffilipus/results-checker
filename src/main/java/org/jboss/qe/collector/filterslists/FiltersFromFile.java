@@ -64,6 +64,12 @@ public class FiltersFromFile implements FiltersList {
             }
          }
       }
+
+      System.out.println("results");
+      for (Class a : classes) {
+         System.out.println(a.getName());
+      }
+
       return classes;
    }
 
