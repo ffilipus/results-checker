@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 /**
  * Created by jbilek on 22/09/16.
- * filter for http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-64x-patched-delivered-files-check
+ * filter for https://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-64x-patched-repository-maven-check-unique-artifactId/
  */
 public class Eap64xPatchedRepositoryMavenCheckUniqueArtifactId extends AbstractFilter {
 
