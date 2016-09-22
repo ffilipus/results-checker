@@ -32,8 +32,11 @@ public class FiltersFromFile implements FiltersList {
          JarFile jarFile = new JarFile(file);
          classes = checkJarFile(jarFile, pckg);
          for (Class<?> aClass : classes) {
-            if (Filter.class.isAssignableFrom(aClass))
+            System.out.println("adding: " + aClass.getName());
+            if (Filter.class.isAssignableFrom(aClass)) {
                filters.add((Filter) aClass.newInstance());
+               System.out.println("added: " + filters.toString());
+            }
          }
       } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
          e.printStackTrace();
