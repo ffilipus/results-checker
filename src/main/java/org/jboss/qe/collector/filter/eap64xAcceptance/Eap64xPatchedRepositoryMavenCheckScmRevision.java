@@ -34,6 +34,13 @@ public class Eap64xPatchedRepositoryMavenCheckScmRevision extends AbstractFilter
                   .addTest("resteasy-multipart-provider-2.3.15.Final-redhat-1.*#resteasy-multipart-provider-2.3.15.Final-redhat-1.*")
                   .addTest("resteasy-spring-2.3.15.Final-redhat-1.*#resteasy-spring-2.3.15.Final-redhat-1.*")
                   .addTest("resteasy-yaml-provider-2.3.15.Final-redhat-1.*#resteasy-yaml-provider-2.3.15.Final-redhat-1.*")
+                  .addTest("arjunacore-4.17.35.Final-redhat-1.*#arjunacore-4.17.35.Final-redhat-1.*")
+                  .addTest("jbossjts-integration-4.17.35.Final-redhat-1.*#jbossjts-integration-4.17.35.Final-redhat-1.*")
+                  .addTest("jbossjts-jacorb-4.17.35.Final-redhat-1.*#jbossjts-jacorb-4.17.35.Final-redhat-1.*")
+                  .addTest("jbosstxbridge-4.17.35.Final-redhat-1.*#jbosstxbridge-4.17.35.Final-redhat-1.*")
+                  .addTest("jbosstxbridge-4.17.35.Final-redhat-1#jbosstxbridge-4.17.35.Final-redhat-1")
+                  .addTest("jbossxts-4.17.35.Final-redhat-1.*#jbossxts-4.17.35.Final-redhat-1.*")
+                  .addTest("narayana-jta-4.17.35.Final-redhat-1.*#narayana-jta-4.17.35.Final-redhat-1.*")
                   .setErrorText("BZ 1017635"),
       };
 
