@@ -48,6 +48,14 @@ public class FileLoaderTestCase {
    }
 
    @Test
+   public void testFileMatch21() {
+      List<File> loadedFiles = Tools.fileLoader("./src/test/resources/fileLoader/reports/qfg/test2/test/**");
+      List<File> files = new ArrayList();
+      files.add(new File("./src/test/resources/fileLoader/reports/qfg/test2/test/testjournal.xml"));
+      Assert.assertEquals("Files isn't equals", files.get(0).getAbsolutePath(), loadedFiles.get(0).getAbsolutePath());
+   }
+
+   @Test
    public void testFileMatch3() {
       List<File> loadedFiles = Tools.fileLoader("./src/test/resources/fileLoader/reports/**/asfsf/*.xml");
       List<File> files = new ArrayList();

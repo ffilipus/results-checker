@@ -23,6 +23,7 @@ public class Tools {
       }
       return listFiles;
    }*/
+
    public static List<File> fileLoader(String path) {
       String[] items = path.split("/");
       ArrayList<ArrayList<File>> listOfDirectories = new ArrayList<>();
@@ -53,7 +54,9 @@ public class Tools {
                         directories.add(file);
                      }
                   }
-                  listOfDirectories.add(directories);
+                  if (directories.size() != 0) {
+                     listOfDirectories.add(directories);
+                  }
                }
             }
          }
@@ -76,8 +79,12 @@ public class Tools {
    private static List<File> listFiles(String path, String[] items, ArrayList<ArrayList<File>> listOfDirectories) {
       ArrayList<File> testFiles = new ArrayList<>();
       if (listOfDirectories.isEmpty()) {
-         if (items[items.length - 1].equals("*.xml")) {
-            File directory = new File(items[items.length - 2]);
+         if (items[items.length - 1].equals("*.xml") || items[items.length - 1].equals("**")) {
+            String respath = "";
+            for (int i = 0; i < items.length - 1; i++) {
+               respath += items[i] + "/";
+            }
+            File directory = new File(respath);
             File[] listOfFiles = directory.listFiles();
             if (listOfFiles != null) {
                for (File file : listOfFiles) {
@@ -95,7 +102,7 @@ public class Tools {
 
       List<File> directories = listOfDirectories.get(listOfDirectories.size() - 2);
 
-      if (items[items.length - 1].equals("*.xml") ) {
+      if (items[items.length - 1].equals("*.xml") || items[items.length - 1].equals("**")) {
          for (File directory : directories) {
             File[] listOfFiles = directory.listFiles();
             if (listOfFiles != null) {
