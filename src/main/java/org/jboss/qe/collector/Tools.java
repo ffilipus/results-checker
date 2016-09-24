@@ -1,5 +1,6 @@
 package org.jboss.qe.collector;
 
+import java.awt.geom.IllegalPathStateException;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -25,6 +26,73 @@ public class Tools {
    }*/
 
    public static List<File> fileLoader(String path) {
+      List<File> res = new LinkedList<>();
+      List<String> start = new LinkedList<>();
+       // TODO do it more multiplatform :)
+      if (path.startsWith("/")) {
+         start.add("/");
+      } else {
+         start.add(".");
+      }
+      res.addAll(recursiveFileLoader(start, Arrays.asList(path.split("/"))).stream().map(File::new).collect(Collectors.toList()));
+      return res;
+   }
+
+   private static List<String> recursiveFileLoader(List<String> nodes, List<String> path) {
+      List<String> output = new LinkedList<>();
+      if (path.size() == 0) {
+         for (String filename : nodes) {
+            File file = new File(filename);
+            if (file.isFile()) {
+               output.add(filename);
+            }
+         }
+         return output;
+      } else {
+         if (path.get(0).equals("**")) {
+            for (String fn : nodes) {
+               File file = new File(fn);
+               if (file.isDirectory() && file.list().length > 0) {
+                  for (String child : file.list()) {
+                     output.add(fn + "/" + child);
+                  }
+               }
+            }
+         } else if (path.get(0).contains("*")) {
+            for (String fn : nodes) {
+               File file = new File(fn);
+               if (path.get(0).equals("*.xml")) {
+                  if (file.isDirectory() && file.list().length > 0) {
+                     for (String child : file.list()) {
+                        if (child.endsWith(".xml")) {
+                           output.add(fn + "/" + child);
+                        }
+                     }
+                  }
+               } else { // other wildcard is not supported
+                  throw new IllegalPathStateException("not supported wild card");
+               }
+            }
+         } else {
+            for (String fn : nodes) {
+               File file = new File(fn);
+               if (file.isDirectory() && arrayContains(file.list(), path.get(0))) {
+                  output.add(fn + "/" + path.get(0));
+               }
+            }
+         }
+         return recursiveFileLoader(output, path.subList(1,path.size()));
+      }
+   }
+
+   private static boolean arrayContains(String[] list, String key) {
+      for (String value : list) {
+         if (value.equals(key)) return true;
+      }
+      return false;
+   }
+
+   public static List<File> fileLoader2(String path) {
       String[] items = path.split("/");
       ArrayList<ArrayList<File>> listOfDirectories = new ArrayList<>();
       for (int i = 0; i < items.length; i++) {

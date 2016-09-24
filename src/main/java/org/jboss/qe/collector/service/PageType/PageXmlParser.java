@@ -32,11 +32,6 @@ public class PageXmlParser {
       SAXBuilder builder = new SAXBuilder();
       List<File> files = Tools.fileLoader(path);
 
-      System.out.println("files: ");
-      for (File f : files) {
-         System.out.println(f.getAbsolutePath());
-      }
-
       for (File file : files) {
          try {
             if (file.exists()) {
