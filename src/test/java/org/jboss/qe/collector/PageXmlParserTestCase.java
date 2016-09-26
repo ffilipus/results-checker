@@ -28,14 +28,15 @@ public class PageXmlParserTestCase {
    @Before
    public void init() {
       try {
-         Files.copy(Paths.get("./src/test/resources/pageXmlParser/input/test.xml"), Paths.get("./src/test/resources/pageXmlParser/output/test.xml"), REPLACE_EXISTING);
-         Files.copy(Paths.get("./src/test/resources/pageXmlParser/input/test2.xml"), Paths.get("./src/test/resources/pageXmlParser/output/test2.xml"), REPLACE_EXISTING);
-         Files.copy(Paths.get("./src/test/resources/pageXmlParser/input/test3.xml"), Paths.get("./src/test/resources/pageXmlParser/output/test3.xml"), REPLACE_EXISTING);
+         Files.copy(Paths.get("src/test/resources/pageXmlParser/input/test.xml"), Paths.get("src/test/resources/pageXmlParser/output/test.xml"), REPLACE_EXISTING);
+         Files.copy(Paths.get("src/test/resources/pageXmlParser/input/test2.xml"), Paths.get("src/test/resources/pageXmlParser/output/test2.xml"), REPLACE_EXISTING);
+         Files.copy(Paths.get("src/test/resources/pageXmlParser/input/test3.xml"), Paths.get("src/test/resources/pageXmlParser/output/test3.xml"), REPLACE_EXISTING);
       } catch (IOException ex) {
          Logger.getLogger(PageXmlParserTestCase.class.getName()).log(Level.SEVERE, null, ex);
       }
       Tools.setEnvironmentVariable("DELETE_IF_FILTERED","true");
       Tools.setEnvironmentVariable("JOB_NAME","eap-64x-patched-manu-acceptance-tattletale");
+      Tools.setEnvironmentVariable("JOB_URL","http://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-64x-patched-manu-acceptance-tattletale");
    }
 
    @Test
@@ -43,9 +44,9 @@ public class PageXmlParserTestCase {
       ReportCreator rc = new ReportCreator("results-checker-report.html");
       PageXmlParser parser = new PageXmlParser(filter, rc);
       try {
-         parser.run("./src/test/resources/pageXmlParser/output/test.xml");
-         File testFile = new File("./src/test/resources/pageXmlParser/output/test.xml");
-         File expectedOutputFile = new File("./src/test/resources/pageXmlParser/expectedOutput/test.xml");
+         parser.run("src/test/resources/pageXmlParser/output/test.xml");
+         File testFile = new File("src/test/resources/pageXmlParser/output/test.xml");
+         File expectedOutputFile = new File("src/test/resources/pageXmlParser/expectedOutput/test.xml");
          Assert.assertTrue("Files aren't equals", FileUtils.contentEquals(testFile, expectedOutputFile));
       } catch (IOException ex) {
          Logger.getLogger(PageXmlParserTestCase.class.getName()).log(Level.SEVERE, null, ex);
@@ -57,9 +58,9 @@ public class PageXmlParserTestCase {
       ReportCreator rc = new ReportCreator("results-checker-report.html");
       PageXmlParser parser = new PageXmlParser(filter, rc);
       try {
-         parser.run("./src/test/resources/pageXmlParser/output/test2.xml");
-         File testFile = new File("./src/test/resources/pageXmlParser/output/test2.xml");
-         File expectedOutputFile = new File("./src/test/resources/pageXmlParser/expectedOutput/test2.xml");
+         parser.run("src/test/resources/pageXmlParser/output/test2.xml");
+         File testFile = new File("src/test/resources/pageXmlParser/output/test2.xml");
+         File expectedOutputFile = new File("src/test/resources/pageXmlParser/expectedOutput/test2.xml");
          Assert.assertTrue("Files aren't equals", FileUtils.contentEquals(testFile, expectedOutputFile));
       } catch (IOException ex) {
          Logger.getLogger(PageXmlParserTestCase.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,9 +72,9 @@ public class PageXmlParserTestCase {
       ReportCreator rc = new ReportCreator("results-checker-report.html");
       PageXmlParser parser = new PageXmlParser(filter, rc);
       try {
-         parser.run("./src/test/resources/pageXmlParser/output/test3.xml");
-         File testFile = new File("./src/test/resources/pageXmlParser/output/test3.xml");
-         File expectedOutputFile = new File("./src/test/resources/pageXmlParser/expectedOutput/test3.xml");
+         parser.run("src/test/resources/pageXmlParser/output/test3.xml");
+         File testFile = new File("src/test/resources/pageXmlParser/output/test3.xml");
+         File expectedOutputFile = new File("src/test/resources/pageXmlParser/expectedOutput/test3.xml");
          Assert.assertTrue("Files aren't equals", FileUtils.contentEquals(testFile, expectedOutputFile));
       } catch (IOException ex) {
          Logger.getLogger(PageXmlParserTestCase.class.getName()).log(Level.SEVERE, null, ex);

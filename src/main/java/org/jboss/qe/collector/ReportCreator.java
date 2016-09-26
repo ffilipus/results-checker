@@ -38,7 +38,7 @@ public class ReportCreator {
 
       String errorChildName = testCase.getChild("error") != null ? "error" : "failure";
       String job_full_name = testCase.getAttributeValue("classname") + "." + testCase.getAttributeValue("name"); //;"org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser.EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars";
-      String job_url = "https://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/" + Tools.getEnvironmentVariable("JOB_NAME");
+      String job_url = Tools.getEnvironmentVariable("JOB_URL");
       String run_time = testCase.getAttributeValue("time");
       String age = "#"; // TODO maybe is somehow possible find up this information
       String s_id_test = "id" + (id_test++);
@@ -131,12 +131,10 @@ public class ReportCreator {
    private String getHeadContent() {
 
       String job_name = Tools.getEnvironmentVariable("JOB_NAME");
-      int run_number = 2;
-      String job_url = "https://jenkins.mw.lab.eng.bos.redhat.com/hudson/job/eap-64x-patched-manu-acceptance-tattletale-jbilek/lastCompletedBuild/testReport/history";
-      String run_time = "#";
+      String run_number = Tools.getEnvironmentVariable("BUILD_ID");
       int test_failures = this.failed_not_matched + this.failed_matched;
       int sum_tests = this.total_count_tests;
-      double matched_line = (double)test_failures / sum_tests * 100;
+      double matched_line = (double)failed_matched / sum_tests * 100;
       double unmatched_line = (double)failed_not_matched / sum_tests * 100;
 
       return "<!DOCTYPE html>\n" +
@@ -152,9 +150,9 @@ public class ReportCreator {
             "            " + test_failures + " failures (known issues: " + this.failed_matched + ", unknown issues: " + this.failed_not_matched + ")\n" +
             "         </div>\n" +
             "         <div style=\"width:100%; height:1em; background-color: #729FCF\">\n" +
-            "            <div style=\"width:" + matched_line + "%; height: 1em; background-color: #20941C; float: left\">\n" +
-            "            </div>\n" +
             "            <div style=\"width:" + unmatched_line + "%; height: 1em; background-color: #EF2929; float: left\">\n" +
+            "            </div>\n" +
+            "            <div style=\"width:" + matched_line + "%; height: 1em; background-color: #20941C; float: left\">\n" +
             "            </div>\n" +
             "            <div style=\"width:0.0%; height: 1em; background-color: #FCE94F; float: left\">\n" +
             "            </div>\n" +
@@ -163,9 +161,6 @@ public class ReportCreator {
             "            " + sum_tests + " tests\n" +
             "            (±0)\n" +
             "         </div>\n" +
-            "      </div>\n" +
-            "      <div style=\"text-align:right;\">\n" +
-            "         <a href=\"" + job_url + "\">Trval " + run_time + " ms.</a>\n" +
             "      </div>\n" +
             "      <div id=\"description\">\n" +
             "      </div>\n" +

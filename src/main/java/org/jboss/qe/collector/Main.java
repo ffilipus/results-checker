@@ -36,10 +36,6 @@ public class Main {
 
    public static void main(String[] args) {
 
-      if (args.length < 1) {
-         throw new IllegalArgumentException("You have to pass some job name for processing");
-      }
-
       // Filter configuration
       Injector injector = Guice.createInjector(new FilterInjector());
       filters = injector.getInstance(FiltersList.class);
@@ -91,7 +87,9 @@ public class Main {
 
    private static void printSelectedFiltersOnServer() {
       System.out.println("Filter class:");
-      System.out.println(filters == null ? " - no filter in use" : " - " + filters.getClass().getName());
+      for (Filter filter : filters.getFilters()) {
+         System.out.println(filters == null ? " - no filter in use" : " - " + filter.getClass().getName());
+      }
    }
 
    private static void printHelp() {
