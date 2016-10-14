@@ -18,7 +18,7 @@ public class Eap64xPatchedRepositoryMavenCheckUniqueArtifactId extends AbstractF
       FilterItem[] items = {
 
             new FilterItem(Colour.YELLOW)
-                  .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorStackTrace").toString().matches(".*ERROR: The artifact ID.*is duplicated in Maven repo.*"))
+                  .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorStackTrace").toString().matches(".*"))
                   .setErrorText("tracked in several BZs, see TCMS and results from 6.4.0.GA run for details"),
       };
 
