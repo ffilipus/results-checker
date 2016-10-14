@@ -26,6 +26,26 @@ public class Tools {
    }*/
 
    public static List<File> fileLoader(String path) {
+      long startTime = System.nanoTime();
+      List<File> f3 = fileLoader3(path);
+      long stopTime = System.nanoTime();
+      System.out.println("Time of first algorithm is " + (stopTime - startTime));
+
+      startTime = System.nanoTime();
+      List<File> f2 = fileLoader2(path);
+      stopTime = System.nanoTime();
+      System.out.println("Time of second algorithm is " + (stopTime - startTime));
+
+      if (f2.size() != f3.size()) {
+         System.out.println("some algorithm do not works correctly (" + f2.size() + " != " + f3.size() + ")");
+      } else {
+         System.out.println("both algorithms has the same size (" + f2.size() + ")");
+      }
+
+      return f2;
+   }
+
+   public static List<File> fileLoader3(String path) {
       List<File> res = new LinkedList<>();
       List<String> start = new LinkedList<>();
        // TODO do it more multiplatform :)
