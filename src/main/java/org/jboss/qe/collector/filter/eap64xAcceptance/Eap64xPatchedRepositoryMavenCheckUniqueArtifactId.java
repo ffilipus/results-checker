@@ -18,8 +18,9 @@ public class Eap64xPatchedRepositoryMavenCheckUniqueArtifactId extends AbstractF
       FilterItem[] items = {
 
             new FilterItem(Colour.YELLOW)
-                  .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("name").toString().contains("jboss-as.*-uniq_artifact_version"))
-                  .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorStackTrace").toString().contains("is duplicated in Maven repo"))
+                  .addTest("*")
+                  //.addTestMatcher((JSONObject errorDetails) -> errorDetails.get("name").toString().contains("jboss-as.*-uniq_artifact_version"))
+                  //.addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorStackTrace").toString().contains("is duplicated in Maven repo"))
                   .setErrorText("tracked in several BZs, see TCMS and results from 6.4.0.GA run for details"),
       };
 
