@@ -5,7 +5,7 @@ import org.jboss.qe.collector.FailedTest;
 import org.jboss.qe.collector.FilterResult;
 import org.jboss.qe.collector.filter.AbstractFilter;
 import org.jboss.qe.collector.filter.FilterItem;
-import org.json.JSONObject;
+//import org.json.JSONObject;
 
 /**
  * Created by jbilek on 22/09/16.
