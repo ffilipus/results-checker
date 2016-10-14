@@ -5,7 +5,7 @@ import org.jboss.qe.collector.FailedTest;
 import org.jboss.qe.collector.FilterResult;
 import org.jboss.qe.collector.filter.AbstractFilter;
 import org.jboss.qe.collector.filter.FilterItem;
-//import org.json.JSONObject;
+import org.json.JSONObject;
 
 /**
  * Created by jbilek on 22/09/16.
@@ -18,9 +18,9 @@ public class Eap64xPatchedRepositoryMavenCheckUniqueArtifactId extends AbstractF
       FilterItem[] items = {
 
             new FilterItem(Colour.YELLOW)
-                  .addTest("*")
                   //.addTestMatcher((JSONObject errorDetails) -> errorDetails.get("name").toString().contains("jboss-as.*-uniq_artifact_version"))
-                  //.addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorStackTrace").toString().contains("is duplicated in Maven repo"))
+                  .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorStackTrace").toString().contains("is duplicated in Maven repo"))
+                  .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorStackTrace").toString().contains("ERROR: The artifact ID"))
                   .setErrorText("tracked in several BZs, see TCMS and results from 6.4.0.GA run for details"),
       };
 
