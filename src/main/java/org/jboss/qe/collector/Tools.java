@@ -104,7 +104,7 @@ public class Tools {
          } else {
             for (String fn : nodes) {
                File file = new File(fn);
-               if (file.isDirectory() && (new File(fn + "/" + path.get(0))).exists() ) {//arrayContains(file.list(), path.get(0))) {
+               if (file.isDirectory() && (new File(fn + "/" + path.get(0))).exists() ) { //arrayContains(file.list(), path.get(0))) {
                   output.add(fn + "/" + path.get(0));
                }
             }
