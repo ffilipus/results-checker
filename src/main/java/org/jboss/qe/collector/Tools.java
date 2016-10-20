@@ -51,6 +51,7 @@ public class Tools {
        // TODO do it more multiplatform :)
       if (path.startsWith("/")) {
          start.add("/");
+         path = path.substring(1);
       } else {
          start.add(".");
       }
