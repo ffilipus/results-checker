@@ -25,24 +25,32 @@ public class Tools {
       return listFiles;
    }*/
 
+
    public static List<File> fileLoader(String path) {
       long startTime = System.nanoTime();
       List<File> f3 = fileLoader3(path);
       long stopTime = System.nanoTime();
-      System.out.println("Time of first algorithm is " + (stopTime - startTime));
+      System.out.println("Time of first algorithm is  " + (stopTime - startTime));
 
       startTime = System.nanoTime();
       List<File> f2 = fileLoader2(path);
       stopTime = System.nanoTime();
       System.out.println("Time of second algorithm is " + (stopTime - startTime));
 
+      startTime = System.nanoTime();
+      List<File> f4 = cyclicFileLoader(path);
+      stopTime = System.nanoTime();
+      System.out.println("Time of third algorithm is  " + (stopTime - startTime));
+
       if (f2.size() != f3.size()) {
          System.out.println("some algorithm do not works correctly (" + f2.size() + " != " + f3.size() + ")");
+      } else if (f3.size() != f4.size()) {
+         System.out.println("some algorithm do not works correctly (" + f3.size() + " != " + f4.size() + ")");
       } else {
-         System.out.println("both algorithms has the same size (" + f2.size() + ")");
+         System.out.println("all algorithms has the same size (" + f2.size() + ")");
       }
 
-      return f2;
+      return f3;
    }
 
    public static List<File> fileLoader3(String path) {
@@ -108,6 +116,76 @@ public class Tools {
          }
          return recursiveFileLoader(output, path.subList(1,path.size()));
       }
+   }
+
+   private static List<File> cyclicFileLoader(String path) {
+      List<File> res = new LinkedList<>();
+      List<String> start = new LinkedList<>();
+      // TODO do it more multiplatform :)
+      if (path.startsWith("/")) {
+         start.add("/");
+         path = path.substring(1);
+      } else {
+         start.add(".");
+      }
+      List<String> paths = Arrays.asList(path.split("/"));
+      List<String> output = new LinkedList<>();
+
+      for (String step : paths) {
+
+         if (paths.size() == 0) {
+            for (String filename : start) {
+               File file = new File(filename);
+               if (file.isFile()) {
+                  output.add(filename);
+               }
+            }
+            res.addAll(output.stream().map(File::new).collect(Collectors.toList()));
+            return res;
+         } else {
+            if (paths.get(0).equals("**")) {
+               for (String fn : start) {
+                  File file = new File(fn);
+                  if (file.isDirectory() && file.list().length > 0) {
+                     for (String child : file.list()) {
+                        output.add(fn + "/" + child);
+                     }
+                  }
+               }
+            } else if (paths.get(0).contains("*")) {
+               for (String fn : start) {
+                  File file = new File(fn);
+                  if (paths.get(0).equals("*.xml")) {
+                     if (file.isDirectory() && file.list().length > 0) {
+                        for (String child : file.list()) {
+                           if (child.endsWith(".xml")) {
+                              output.add(fn + "/" + child);
+                           }
+                        }
+                     }
+                  } else { // other wildcard is not supported
+                     throw new IllegalPathStateException("not supported wild card");
+                  }
+               }
+            } else {
+               if (start.size() == 1) {
+                  output.add(start.get(0) + "/" + step);
+               } else {
+                  for (String fn : start) {
+                     File file = new File(fn);
+                     if (file.isDirectory() && (new File(fn + "/" + step)).exists()) {
+                        output.add(fn + "/" + step);
+                     }
+                  }
+               }
+            }
+         }
+         start.clear();
+         start.addAll(output);
+         output.clear();
+      }
+      res.addAll(start.stream().map(File::new).collect(Collectors.toList()));
+      return res;
    }
 
    private static boolean arrayContains(String[] list, String key) {
