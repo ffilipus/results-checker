@@ -59,6 +59,13 @@ public class Tools {
    }
 
    private static List<String> recursiveFileLoader(List<String> nodes, List<String> path) {
+      System.out.println("INPUT");
+      for (String node : nodes) {
+         System.out.println(" ALG2: node: " + node);
+      }
+      for (String pat : path) {
+         System.out.println(" ALG2: path: " + pat);
+      }
       List<String> output = new LinkedList<>();
       if (path.size() == 0) {
          for (String filename : nodes) {
@@ -100,6 +107,10 @@ public class Tools {
                   output.add(fn + "/" + path.get(0));
                }
             }
+         }
+         System.out.println("OUTPUT");
+         for (String out : output) {
+            System.out.println(" ALG2: node: " + out);
          }
          return recursiveFileLoader(output, path.subList(1,path.size()));
       }
