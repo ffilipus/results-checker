@@ -43,9 +43,9 @@ public class Tools {
       System.out.println("Time of third algorithm is  " + (stopTime - startTime));
 
       if (f2.size() != f3.size()) {
-         System.out.println("some algorithm do not works correctly (" + f2.size() + " != " + f3.size() + ")");
+         System.out.println("some algorithm do not works correctly (1)(" + f2.size() + " != " + f3.size() + ")");
       } else if (f3.size() != f4.size()) {
-         System.out.println("some algorithm do not works correctly (" + f3.size() + " != " + f4.size() + ")");
+         System.out.println("some algorithm do not works correctly (2) (" + f3.size() + " != " + f4.size() + ")");
       } else {
          System.out.println("all algorithms has the same size (" + f2.size() + ")");
       }
@@ -133,49 +133,38 @@ public class Tools {
 
       for (String step : paths) {
 
-         if (paths.size() == 0) {
-            for (String filename : start) {
-               File file = new File(filename);
-               if (file.isFile()) {
-                  output.add(filename);
+         if (step.equals("**")) {
+            for (String fn : start) {
+               File file = new File(fn);
+               if (file.isDirectory() && file.list().length > 0) {
+                  for (String child : file.list()) {
+                     output.add(fn + "/" + child);
+                  }
                }
             }
-            res.addAll(output.stream().map(File::new).collect(Collectors.toList()));
-            return res;
-         } else {
-            if (paths.get(0).equals("**")) {
-               for (String fn : start) {
-                  File file = new File(fn);
+         } else if (step.contains("*")) {
+            for (String fn : start) {
+               File file = new File(fn);
+               if (step.equals("*.xml")) {
                   if (file.isDirectory() && file.list().length > 0) {
                      for (String child : file.list()) {
-                        output.add(fn + "/" + child);
-                     }
-                  }
-               }
-            } else if (paths.get(0).contains("*")) {
-               for (String fn : start) {
-                  File file = new File(fn);
-                  if (paths.get(0).equals("*.xml")) {
-                     if (file.isDirectory() && file.list().length > 0) {
-                        for (String child : file.list()) {
-                           if (child.endsWith(".xml")) {
-                              output.add(fn + "/" + child);
-                           }
+                        if (child.endsWith(".xml")) {
+                           output.add(fn + "/" + child);
                         }
                      }
-                  } else { // other wildcard is not supported
-                     throw new IllegalPathStateException("not supported wild card");
                   }
+               } else { // other wildcard is not supported
+                  throw new IllegalPathStateException("not supported wild card");
                }
+            }
+         } else {
+            if (start.size() == 1) {
+               output.add(start.get(0) + "/" + step);
             } else {
-               if (start.size() == 1) {
-                  output.add(start.get(0) + "/" + step);
-               } else {
-                  for (String fn : start) {
-                     File file = new File(fn);
-                     if (file.isDirectory() && (new File(fn + "/" + step)).exists()) {
-                        output.add(fn + "/" + step);
-                     }
+               for (String fn : start) {
+                  File file = new File(fn);
+                  if (file.isDirectory() && (new File(fn + "/" + step)).exists()) {
+                     output.add(fn + "/" + step);
                   }
                }
             }
@@ -184,7 +173,13 @@ public class Tools {
          start.addAll(output);
          output.clear();
       }
-      res.addAll(start.stream().map(File::new).collect(Collectors.toList()));
+      for (String filename : start) {
+         File file = new File(filename);
+         if (file.isFile()) {
+            output.add(filename);
+         }
+      }
+      res.addAll(output.stream().map(File::new).collect(Collectors.toList()));
       return res;
    }
 
