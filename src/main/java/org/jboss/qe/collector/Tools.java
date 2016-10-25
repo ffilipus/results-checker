@@ -56,14 +56,24 @@ public class Tools {
    public static List<File> fileLoader3(String path) {
       List<File> res = new LinkedList<>();
       List<String> start = new LinkedList<>();
-       // TODO do it more multiplatform :)
+      // TODO test it multiplatform
+      /*
+       path could be like:
+         /path/from/root
+         C:\path\from\root
+         path/from/current/location
+         path\from\current\location
+        */
       if (path.startsWith("/")) {
          start.add("/");
          path = path.substring(1);
+      } else if (path.split(File.separator)[0].contains(":")) {
+         start.add(path.split(File.separator)[0]);
+         path = path.substring(path.split(File.separator)[0].length() + 1);
       } else {
          start.add(".");
       }
-      res.addAll(recursiveFileLoader(start, Arrays.asList(path.split("/"))).stream().map(File::new).collect(Collectors.toList()));
+      res.addAll(recursiveFileLoader(start, Arrays.asList(path.split(File.separator))).stream().map(File::new).collect(Collectors.toList()));
       return res;
    }
 
@@ -83,7 +93,7 @@ public class Tools {
                File file = new File(fn);
                if (file.isDirectory() && file.list().length > 0) {
                   for (String child : file.list()) {
-                     output.add(fn + "/" + child);
+                     output.add(fn + File.separator + child);
                   }
                }
             }
@@ -94,7 +104,7 @@ public class Tools {
                   if (file.isDirectory() && file.list().length > 0) {
                      for (String child : file.list()) {
                         if (child.endsWith(".xml")) {
-                           output.add(fn + "/" + child);
+                           output.add(fn + File.separator + child);
                         }
                      }
                   }
@@ -104,12 +114,12 @@ public class Tools {
             }
          } else {
             if (nodes.size() == 1) {
-               output.add(nodes.get(0) + "/" + path.get(0));
+               output.add(nodes.get(0) + File.separator + path.get(0));
             } else {
                for (String fn : nodes) {
                   File file = new File(fn);
-                  if (file.isDirectory() && (new File(fn + "/" + path.get(0))).exists() ) { //arrayContains(file.list(), path.get(0))) {
-                     output.add(fn + "/" + path.get(0));
+                  if (file.isDirectory() && (new File(fn + File.separator + path.get(0))).exists() ) { //arrayContains(file.list(), path.get(0))) {
+                     output.add(fn + File.separator + path.get(0));
                   }
                }
             }
@@ -121,14 +131,23 @@ public class Tools {
    private static List<File> cyclicFileLoader(String path) {
       List<File> res = new LinkedList<>();
       List<String> start = new LinkedList<>();
-      // TODO do it more multiplatform :)
+      /*
+       path could be like:
+         /path/from/root
+         C:\path\from\root
+         path/from/current/location
+         path\from\current\location
+        */
       if (path.startsWith("/")) {
          start.add("/");
          path = path.substring(1);
+      } else if (path.split(File.separator)[0].contains(":")) {
+         start.add(path.split(File.separator)[0]);
+         path = path.substring(path.split(File.separator)[0].length() + 1);
       } else {
          start.add(".");
       }
-      List<String> paths = Arrays.asList(path.split("/"));
+      List<String> paths = Arrays.asList(path.split(File.separator));
       List<String> output = new LinkedList<>();
 
       for (String step : paths) {
@@ -138,7 +157,7 @@ public class Tools {
                File file = new File(fn);
                if (file.isDirectory() && file.list().length > 0) {
                   for (String child : file.list()) {
-                     output.add(fn + "/" + child);
+                     output.add(fn + File.separator + child);
                   }
                }
             }
@@ -149,7 +168,7 @@ public class Tools {
                   if (file.isDirectory() && file.list().length > 0) {
                      for (String child : file.list()) {
                         if (child.endsWith(".xml")) {
-                           output.add(fn + "/" + child);
+                           output.add(fn + File.separator + child);
                         }
                      }
                   }
@@ -159,12 +178,12 @@ public class Tools {
             }
          } else {
             if (start.size() == 1) {
-               output.add(start.get(0) + "/" + step);
+               output.add(start.get(0) + File.separator + step);
             } else {
                for (String fn : start) {
                   File file = new File(fn);
-                  if (file.isDirectory() && (new File(fn + "/" + step)).exists()) {
-                     output.add(fn + "/" + step);
+                  if (file.isDirectory() && (new File(fn + File.separator + step)).exists()) {
+                     output.add(fn + File.separator + step);
                   }
                }
             }
@@ -191,7 +210,7 @@ public class Tools {
    }
 
    public static List<File> fileLoader2(String path) {
-      String[] items = path.split("/");
+      String[] items = path.split(File.separator);
       ArrayList<ArrayList<File>> listOfDirectories = new ArrayList<>();
       for (int i = 0; i < items.length; i++) {
          if (items[i].equals("**")) {
@@ -209,7 +228,7 @@ public class Tools {
             }
             else {
                for (int ii = 0; ii < i; ii++) {
-                  directoryPath += items[ii] + "/";
+                  directoryPath += items[ii] + File.separator;
                }
                File directory = new File(directoryPath);
                File[] listOfFiles = directory.listFiles();
@@ -231,7 +250,7 @@ public class Tools {
                ArrayList<File> directories = new ArrayList<>();
                for (File directory : listOfDirectories.get(listOfDirectories.size() - 1)) {
                   if (!items[i].equals("*.xml")) {
-                     directories.add(new File(directory.getAbsolutePath() + "/" + items[i]));
+                     directories.add(new File(directory.getAbsolutePath() + File.separator + items[i]));
                   }
                }
                listOfDirectories.add(directories);
@@ -248,7 +267,7 @@ public class Tools {
          if (items[items.length - 1].equals("*.xml") || items[items.length - 1].equals("**")) {
             String respath = "";
             for (int i = 0; i < items.length - 1; i++) {
-               respath += items[i] + "/";
+               respath += items[i] + File.separator;
             }
             File directory = new File(respath);
             File[] listOfFiles = directory.listFiles();
@@ -282,7 +301,7 @@ public class Tools {
          }
       }
       else {
-         testFiles.addAll(directories.stream().map(directory -> new File(directory.getAbsolutePath() + "/" + items[items.length - 1])).collect(Collectors.toList()));
+         testFiles.addAll(directories.stream().map(directory -> new File(directory.getAbsolutePath() + File.separator + items[items.length - 1])).collect(Collectors.toList()));
       }
       return testFiles;
    }

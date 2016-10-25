@@ -61,13 +61,12 @@ public class PageXmlParser {
    private void addErrorMessage(Element testCase, FilterResult processedIssue, Document document, File file) throws IOException {
       //String[] processedIssues = processedIssue.getJobError().split("-");
       if (processedIssue.isMatch()) {
-         rc.addMatchedTestResult(testCase, processedIssue.getJobError().split("-")[1]);
+         rc.addMatchedTestResult(testCase, processedIssue.getJobError());
          String errorChildName = testCase.getChild("error") != null ? "error" : "failure";
-         // TODO removing is maybe not wanted
          if (Tools.getEnvironmentVariable("DELETE_IF_FILTERED").equals("true")) {
             testCase.removeChild(errorChildName);
          }
-         testCase.addContent(new Element("filtermessage").setText(processedIssue.getJobError().split("-")[1]));
+         testCase.addContent(new Element("filtermessage").setText(processedIssue.getJobError()));
          XMLOutputter xmlOutput = new XMLOutputter();
          xmlOutput.setFormat(Format.getPrettyFormat());
          xmlOutput.output(document, new FileWriter(file.getAbsolutePath()));

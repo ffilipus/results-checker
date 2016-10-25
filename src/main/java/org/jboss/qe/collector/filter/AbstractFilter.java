@@ -3,6 +3,7 @@ package org.jboss.qe.collector.filter;
 import org.jboss.qe.collector.Colour;
 import org.jboss.qe.collector.FailedTest;
 import org.jboss.qe.collector.FilterResult;
+import org.jboss.qe.collector.Tools;
 import org.json.JSONException;
 
 import java.text.MessageFormat;
@@ -29,12 +30,16 @@ public abstract class AbstractFilter implements Filter {
     * Get text description with correct colour about test error.
     */
    public String getMessageFromFilterItem(FailedTest failedTest, FilterItem item) {
-      String category = item.category != null ? " " + dyeText(item.category, Colour.GRAY) : "";
-      String template = "{0} - {1} {2}";
-      Object[] values = new Object[] {
-          dyeText(failedTest.testName, item.colour), item.errorText, category
-      };
-      return MessageFormat.format(template, values);
+      if (Tools.isRunningOnJenkinse()) {
+         return item.errorText;
+      } else {
+         String category = item.category != null ? " " + dyeText(item.category, Colour.GRAY) : "";
+         String template = "{0} - {1} {2}";
+         Object[] values = new Object[]{
+               dyeText(failedTest.testName, item.colour), item.errorText, category
+         };
+         return MessageFormat.format(template, values);
+      }
    }
 
    /**
