@@ -41,7 +41,7 @@ public class Eap64xPatchedRepositoryMavenCheckScmRevision extends AbstractFilter
                   .addTest("jbosstxbridge-4.17.35.Final-redhat-1#jbosstxbridge-4.17.35.Final-redhat-1")
                   .addTest("jbossxts-4.17.35.Final-redhat-1.*#jbossxts-4.17.35.Final-redhat-1.*")
                   .addTest("narayana-jta-4.17.35.Final-redhat-1.*#narayana-jta-4.17.35.Final-redhat-1.*")
-                  .setErrorText("BZ 1017635"),
+                  .setErrorText("<a href=\"https://bugzilla.redhat.com/show_bug.cgi?id=1017635\" >BZ1017635</a>"),
       };
 
       return coreFilter(failedTest, items);
