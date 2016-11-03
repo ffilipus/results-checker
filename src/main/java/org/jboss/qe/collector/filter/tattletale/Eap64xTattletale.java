@@ -62,14 +62,14 @@ public class Eap64xTattletale  extends AbstractFilter {
                   .setErrorText("https://bugzilla.redhat.com/show_bug.cgi?id=918566 https://bugzilla.redhat.com/show_bug.cgi?id=918564"),
             new FilterItem(Colour.YELLOW)
                   //.addTest("org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser.EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars.*")
-                  .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorDetails").toString().matches("39 duplicate classes found in JARs: \\[jboss-as-osgi-http-7.5.11.Final-redhat-..jar, org.osgi.enterprise-4.2.0.redhat-10.jar\\]\n" +
+                  .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorDetails").toString().matches("39 duplicate classes found in JARs: \\[jboss-as-osgi-http-7.5.1..Final-redhat-..jar, org.osgi.enterprise-4.2.0.redhat-10.jar\\]\n" +
                         "org.osgi.service.http.HttpContext\n" +
                         "org.osgi.service.http.HttpService\n" +
                         "org.osgi.service.http.NamespaceException"))
                   .setErrorText("https://bugzilla.redhat.com/show_bug.cgi?id=918566 https://bugzilla.redhat.com/show_bug.cgi?id=918564"),
             new FilterItem(Colour.YELLOW)
                   //.addTest("org.jboss.manu.units.eap.tattletale.EapMultipleJarsReportParser.EvaluateMultipleJarsReport.searching_duplicate_classes_in_jars.*")
-                  .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorDetails").toString().matches("39 duplicate classes found in JARs: \\[jboss-as-osgi-jpa-7.5.11.Final-redhat-..jar, org.osgi.enterprise-4.2.0.redhat-10.jar\\]\n" +
+                  .addTestMatcher((JSONObject errorDetails) -> errorDetails.get("errorDetails").toString().matches("39 duplicate classes found in JARs: \\[jboss-as-osgi-jpa-7.5.1..Final-redhat-..jar, org.osgi.enterprise-4.2.0.redhat-10.jar\\]\n" +
                         "org.osgi.service.jpa.EntityManagerFactoryBuilder"))
                   .setErrorText("https://bugzilla.redhat.com/show_bug.cgi?id=918566 https://bugzilla.redhat.com/show_bug.cgi?id=918564"),
             new FilterItem(Colour.YELLOW)
