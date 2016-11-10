@@ -32,6 +32,7 @@
 
 `JAR_PATH` - Path to jar file containing custom filters. In default ./result-checker-filters.jar
 
+`RESPONSE_TIMEOUT_SECONDS` - Set timeout for resteasy requests in seconds. In default it is 60 seconds.
 
 ###Examples:
 ```

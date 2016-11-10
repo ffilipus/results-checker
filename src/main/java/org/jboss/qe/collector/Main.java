@@ -132,7 +132,12 @@ public class Main {
       String[] splitRes = jobName.split(":", 2);
       jobName = splitRes[0];
       String buildNum = splitRes.length > 1 ? splitRes[1] : "lastBuild";
-      PageParser job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient());
+      PageParser job = null;
+      try {
+         job = JobService.getJob(jobName, buildNum, JobService.getNewRESTClient());
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
       System.out.println("\n" + dyeText(jobName, Colour.BLACK_BOLD));
       if (JobService.isMatrix(job)) {
          handleMatrix(jobName, job);
@@ -153,7 +158,12 @@ public class Main {
       System.out.println(printableUlr);
       // handle single
       List<String> cases = new LinkedList<>();
-      PageParser data = JobService.getTestReport(jobName, buildNum, null);
+      PageParser data = null;
+      try {
+         data = JobService.getTestReport(jobName, buildNum, null);
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
       // ignore runs without any results
       if (data != null) {
          totalBuilds++;
@@ -206,9 +216,15 @@ public class Main {
       } catch (UnsupportedEncodingException uee) {
          return -1;
       }
-      PageParser matrixChild = JobService.getJob(name, "", client);
-      result.append(" - ").append(getPrintableUrl(url, matrixChild.get("result")));
-      PageParser data = JobService.getTestReport(name, "", client);
+      PageParser matrixChild = null;
+      PageParser data = null;
+      try {
+         matrixChild = JobService.getJob(name, "", client);
+         result.append(" - ").append(getPrintableUrl(url, matrixChild.get("result")));
+         data = JobService.getTestReport(name, "", client);
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
       if (data != null) {
          totalBuilds++;
          buildsInMatrix++;

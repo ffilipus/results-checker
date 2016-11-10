@@ -333,6 +333,8 @@ public class Tools {
                return "";
             case "DELETE_IF_FILTERED":
                return "false";
+            case "RESPONSE_TIMEOUT_SECONDS":
+               return "60";
             case "JAR_PATH":
                return "./results-checker-filters.jar";
             case "PACKAGE":
