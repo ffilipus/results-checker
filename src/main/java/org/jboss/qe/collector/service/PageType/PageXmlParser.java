@@ -35,6 +35,7 @@ public class PageXmlParser {
       for (File file : files) {
          try {
             if (file.exists()) {
+               System.out.println("Adding file into result report: " + file.getAbsolutePath());
                Document document = builder.build(file);
                List testSuite = document.getRootElement().getChildren();
                for (Object aTestSuite : testSuite) {
